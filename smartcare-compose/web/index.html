@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            PAGINA INICAL
+        </title>
+        <style>
+            .Title {
+                text-align: center;
+                align-items: center;
+            }
+            .Body {
+                background-color: aquamarine;
+            }
+            table, tr, th, td {
+                border-collapse: collapse;
+                border: 1px solid black;
+                width: 50%;
+                text-align: center;
+            }
+            button {
+                background-color: white;
+                color: black;
+                border: 2px solid #f73a00; /* Green */
+            }
+            .notedit {
+                pointer-events:none ;
+            }
+        </style>
+    </head>
+    <body class="Body">
+        <div class="Title">
+            <h1>
+                Tipos Dispositivos
+            </h1>
+            <button onclick="listaDispositivos()">Listar</button>
+            <table class="Table" id="TiposDispositivos"></table>
+            <br/>
+            <h1>
+                Buscar por Id
+            </h1>
+            <input type="text" id="idbusca">
+            <input type="text" id="nomebusca" class="notedit">
+            <button onclick="buscaDipositivos()">Buscar</button>
+            <h1>
+                Busca por nome
+            </h1>
+            <input type="text" id="buscanome">
+            <button onclick="buscaDispositivosNome()">Buscar</button>
+            <table class="Table" id="TiposDispositivosBusca"></table>
+            <h1>
+                Cadastro
+            </h1>
+            <form action="http://localhost:8080/dispositivo/tipos/inserir" method="POST">
+                <input type="text" id="cadastra" name="cadastra">
+                <button>Enviar!</button>
+            </form>
+
+        </div>
+        <script src="main.js"></script>
+    </body>
+</html>
