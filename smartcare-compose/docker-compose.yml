@@ -1,7 +1,9 @@
 version: '3'
 volumes:
   # todos containers que precisam de persistencia de dados devem ter um vomule configurado
+  web:
   database:
+  web-api:
 networks:
   # todas redes precisam ser declaradas
   alerts:
