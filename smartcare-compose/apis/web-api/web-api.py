@@ -295,6 +295,29 @@ class ConnectDataBase():
 
             return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
 
+class ErrorsDict():
+
+    def errorcode(int):
+
+        Errors = []
+
+        Errors.append({101:"Erro na listagem de tipos de dispositivo!"})
+
+        print(Errors)
+        print(Errors[0])
+
+        error = Errors.get(int) if int in Errors[0] else None
+
+        if error != None:
+
+            return error
+
+        else:
+
+            return f"Ocorreu um erro, procure o suporte! (error code {int})"
+
+
+
 class WebApi(Bottle):
 
     def __init__(self):
@@ -440,12 +463,15 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
+        print(ErrorsDict.errorcode(101))
+        print(ErrorsDict.errorcode(102))
+
         if connectionStatus == True:
 
-            SQL = "SELECT * FROM TIPODISPOSITIVO "
-            Sucess = True
-            Errors = []
-            Data = []
+            SQL     = "SELECT * FROM TIPODISPOSITIVO "
+            Sucess  = True
+            Errors  = []
+            Data    = []
 
             try:
 
