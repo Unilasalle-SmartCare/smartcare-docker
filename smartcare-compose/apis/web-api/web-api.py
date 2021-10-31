@@ -68,10 +68,24 @@ class StringHandling():
     def isnumber(string):
 
         try:
+
             float(string)
+
             return True
+
         except:
+
             return False
+
+    def CleanSqlString(str):
+
+        Remove = "'" #adicionar aqui os caracteres a serem removidos
+
+        for c in Remove:
+
+            str = str.replace(c, "")
+
+        return str
 
 class UrlHandling():
 
@@ -310,7 +324,7 @@ class ErrorsDict():
         Errors[107] = "O id passado não pôde ser resolvido, ele deve ser um inteiro!"
         Errors[108] = "Rota não encontrada!"
         Errors[109] = "O valor buscado não é um inteiro!"
-        Errors[110] = "As variáveis esperadas não foram passadas!"
+        Errors[110] = "As variáveis esperadas não foram passadas ou estão incorretas!"
         Errors[111] = "Erro extrair valores das variáveis do formulário!"
         Errors[112] = "Variáveis obrigatórias não foram passadas!"
         Errors[113] = "Os tipos das variáveis obrigatórias estão incorretos!"
@@ -337,7 +351,7 @@ class ErrorsDict():
         Errors[451] = "A atualização foi bem sucedida, porém não encontramos o tipo no banco!"
         Errors[452] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo!"
         Errors[453] = "Erro ao atualizar o nome do tipo!"
-        Errors[455] = "O nome do tipo a ser alterado não foi passado!"
+        Errors[455] = "O nome do tipo a ser alterado não foi passado ou está incorreto!"
         Errors[456] = "Erro interno na Api - Atualizar nome do tipo!"
         Errors[461] = "A exclusão do tipo não foi bem sucedida!"
         Errors[462] = "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo!"
@@ -660,6 +674,7 @@ class WebApi(Bottle):
                 if variavelStatus == True:
 
                     nomebusca = list(list(variavelData)[0].values())[0]
+                    nomebusca = StringHandling.CleanSqlString(nomebusca)
 
                     if str(nomebusca) != "":
 
@@ -734,8 +749,9 @@ class WebApi(Bottle):
             try:
 
                 cadastra = FormData.get("cadastra") if "cadastra" in FormData.keys() else None
+                cadastra = StringHandling.CleanSqlString(cadastra) if cadastra != None else cadastra
 
-                if cadastra != None:
+                if cadastra != None and cadastra != "":
                     
                     SQL = "INSERT INTO TIPODISPOSITIVO (NOME, IND_SIT) VALUES " + f" ('{cadastra}', 1)"
 
@@ -845,8 +861,9 @@ class WebApi(Bottle):
                         SQL     = "UPDATE TIPODISPOSITIVO SET "
 
                         nome = FormData.get("nome") if "nome" in FormData.keys() else None
+                        nome = StringHandling.CleanSqlString(nome) if nome != None else nome
                     
-                        if nome != None:
+                        if nome != None and nome != "":
 
                             SQL     = StringHandling.AddColumns(columns, SQL)
                             SQL     = SQL + f"NOME = '{nome}'"
@@ -957,10 +974,11 @@ class WebApi(Bottle):
 
                 idtipo  = FormData.get("id")    if "id"     in FormData.keys()  else None
                 nome    = FormData.get("nome")  if "nome"   in FormData.keys()  else None
+                nome    = StringHandling.CleanSqlString(nome) if nome != None else nome
 
                 if idtipo != None and str(idtipo).isnumeric():
 
-                    if nome != None:
+                    if nome != None and nome != "":
 
                         SQL = "UPDATE TIPODISPOSITIVO SET NOME = '{}' WHERE IDTIPO = {}".format(
                             nome ,
@@ -1097,7 +1115,7 @@ class WebApi(Bottle):
 
                             Count = Count + 1
 
-                    if  DataBeforeStatus == True and list(DataBefore.values())[2] and IndSitPosition != -1:
+                    if  DataBeforeStatus == True and DataBeforeData and IndSitPosition != -1:
 
                         if  list(list(DataBeforeData)[0].values())[IndSitPosition] != 2:
 
@@ -1374,6 +1392,7 @@ class WebApi(Bottle):
                 if variavelStatus == True:
                 
                     textobusca = list(list(variavelData)[0].values())[0]
+                    textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
 
                     if textobusca != "":
                 
@@ -1509,6 +1528,11 @@ class WebApi(Bottle):
                         eixox               = FormData.get("eixox")
                         eixoy               = FormData.get("eixoy")
                         orientacao          = FormData.get("orientacao")
+
+                        codigodispositivo   = StringHandling.CleanSqlString(codigodispositivo)
+                        nome                = StringHandling.CleanSqlString(nome)
+                        descricao           = StringHandling.CleanSqlString(descricao)
+                        orientacao          = StringHandling.CleanSqlString(orientacao)
                             
                         SQL = " INSERT INTO DISPOSITIVO (" + \
                                                             "CODIGODISPOSITIVO , " + \
@@ -1651,6 +1675,15 @@ class WebApi(Bottle):
                         eixox               = FormData.get("eixox")         if "eixox"      in FormData.keys()  else None
                         eixoy               = FormData.get("eixoy")         if "eixoy"      in FormData.keys()  else None
                         orientacao          = FormData.get("orientacao")    if "orientacao" in FormData.keys()  else None
+
+                        codigodispositivo   =   StringHandling.CleanSqlString(codigodispositivo) \
+                                                if codigodispositivo != None else codigodispositivo
+                        nome                =   StringHandling.CleanSqlString(nome) \
+                                                if nome != None else nome
+                        descricao           =   StringHandling.CleanSqlString(descricao) \
+                                                if descricao != None else descricao
+                        orientacao          =   StringHandling.CleanSqlString(orientacao) \
+                                                if orientacao != None else orientacao
 
                         if      (   str(idtipo).isnumeric()         == True     or idtipo       == None ) \
                             and (   str(idambiente).isnumeric()     == True     or idambiente   == None ) \
