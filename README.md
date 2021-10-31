@@ -1,4 +1,4 @@
-# smartcare-docker
+# Smartcare Docker
 
 Este trabalho contém o compose(docker) do projeto smartcare, o que foi criado neste trabalho :
 
