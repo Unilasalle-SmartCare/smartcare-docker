@@ -1,5 +1,3 @@
-from re import S
-from typing import OrderedDict
 import psycopg2
 import json
 import os
