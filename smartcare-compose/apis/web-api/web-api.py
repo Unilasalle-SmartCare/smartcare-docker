@@ -114,12 +114,12 @@ class UrlHandling():
             if repeats > 1:
 
                 Sucess = False
-                Errors.append({"msg": "A variável buscada foi passada mais de uma vez!"})
+                Errors.append({"msg": ErrorsDict.errorcode(101)})
 
             elif repeats == 0:
 
                 Sucess = False
-                Errors.append({"msg": "A variável buscada não foi passada!"})
+                Errors.append({"msg": ErrorsDict.errorcode(102)})
 
             else:
 
@@ -128,7 +128,7 @@ class UrlHandling():
         except:
 
             Sucess = False
-            Errors.append({"msg": "Erro ao tratar as variáveis da requisição!"})
+            Errors.append({"msg": ErrorsDict.errorcode(103)})
 
         finally:
 
@@ -142,29 +142,29 @@ class UrlHandling():
 
         try:
 
-            variavel = json.loads(UrlHandling.FindGetVars(varsearch))
+            variavel        = json.loads(UrlHandling.FindGetVars(varsearch))
+            variavelStatus  = list(variavel.values())[0]
+            variavelErrors  = list(variavel.values())[1]
+            variavelData    = list(variavel.values())[2]
 
-            if list(variavel.values())[0] == True:
+            if variavelStatus == True:
 
-                dataList = list(variavel.values())[2]
-
-                for data in dataList:
+                for data in variavelData:
 
                     Data.append({f"{varsearch}": list(data.values())[0]})
 
             else:
 
                 Sucess = False
-                errorList = list(variavel.values())[1]
 
-                for error in errorList:
+                for error in variavelErrors:
 
                     Errors.append({"msg": f"{list(error.values())[0]}"})
 
         except:
 
             Sucess = False
-            Errors.append({"msg": "Erro extrair valores das variáveis do formulário!"})
+            Errors.append({"msg": ErrorsDict.errorcode(111)})
 
         finally:
 
@@ -197,12 +197,12 @@ class Env():
             else:
 
                 Sucess = False
-                Errors.append({"msg": "Não foi possivel resolver os dados de conexão da base de dados!"})
+                Errors.append({"msg": ErrorsDict.errorcode(201)})
 
         except:
 
             Sucess = False
-            Errors.append({"msg": "Erro interno na api - Tradução de dados de conexão da base de dados!"})
+            Errors.append({"msg": ErrorsDict.errorcode(202)})
 
         finally:
 
@@ -234,7 +234,7 @@ class ConnectDataBase():
                     
                     WebApi.conn = None
                     Sucess = False
-                    Errors.append({"msg": "Erro ao se conectar à base de dados! {0}".format(ex)})
+                    Errors.append({"msg": ErrorsDict.errorcode(301) + " - {0}".format(ex)})
 
             else:
 
@@ -248,7 +248,7 @@ class ConnectDataBase():
 
             Sucess = False
 
-            Errors.append({"msg": "Erro interno na Api - Conexão na Base de Dados!"})
+            Errors.append({"msg": ErrorsDict.errorcode(302)})
 
         finally:
 
@@ -289,7 +289,7 @@ class ConnectDataBase():
         except:
 
             Sucess = False
-            Errors.append({"msg": "Erro ao autenticar a conexão com o banco de dados, contate o suporte!"})
+            Errors.append({"msg": ErrorsDict.errorcode(311)})
 
         finally:
 
@@ -299,14 +299,66 @@ class ErrorsDict():
 
     def errorcode(int):
 
-        Errors = []
+        Errors = {}
 
-        Errors.append({101:"Erro na listagem de tipos de dispositivo!"})
+        Errors[101] = "A variável buscada foi passada mais de uma vez!"
+        Errors[102] = "A variável buscada não foi passada!"
+        Errors[103] = "Erro ao tratar as variáveis da requisição!"
+        Errors[104] = "O valor buscado deve ser diferente de vazio!"
+        Errors[105] = "Não foram passados parâmetros!"
+        Errors[106] = "Nenhuma coluna foi passada para a atualização!"
+        Errors[107] = "O id passado não pôde ser resolvido, ele deve ser um inteiro!"
+        Errors[108] = "Rota não encontrada!"
+        Errors[109] = "O valor buscado não é um inteiro!"
+        Errors[110] = "As variáveis esperadas não foram passadas!"
+        Errors[111] = "Erro extrair valores das variáveis do formulário!"
+        Errors[112] = "Variáveis obrigatórias não foram passadas!"
+        Errors[113] = "Os tipos das variáveis obrigatórias estão incorretos!"
+        Errors[114] = "Erro ao decodificar as variáveis!"
+        Errors[115] = "O tipo da variável está incorreto!"
+        Errors[201] = "Não foi possivel resolver os dados de conexão da base de dados!"
+        Errors[202] = "Erro interno na api - Tradução de dados de conexão da base de dados!"
+        Errors[300] = "Erro na conexão com o banco de dados, contate o suporte!"
+        Errors[301] = "Erro ao se conectar à base de dados!"
+        Errors[302] = "Erro interno na Api - Conexão na Base de Dados!"
+        Errors[311] = "Erro ao autenticar a conexão com o banco de dados, contate o suporte!"
+        Errors[401] = "Erro na listagem de tipo de dispositivo!"
+        Errors[412] = "Erro interno na Api - busca tipo por id!"
+        Errors[421] = "Erro interno na Api - busca tipo por nome!"
+        Errors[431] = "A inserção foi bem sucedida, porém não encontramos os dados do tipo no banco!"
+        Errors[432] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do dado!"
+        Errors[433] = "Erro na inserção do tipo!"
+        Errors[435] = "Erro interno na Api - inserir tipo!"
+        Errors[441] = "A atualização do tipo foi bem sucedida, porém não encontramos os dados do tipo no banco!"
+        Errors[442] = "A atualização do tipo foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo no banco!"
+        Errors[443] = "Erro na atualização do tipo!"
+        Errors[444] = "O id do tipo de dispositivo não foi localizado!"
+        Errors[445] = "Erro interno na Api - atualizar tipo!"
+        Errors[451] = "A atualização foi bem sucedida, porém não encontramos o tipo no banco!"
+        Errors[452] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo!"
+        Errors[453] = "Erro ao atualizar o nome do tipo!"
+        Errors[455] = "O nome do tipo a ser alterado não foi passado!"
+        Errors[456] = "Erro interno na Api - Atualizar nome do tipo!"
+        Errors[461] = "A exclusão do tipo não foi bem sucedida!"
+        Errors[462] = "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo!"
+        Errors[463] = "Erro na exclusão do tipo!"
+        Errors[464] = "Tipo já deletado!"
+        Errors[465] = "Erro interno na Api - deletar tipo!"
+        Errors[501] = "Erro na listagem de dispositivo!"
+        Errors[503] = "Erro interno na Api - busca dispositivo por id!"
+        Errors[504] = "Erro na busca de dispositivo!"
+        Errors[505] = "Erro interno na Api - busca dipositivo por texto!"
+        Errors[511] = "A inserção foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
+        Errors[512] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo no banco!"
+        Errors[513] = "Erro na inserção dos dispositivo!"
+        Errors[514] = "Erro interno na Api - inserir dispositivo!"
+        Errors[521] = "A atualização foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
+        Errors[522] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do dipositivo no banco!"
+        Errors[523] = "Erro na atualização do dispositivo!"
+        Errors[524] = "O id do dispositivo não foi localizado!"
+        Errors[525] = "Erro interno na Api - atualizar dipositivo!"
 
-        print(Errors)
-        print(Errors[0])
-
-        error = Errors.get(int) if int in Errors[0] else None
+        error = Errors[int] if int in Errors.keys() else None
 
         if error != None:
 
@@ -314,9 +366,7 @@ class ErrorsDict():
 
         else:
 
-            return f"Ocorreu um erro, procure o suporte! (error code {int})"
-
-
+            return f"Ocorreu um erro, entre em contato com o suporte! (error code {int})"
 
 class WebApi(Bottle):
 
@@ -453,7 +503,6 @@ class WebApi(Bottle):
             print("Connection error!")
             print(ConnectDataBase.Connection(self))
 
-
     #   TipoDispositivo
 
     def TipoDispositivoGetAll(self):
@@ -462,9 +511,6 @@ class WebApi(Bottle):
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
-
-        print(ErrorsDict.errorcode(101))
-        print(ErrorsDict.errorcode(102))
 
         if connectionStatus == True:
 
@@ -495,8 +541,9 @@ class WebApi(Bottle):
 
             except:
 
+                self.conn.rollback()
                 Sucess = False
-                Errors.append({"msg": "Erro na listagem de tipos de dispositivo!"})
+                Errors.append({"msg": ErrorsDict.errorcode(401)})
 
             finally:
 
@@ -507,7 +554,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": "Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -551,8 +598,9 @@ class WebApi(Bottle):
 
                         except:
 
+                            self.conn.rollback()
                             Sucess = False
-                            Errors.append({"msg": "Erro na listagem de tipos de dispositivo!"})
+                            Errors.append({"msg": ErrorsDict.errorcode[401]})
 
                         finally:
 
@@ -561,12 +609,12 @@ class WebApi(Bottle):
                     elif str(idbusca) == "":
 
                         Sucess = False
-                        Errors.append({"msg": "O valor buscado deve ser diferente de vazio!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
 
                     else:
 
                         Sucess = False
-                        Errors.append({"msg": "O valor buscado não é um inteiro!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(109)})
 
                 else:
 
@@ -579,7 +627,7 @@ class WebApi(Bottle):
             except:
 
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - busca por id!"})
+                Errors.append({"msg": ErrorsDict.errorcode(412)})
 
             finally:
 
@@ -588,7 +636,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg":"Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -633,8 +681,9 @@ class WebApi(Bottle):
 
                         except:
 
+                            self.conn.rollback()
                             Sucess = False
-                            Errors.append({"msg": "Erro na listagem de tipos de dispositivo!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(401)})
 
                         finally:
 
@@ -643,7 +692,7 @@ class WebApi(Bottle):
                     else:
 
                         Sucess = False
-                        Errors.append({"msg": "O valor buscado deve ser diferente de vazio!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
                 else:
 
                     Sucess = False
@@ -655,7 +704,7 @@ class WebApi(Bottle):
             except:
 
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - busca por nome!"})
+                Errors.append({"msg": ErrorsDict.errorcode(421)})
 
             finally:
 
@@ -664,7 +713,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": "Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -716,21 +765,23 @@ class WebApi(Bottle):
                             if not Data:
 
                                 Sucess = False
-                                Errors.append({"msg": "A inserção foi bem sucedida, porém não encontramos os dados no banco!"})
+                                Errors.append({"msg": ErrorsDict.errorcode(431)})
                         
                         except:
 
+                            self.conn.rollback()
                             Sucess = False
-                            Errors.append({"msg": "A inserção parece ter ocorrido normalmente, mas ocorreu um erro ao buscar os indices do dado"})
+                            Errors.append({"msg": ErrorsDict.errorcode(432)})
                         
                         finally:
                         
                             cur.close()
                     
                     except:
-                    
+
+                        self.conn.rollback()                    
                         Sucess = False
-                        Errors.append({"msg": "Erro na inserção dos dados!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(433)})
                     
                     finally:
                     
@@ -739,12 +790,12 @@ class WebApi(Bottle):
                 else:
                 
                     Sucess = False
-                    Errors.append({"msg": "As variáveis esperadas não foram passadas"})
+                    Errors.append({"msg": ErrorsDict.errorcode(110)})
             
             except:
             
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - inserir!"})
+                Errors.append({"msg": ErrorsDict.errorcode(435)})
             
             finally:
             
@@ -753,7 +804,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": "Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -778,7 +829,7 @@ class WebApi(Bottle):
                 if not FormData:
 
                     Sucess = False
-                    Errors.append({"msg": "Não foram passados parametros!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(105)})
 
                 elif idtipo != None and str(idtipo).isnumeric():
 
@@ -831,21 +882,23 @@ class WebApi(Bottle):
                                     if not Data:
                                     
                                         Sucess = False
-                                        Errors.append({"msg": "A atualização foi bem sucedida, porém não encontramos os dados no banco!"})
+                                        Errors.append({"msg": ErrorsDict.errorcode(441)})
                                 
                                 except:
-                                
+
+                                    self.conn.rollback()                                
                                     Sucess = False
-                                    Errors.append({"msg": "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os indices do dado!"})
+                                    Errors.append({"msg": ErrorsDict.errorcode(442)})
                                 
                                 finally:
                                 
                                     cur.close()
                             
                             except:
-                            
+
+                                self.conn.rollback()                            
                                 Sucess = False
-                                Errors.append({"msg": "Erro na atualização dos dados!"})
+                                Errors.append({"msg": ErrorsDict.errorcode(443)})
                             
                             finally:
                             
@@ -854,12 +907,12 @@ class WebApi(Bottle):
                         else:
                         
                             Sucess = False
-                            Errors.append({"msg": "Nenhuma coluna foi passada para o update"})
+                            Errors.append({"msg": ErrorsDict.errorcode(106)})
                     
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": "O id do tipo de dispositivo não foi localizado!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(444)})
 
                         for error in DataBeforeErrors:
 
@@ -868,12 +921,12 @@ class WebApi(Bottle):
                 else:
                 
                     Sucess = False
-                    Errors.append({"msg": "O id do objeto não pôde ser resolvido, ele deve ser um inteiro!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - atualizar!"})
+                Errors.append({"msg": ErrorsDict.errorcode(445)})
             
             finally:
             
@@ -882,7 +935,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": "Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -947,21 +1000,23 @@ class WebApi(Bottle):
                                     if not Data:
 
                                         Sucess = False
-                                        Errors.append({"msg": "A atualização foi bem sucedida, porém não encontramos os dados no banco!"})
+                                        Errors.append({"msg": ErrorsDict.errorcode(451)})
                                 
                                 except:
-                            
+
+                                    self.conn.rollback()                            
                                     Sucess = False
-                                    Errors.append({"msg": "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os indices do dado!"})
+                                    Errors.append({"msg": ErrorsDict.errorcode(452)})
                             
                                 finally:
                             
                                     cur.close()
                             
                             except:
-                            
+
+                                self.conn.rollback()                            
                                 Sucess = False
-                                Errors.append({"msg": "Erro na atualização do nome!"})
+                                Errors.append({"msg": ErrorsDict.errorcode(453)})
                             
                             finally:
                             
@@ -970,7 +1025,7 @@ class WebApi(Bottle):
                         else:
                         
                             Sucess = False
-                            Errors.append({"msg": "O id do tipo de dispositivo não foi localizado!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(444)})
 
                             for error in DataBeforeErrors:
 
@@ -979,17 +1034,17 @@ class WebApi(Bottle):
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": "O nome a ser alterado não foi passado!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(455)})
                 
                 else:
                 
                     Sucess = False
-                    Errors.append({"msg": "O id do objeto não pôde ser resolvido, ele deve ser um inteiro!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - Atualizar nome!"})
+                Errors.append({"msg": ErrorsDict.errorcode(456)})
             
             finally:
             
@@ -998,7 +1053,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": "Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1074,35 +1129,37 @@ class WebApi(Bottle):
                                     if Data:
 
                                         Sucess = False
-                                        Errors.append({"msg": "A exclusão não foi bem sucedida!"})
+                                        Errors.append({"msg": ErrorsDict.errorcode(461)})
 
                                 except:
 
+                                    self.conn.rollback()
                                     Sucess = False
-                                    Errors.append({"msg": "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os indices do dado!"})
+                                    Errors.append({"msg": ErrorsDict.errorcode(462)})
 
                                 finally:
                                 
                                     cur.close()
                             
                             except:
-                            
+
+                                self.conn.rollback()                
                                 Sucess = False
-                                Errors.append({"msg": "Erro na exclusão do tipo!"})
+                                Errors.append({"msg": ErrorsDict.errorcode(463)})
                             
                             finally:
-                            
+
                                 cur.close()
                         
                         else:
                         
                             Sucess = False
-                            Errors.append({"msg": "Tipo já deletado!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(464)})
                     
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": "O id do tipo de dispositivo não foi localizado!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(444)})
 
                         for error in DataBeforeErrors:
 
@@ -1111,12 +1168,12 @@ class WebApi(Bottle):
                 else:
 
                     Sucess = False
-                    Errors.append({"msg": "O id do objeto não pôde ser resolvido, ele deve ser um inteiro!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
 
             except:
 
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - deletar!"})
+                Errors.append({"msg": ErrorsDict.errorcode(465)})
 
             finally:
 
@@ -1125,7 +1182,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg":"Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1167,8 +1224,9 @@ class WebApi(Bottle):
 
             except:
 
+                self.conn.rollback()
                 Sucess = False
-                Errors.append({"msg": "Erro na listagem de dispositivo!"})
+                Errors.append({"msg": ErrorsDict.errorcode(501)})
             
             finally:
             
@@ -1178,7 +1236,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg":"Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1228,7 +1286,7 @@ class WebApi(Bottle):
                         else:
 
                             Sucess = False
-                            Errors.append({"msg":"Rota não encontrada!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(108)})
 
                             return({"sucess":Sucess,"errors":Errors,"data":Data})
                 
@@ -1252,9 +1310,10 @@ class WebApi(Bottle):
                                 counter = counter + 1
 
                         except:
-                           
+
+                            self.conn.rollback()                           
                             Sucess = False
-                            Errors.append({"msg": "Erro na listagem de dispositivo!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(501)})
                         
                         finally:
                         
@@ -1263,12 +1322,12 @@ class WebApi(Bottle):
                     elif str(idbusca) == "":
                     
                         Sucess = False
-                        Errors.append({"msg": "O valor buscado deve ser diferente de vazio!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
                     
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": "O valor buscado não é um inteiro!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(109)})
                 
                 else:
                 
@@ -1282,7 +1341,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - busca por id!"})
+                Errors.append({"msg": ErrorsDict.errorcode(503)})
             
             finally:
             
@@ -1291,7 +1350,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg":"Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1334,7 +1393,7 @@ class WebApi(Bottle):
                         else:
 
                             Sucess = False
-                            Errors.append({"msg":"Rota não encontrada!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(108)})
 
                             return({"sucess":Sucess,"errors":Errors,"data":Data})
 
@@ -1353,9 +1412,10 @@ class WebApi(Bottle):
                                 Data.append(dict(zip(row_headers, result)))
 
                         except:
-                            
+            
+                            self.conn.rollback()                            
                             Sucess = False
-                            Errors.append({"msg": "Erro na busca de dispositivo!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(504)})
                         
                         finally:
                         
@@ -1364,7 +1424,7 @@ class WebApi(Bottle):
                     else:
 
                         Sucess = False
-                        Errors.append({"msg": "O valor buscado deve ser diferente de vazio!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
                 
                 else:
                 
@@ -1378,7 +1438,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - busca por texto!"})
+                Errors.append({"msg": ErrorsDict.errorcode(505)})
             
             finally:
             
@@ -1387,7 +1447,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg":"Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1496,21 +1556,23 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Sucess = False
-                                    Errors.append({"msg": "A inserção foi bem sucedida, porém não encontramos os dados no banco!"})
+                                    Errors.append({"msg": ErrorsDict.errorcode(511)})
                             
                             except:
 
+                                self.conn.rollback()
                                 Sucess = False
-                                Errors.append({"msg": "A inserção parece ter ocorrido normalmente, mas ocorreu um erro ao buscar os índices do dado!"})
+                                Errors.append({"msg": ErrorsDict.errorcode(512)})
                             
                             finally:
                             
                                 cur.close()
                         
                         except:
-                        
+                            
+                            self.conn.rollback()
                             Sucess = False
-                            Errors.append({"msg": "Erro na inserção dos dados!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(513)})
                         
                         finally:
                         
@@ -1519,22 +1581,22 @@ class WebApi(Bottle):
                     except:
                     
                         Sucess = False
-                        Errors.append({"msg": "Erro interno na Api - inserir!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(514)})
 
                 elif MandatoryVarsExists == False:
 
                     Sucess = False
-                    Errors.append({"msg":"Variáveis obrigatórias não foram passadas!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(112)})
 
                 else: #MandatoryVarsTypes == False
 
                     Sucess = False
-                    Errors.append({"msg":"Os tipos das variáveis obrigatórias estão incorretos!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(113)})
             
             except:
 
                 Sucess = False
-                Errors.append({"msg":"Erro ao decodificar as variáveis!"})
+                Errors.append({"msg": ErrorsDict.errorcode(114)})
 
             finally:
 
@@ -1543,7 +1605,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": "Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1568,7 +1630,7 @@ class WebApi(Bottle):
                 if not FormData:
 
                     Sucess = False
-                    Errors.append({"msg": "Não foram passados parametros!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(105)})
 
                 elif iddispositivo != None and str(iddispositivo).isnumeric():
 
@@ -1675,21 +1737,23 @@ class WebApi(Bottle):
                                         if not Data:
                                         
                                             Sucess = False
-                                            Errors.append({"msg": "A atualização foi bem sucedida, porém não encontramos os dados no banco!"})
+                                            Errors.append({"msg": ErrorsDict.errorcode(521)})
                                     
                                     except:
-                                    
+
+                                        self.conn.rollback()                                    
                                         Sucess = False
-                                        Errors.append({"msg": "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os indices do dado!"})
+                                        Errors.append({"msg": ErrorsDict.errorcode(522)})
                                     
                                     finally:
                                     
                                         cur.close()
                                 
                                 except:
-                                
+
+                                    self.conn.rollback()                                
                                     Sucess = False
-                                    Errors.append({"msg": "Erro na atualização dos dados!"})
+                                    Errors.append({"msg": ErrorsDict.errorcode(523)})
                                 
                                 finally:
                                 
@@ -1698,27 +1762,27 @@ class WebApi(Bottle):
                             else:
                             
                                 Sucess = False
-                                Errors.append({"msg": "Nenhuma coluna foi passada para o update"})
+                                Errors.append({"msg": ErrorsDict.errorcode(106)})
 
                         else:
 
                             Sucess = False
-                            Errors.append({"msg":"O tipo da variável está incorreto!"})
+                            Errors.append({"msg": ErrorsDict.errorcode(115)})
                         
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": "O id do dispositivo não foi localizado!"})
+                        Errors.append({"msg": ErrorsDict.errorcode(524)})
                     
                 else:
                 
                     Sucess = False
-                    Errors.append({"msg": "O id do objeto não pôde ser resolvido, ele deve ser um inteiro!"})
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
                 Sucess = False
-                Errors.append({"msg": "Erro interno na Api - atualizar!"})
+                Errors.append({"msg": ErrorsDict.errorcode(525)})
             
             finally:
             
@@ -1727,7 +1791,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": "Erro na conexão com o banco de dados, contate o suporte!"}]
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
