@@ -371,6 +371,20 @@ class ErrorsDict():
         Errors[523] = "Erro na atualização do dispositivo!"
         Errors[524] = "O id do dispositivo não foi localizado!"
         Errors[525] = "Erro interno na Api - atualizar dipositivo!"
+        Errors[531] = "A atualização foi bem sucedida, porém não encontramos o dispositivo no banco!"
+        Errors[532] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo!"
+        Errors[533] = "Erro ao atualizar o nome do dispositivo!"
+        Errors[534] = "O id do dispositivo não foi localizado!"
+        Errors[535] = "O nome do dispositivo a ser alterado não foi passado ou está incorreto!"
+        Errors[536] = "Erro interno na Api - Atualizar nome do dispositivo!"
+        Errors[541] = "Erro ao atualizar o codigo do dispositivo!"
+        Errors[542] = "O codigo do dispositivo a ser alterado não foi passado ou está incorreto!"
+        Errors[543] = "Erro interno na Api - Atualizar codigo do dispositivo!"
+        Errors[551] = "A exclusão do dispositivo não foi bem sucedida!"
+        Errors[552] = "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo!"
+        Errors[553] = "Erro na exclusão do dispositivo!"
+        Errors[554] = "Dispositivo já deletado!"
+        Errors[555] = "Erro interno na Api - deletar dispositivo!"
 
         error = Errors[int] if int in Errors.keys() else None
 
@@ -426,11 +440,11 @@ class WebApi(Bottle):
 
         self.route("/microservices/web/dispositivo/update", method="PUT", callback=self.DispositivoUpdate)
 
-        # self.route("/microservices/web/dispositivo/update/name", method="PATCH", callback=self.DispositivoUpdateName) 
-        #     
-        # self.route("/microservices/web/dispositivo/update/code", method="PATCH", callback=self.DispositivoUpdateCode) 
-        #        
-        # self.route("/microservices/web/dispositivo/delete", method="DELETE", callback=self.DispositivoDelete)
+        self.route("/microservices/web/dispositivo/update/name", method="PATCH", callback=self.DispositivoUpdateName) 
+            
+        self.route("/microservices/web/dispositivo/update/code", method="PATCH", callback=self.DispositivoUpdateCode) 
+               
+        self.route("/microservices/web/dispositivo/delete", method="DELETE", callback=self.DispositivoDelete)
 
         # Ambiente
 
@@ -850,7 +864,7 @@ class WebApi(Bottle):
                 elif idtipo != None and str(idtipo).isnumeric():
 
                     request.query.update({'idbusca': f'{idtipo}'})
-                    DataBefore = json.loads(self.TipoDispositivoGetById())
+                    DataBefore          = json.loads(self.TipoDispositivoGetById())
                     DataBeforeStatus    = list(DataBefore.values())[0]
                     DataBeforeErrors    = list(DataBefore.values())[1]
                     DataBeforeData      = list(DataBefore.values())[2]
@@ -985,7 +999,7 @@ class WebApi(Bottle):
                             idtipo
                         )
                         request.query.update({'idbusca': f'{idtipo}'})
-                        DataBefore = json.loads(self.TipoDispositivoGetById())
+                        DataBefore          = json.loads(self.TipoDispositivoGetById())
                         DataBeforeStatus    = list(DataBefore.values())[0]
                         DataBeforeErrors    = list(DataBefore.values())[1]
                         DataBeforeData      = list(DataBefore.values())[2]                        
@@ -1222,7 +1236,7 @@ class WebApi(Bottle):
 
             try:
             
-                chamada = request['bottle.route'].rule.replace("/microservices/web/dispositivo/getall/", "")
+                chamada = request['bottle.route'].rule.replace("/microservices/web/dispositivo/get/", "")
 
                 if chamada == "actives":
 
@@ -1296,7 +1310,7 @@ class WebApi(Bottle):
                             SQL = SQL + f"AND IDAMBIENTE = {idbusca} "
                             returnLines = 100
 
-                        elif chamada == route:
+                        elif chamada == route or chamada == "/microservices/web/dispositivo/delete":
 
                             SQL = SQL + f"AND IDDISPOSITIVO = {idbusca} "
                             returnLines = 1
@@ -1660,7 +1674,7 @@ class WebApi(Bottle):
 
                     request.query.update({'idbusca': f'{iddispositivo}'})
 
-                    DataBefore          = json.loads(self.TipoDispositivoGetById())
+                    DataBefore          = json.loads(self.DispositivoGetById())
                     DataBeforeStatus    = list(DataBefore.values())[0]
                     DataBeforeErrors    = list(DataBefore.values())[1]
                     DataBeforeData      = list(DataBefore.values())[2]
@@ -1828,6 +1842,372 @@ class WebApi(Bottle):
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
+    def DispositivoUpdateName(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                iddispositivo   = FormData.get("id")    if "id"     in FormData.keys()  else None
+                nome            = FormData.get("nome")  if "nome"   in FormData.keys()  else None
+                nome            = StringHandling.CleanSqlString(nome) if nome != None else nome
+
+                if iddispositivo != None and str(iddispositivo).isnumeric():
+
+                    if nome != None and nome != "":
+
+                        SQL = "UPDATE DISPOSITIVO SET NOME = '{}' WHERE IDDISPOSITIVO = {}".format(
+                            nome ,
+                            iddispositivo
+                        )
+                        request.query.update({'idbusca': f'{iddispositivo}'})
+                        DataBefore          = json.loads(self.DispositivoGetById())
+                        DataBeforeStatus    = list(DataBefore.values())[0]
+                        DataBeforeErrors    = list(DataBefore.values())[1]
+                        DataBeforeData      = list(DataBefore.values())[2]                        
+
+                        if  DataBeforeStatus == True and DataBeforeData:
+
+                            try:
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                self.conn.commit()
+
+                                try:
+
+                                    SQL =  f"SELECT * FROM DISPOSITIVO " + \
+                                           f"WHERE IDDISPOSITIVO = {iddispositivo} " + \
+                                            "ORDER BY IDDISPOSITIVO"
+
+                                    cur = self.conn.cursor()
+                                    cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
+                                    self.conn.commit()
+
+                                    for result in rv:
+
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
+
+                                    if not Data:
+
+                                        Sucess = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(531)})
+                                
+                                except:
+
+                                    self.conn.rollback()                            
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(532)})
+                            
+                                finally:
+                            
+                                    cur.close()
+                            
+                            except:
+
+                                self.conn.rollback()                            
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(533)})
+                            
+                            finally:
+                            
+                                cur.close()
+                        
+                        else:
+                        
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(534)})
+
+                            for error in DataBeforeErrors:
+
+                                Errors.append({"msg": list(error.values())[0]})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(535)})
+                
+                else:
+                
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
+            
+            except:
+            
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(536)})
+            
+            finally:
+            
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def DispositivoUpdateCode(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                iddispositivo   = FormData.get("id")        if "id"     in FormData.keys()  else None
+                codigo          = FormData.get("codigo")    if "codigo" in FormData.keys()  else None
+                codigo          = StringHandling.CleanSqlString(codigo) if codigo != None   else codigo
+
+                if iddispositivo != None and str(iddispositivo).isnumeric():
+
+                    if codigo != None and codigo != "":
+
+                        SQL = "UPDATE DISPOSITIVO SET CODIGODISPOSITIVO = '{}' WHERE IDDISPOSITIVO = {}".format(
+                            codigo ,
+                            iddispositivo
+                        )
+                        request.query.update({'idbusca': f'{iddispositivo}'})
+                        DataBefore          = json.loads(self.DispositivoGetById())
+                        DataBeforeStatus    = list(DataBefore.values())[0]
+                        DataBeforeErrors    = list(DataBefore.values())[1]
+                        DataBeforeData      = list(DataBefore.values())[2]                        
+
+                        if  DataBeforeStatus == True and DataBeforeData:
+
+                            try:
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                self.conn.commit()
+
+                                try:
+
+                                    SQL =  f"SELECT * FROM DISPOSITIVO " + \
+                                           f"WHERE IDDISPOSITIVO = {iddispositivo} " + \
+                                            "ORDER BY IDDISPOSITIVO"
+
+                                    cur = self.conn.cursor()
+                                    cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
+                                    self.conn.commit()
+
+                                    for result in rv:
+
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
+
+                                    if not Data:
+
+                                        Sucess = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(531)})
+                                
+                                except:
+
+                                    self.conn.rollback()                            
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(532)})
+                            
+                                finally:
+                            
+                                    cur.close()
+                            
+                            except:
+
+                                self.conn.rollback()                            
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(541)})
+                            
+                            finally:
+                            
+                                cur.close()
+                        
+                        else:
+                        
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(534)})
+
+                            for error in DataBeforeErrors:
+
+                                Errors.append({"msg": list(error.values())[0]})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(542)})
+                
+                else:
+                
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
+            
+            except:
+            
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(543)})
+            
+            finally:
+            
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def DispositivoDelete(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                iddispositivo = FormData.get("id") if "id" in FormData.keys() else None
+
+                if iddispositivo != None and str(iddispositivo).isnumeric():
+
+                    request.query.update({'idbusca': f'{iddispositivo}'})
+                    DataBefore          = json.loads(self.DispositivoGetById())
+                    DataBeforeStatus    = list(DataBefore.values())[0]
+                    DataBeforeErrors    = list(DataBefore.values())[1]
+                    DataBeforeData      = list(DataBefore.values())[2]
+                    Count               = 0
+                    IndSitPosition      = -1
+
+                    if DataBeforeData:               
+
+                        Keys = list(DataBeforeData)[0].keys()
+
+                        for i in Keys:
+
+                            if i == "ind_sit":
+
+                                IndSitPosition = Count
+
+                            Count = Count + 1
+
+                    if  DataBeforeStatus == True and DataBeforeData and IndSitPosition != -1:
+
+                        if  list(list(DataBeforeData)[0].values())[IndSitPosition] != 2:
+
+                            SQL = f"UPDATE DISPOSITIVO SET IND_SIT = 2 WHERE IDDISPOSITIVO = {iddispositivo}"
+
+                            try:
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                self.conn.commit()
+
+                                try:
+
+                                    SQL =  f"SELECT 1 FROM DISPOSITIVO " + \
+                                           f"WHERE IDDISPOSITIVO = {iddispositivo} AND IND_SIT <> 2 " + \
+                                            "ORDER BY IDDISPOSITIVO"
+
+                                    cur = self.conn.cursor()
+                                    cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
+                                    self.conn.commit()
+
+                                    for result in rv:
+
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
+
+                                    if Data:
+
+                                        Sucess = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(551)})
+
+                                except:
+
+                                    self.conn.rollback()
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(552)})
+
+                                finally:
+                                
+                                    cur.close()
+                            
+                            except:
+
+                                self.conn.rollback()                
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(553)})
+                            
+                            finally:
+
+                                cur.close()
+                        
+                        else:
+                        
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(554)})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(534)})
+
+                        for error in DataBeforeErrors:
+
+                            Errors.append({"msg": list(error.values())[0]})
+
+                else:
+
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
+
+            except:
+
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(555)})
+
+            finally:
+
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
 if __name__ == '__main__':
 
