@@ -203,10 +203,11 @@ class Env():
             db_host = os.getenv("DB_HOST", "")
             db_user = os.getenv("DB_USER", "")
             db_name = os.getenv("DB_NAME", "")
+            db_pass = os.getenv("DB_PASS", "")
 
-            if db_host != "" and db_user != "" and db_name != "":
+            if db_host != "" and db_user != "" and db_name != "" and db_pass:
 
-                Data.append({"data": f"dbname={db_name} user={db_user} host={db_host}"})
+                Data.append({"data": f"dbname={db_name} user={db_user} password={db_pass} host={db_host}"})
 
             else:
 
