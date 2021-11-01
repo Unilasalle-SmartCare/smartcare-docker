@@ -33,12 +33,10 @@ services:
       #Volume dos dados
       - database:/var/lib/postgres/data
       #Scripts
-      - ./data-base/scripts:/docker-entrypoint-initdb.d
+      - ./data-base/scripts:/scripts
+      - ./data-base/scripts/smartcare_db.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
-      # - POSTGRES_HOST_AUTH_METHOD=trust
-      - POSTGRES_PASSWORD=pK9mE9csuUpFoezBlXh3
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5432:5432
     networks:
@@ -58,8 +56,7 @@ services:
     environment:
       #Variáveis de ambiente são obrigatórias para dados sensíveis
       - DB_HOST=database
-      - DB_USER=smartcare
-      - DB_PASS=820cfb9bb413498ae07941b7bac0582b
+      - DB_USER=postgres
       - DB_NAME=smartcare_db
     
     
