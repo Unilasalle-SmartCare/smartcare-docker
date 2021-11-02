@@ -1,0 +1,292 @@
+{
+	"info": {
+		"_postman_id": "5b304452-a30a-4f6b-9178-34f60d4b8a7f",
+		"name": "TipoDispositivo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/tipo/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar ativos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/tipo/listar/ativos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"listar",
+						"ativos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "busca por id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "idbusca",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/tipo/buscar/id?idbusca=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"buscar",
+						"id"
+					],
+					"query": [
+						{
+							"key": "idbusca",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "busca por nome",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "idbusca",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/tipo/buscar/nome?nomebusca=o",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"buscar",
+						"nome"
+					],
+					"query": [
+						{
+							"key": "nomebusca",
+							"value": "o"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inserir",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "cadastra",
+							"value": "teste",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/tipo/inserir",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"inserir"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alterar",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "id",
+						"value": "2",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "nome",
+						"value": "teste",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "teste",
+						"value": "coluna",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "nome",
+							"value": "novo nome put",
+							"type": "text"
+						},
+						{
+							"key": "teste",
+							"value": "coluna teste",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/tipo/atualizar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"atualizar"
+					],
+					"query": [
+						{
+							"key": "teste",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "aa",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alterar nome",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nome",
+							"value": "novo nome patch",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/dispositivo/tipo/atualizar/nome",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"atualizar",
+						"nome"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apagar",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/dispositivo/tipo/apagar",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"tipo",
+						"apagar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

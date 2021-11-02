@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "828d6dee-c2e1-460f-853b-75a860d35d41",
+		"name": "Dispositivo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listar ativos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/listar/ativos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"listar",
+						"ativos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/buscar/id?idbusca=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"buscar",
+						"id"
+					],
+					"query": [
+						{
+							"key": "idbusca",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar por id tipo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/buscar/id/tipo?idbusca=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"buscar",
+						"id",
+						"tipo"
+					],
+					"query": [
+						{
+							"key": "idbusca",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar por nome",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/buscar/texto/nome?textobusca=Sensor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"buscar",
+						"texto",
+						"nome"
+					],
+					"query": [
+						{
+							"key": "textobusca",
+							"value": "Sensor"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar por codigo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/buscar/texto/codigo?textobusca=PIR",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"buscar",
+						"texto",
+						"codigo"
+					],
+					"query": [
+						{
+							"key": "textobusca",
+							"value": "PIR"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inserir",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "codigo",
+							"value": "NEW-BTN",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "ambiente",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nome",
+							"value": "NEW-SENSOR",
+							"type": "text"
+						},
+						{
+							"key": "descricao",
+							"value": "novo sensor",
+							"type": "text"
+						},
+						{
+							"key": "eixox",
+							"value": "4.9",
+							"type": "text"
+						},
+						{
+							"key": "eixoy",
+							"value": "1.4",
+							"type": "text"
+						},
+						{
+							"key": "orientacao",
+							"value": "-Z",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/inserir",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"inserir"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alterar",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "codigo",
+							"value": "btn-00",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "ambiente",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nome",
+							"value": "teste",
+							"type": "text"
+						},
+						{
+							"key": "descricao",
+							"value": "teste",
+							"type": "text"
+						},
+						{
+							"key": "eixox",
+							"value": "4.8",
+							"type": "text"
+						},
+						{
+							"key": "eixoy",
+							"value": "-5.3",
+							"type": "text"
+						},
+						{
+							"key": "orientacao",
+							"value": "-X",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/atualizar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"atualizar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alterar nome",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "nome",
+							"value": "teste",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/atualizar/nome",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"atualizar",
+						"nome"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alterar codigo",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "codigo",
+							"value": "teste",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/atualizar/codigo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"atualizar",
+						"codigo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apagar",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/dispositivo/apagar",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"apagar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
