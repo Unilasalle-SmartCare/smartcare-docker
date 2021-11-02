@@ -315,7 +315,7 @@ class ErrorsDict():
     def errorcode(int):
 
         Errors = {}
-
+        #TRATAMENTO DE VARIAVEIS
         Errors[101] = "A variável buscada foi passada mais de uma vez!"
         Errors[102] = "A variável buscada não foi passada!"
         Errors[103] = "Erro ao tratar as variáveis da requisição!"
@@ -331,61 +331,82 @@ class ErrorsDict():
         Errors[113] = "Os tipos das variáveis obrigatórias estão incorretos!"
         Errors[114] = "Erro ao decodificar as variáveis!"
         Errors[115] = "O tipo da variável está incorreto!"
+        #VARIAVEIS DE AMBIENTE
         Errors[201] = "Não foi possivel resolver os dados de conexão da base de dados!"
         Errors[202] = "Erro interno na api - Tradução de dados de conexão da base de dados!"
+        #CONEXÃO BASE DE DADOS
         Errors[300] = "Erro na conexão com o banco de dados, contate o suporte!"
         Errors[301] = "Erro ao se conectar à base de dados!"
         Errors[302] = "Erro interno na Api - Conexão na Base de Dados!"
         Errors[311] = "Erro ao autenticar a conexão com o banco de dados, contate o suporte!"
+        #TIPO DISPOSITIVO
         Errors[401] = "Erro na listagem de tipo de dispositivo!"
+        Errors[411] = "Erro na busca de tipos!"
         Errors[412] = "Erro interno na Api - busca tipo por id!"
         Errors[421] = "Erro interno na Api - busca tipo por nome!"
         Errors[431] = "A inserção foi bem sucedida, porém não encontramos os dados do tipo no banco!"
         Errors[432] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do dado!"
         Errors[433] = "Erro na inserção do tipo!"
-        Errors[435] = "Erro interno na Api - inserir tipo!"
+        Errors[434] = "Erro interno na Api - inserir tipo!"
         Errors[441] = "A atualização do tipo foi bem sucedida, porém não encontramos os dados do tipo no banco!"
         Errors[442] = "A atualização do tipo foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo no banco!"
         Errors[443] = "Erro na atualização do tipo!"
         Errors[444] = "O id do tipo de dispositivo não foi localizado!"
         Errors[445] = "Erro interno na Api - atualizar tipo!"
-        Errors[451] = "A atualização foi bem sucedida, porém não encontramos o tipo no banco!"
-        Errors[452] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo!"
-        Errors[453] = "Erro ao atualizar o nome do tipo!"
-        Errors[455] = "O nome do tipo a ser alterado não foi passado ou está incorreto!"
-        Errors[456] = "Erro interno na Api - Atualizar nome do tipo!"
+        Errors[451] = "O nome do tipo a ser alterado não foi passado ou está incorreto!"
+        Errors[452] = "Erro interno na Api - Atualizar nome do tipo!"
         Errors[461] = "A exclusão do tipo não foi bem sucedida!"
         Errors[462] = "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo!"
         Errors[463] = "Erro na exclusão do tipo!"
-        Errors[464] = "Tipo já deletado!"
-        Errors[465] = "Erro interno na Api - deletar tipo!"
+        Errors[464] = "Tipo já excluído!"
+        Errors[465] = "Erro interno na Api - excluir tipo!"
+        #500 - DISPOSITIVO
         Errors[501] = "Erro na listagem de dispositivo!"
-        Errors[503] = "Erro interno na Api - busca dispositivo por id!"
-        Errors[504] = "Erro na busca de dispositivo!"
-        Errors[505] = "Erro interno na Api - busca dipositivo por texto!"
-        Errors[511] = "A inserção foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
-        Errors[512] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo no banco!"
-        Errors[513] = "Erro na inserção dos dispositivo!"
-        Errors[514] = "Erro interno na Api - inserir dispositivo!"
-        Errors[521] = "A atualização foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
-        Errors[522] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do dipositivo no banco!"
-        Errors[523] = "Erro na atualização do dispositivo!"
-        Errors[524] = "O id do dispositivo não foi localizado!"
-        Errors[525] = "Erro interno na Api - atualizar dipositivo!"
-        Errors[531] = "A atualização foi bem sucedida, porém não encontramos o dispositivo no banco!"
-        Errors[532] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo!"
-        Errors[533] = "Erro ao atualizar o nome do dispositivo!"
-        Errors[534] = "O id do dispositivo não foi localizado!"
-        Errors[535] = "O nome do dispositivo a ser alterado não foi passado ou está incorreto!"
-        Errors[536] = "Erro interno na Api - Atualizar nome do dispositivo!"
-        Errors[541] = "Erro ao atualizar o codigo do dispositivo!"
-        Errors[542] = "O codigo do dispositivo a ser alterado não foi passado ou está incorreto!"
-        Errors[543] = "Erro interno na Api - Atualizar codigo do dispositivo!"
-        Errors[551] = "A exclusão do dispositivo não foi bem sucedida!"
-        Errors[552] = "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo!"
-        Errors[553] = "Erro na exclusão do dispositivo!"
-        Errors[554] = "Dispositivo já deletado!"
-        Errors[555] = "Erro interno na Api - deletar dispositivo!"
+        Errors[511] = "Erro interno na Api - busca dispositivo por id!"
+        Errors[521] = "Erro na busca de dispositivo!"
+        Errors[522] = "Erro interno na Api - busca dispositivo por texto!"
+        Errors[531] = "A inserção foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
+        Errors[532] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo no banco!"
+        Errors[533] = "Erro na inserção dos dispositivo!"
+        Errors[534] = "Erro interno na Api - inserir dispositivo!"
+        Errors[541] = "A atualização foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
+        Errors[542] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo no banco!"
+        Errors[543] = "Erro na atualização do dispositivo!"
+        Errors[544] = "O id do dispositivo não foi localizado!"
+        Errors[545] = "Erro interno na Api - atualizar dispositivo!"
+        Errors[551] = "O nome do dispositivo a ser alterado não foi passado ou está incorreto!"
+        Errors[552] = "Erro interno na Api - Atualizar nome do dispositivo!"
+        Errors[561] = "O codigo do dispositivo a ser alterado não foi passado ou está incorreto!"
+        Errors[562] = "Erro interno na Api - Atualizar codigo do dispositivo!"
+        Errors[571] = "A exclusão do dispositivo não foi bem sucedida!"
+        Errors[572] = "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo!"
+        Errors[573] = "Erro na exclusão do dispositivo!"
+        Errors[574] = "Dispositivo já excluído!"
+        Errors[575] = "Erro interno na Api - excluir dispositivo!"
+        #600 - AMBIENTE
+        Errors[601] = "Erro na listagem de ambiente!"
+        Errors[611] = "Erro na busca de ambiente!"
+        Errors[612] = "Erro interno na Api - busca ambiente por id!"
+        Errors[621] = "Erro interno na Api - busca ambiente por texto!"
+        Errors[631] = "A inserção foi bem sucedida, porém não encontramos os dados do ambiente no banco!"
+        Errors[632] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do ambiente no banco!"
+        Errors[633] = "Erro na inserção dos ambiente!"
+        Errors[634] = "Erro interno na Api - inserir ambiente!"
+        Errors[641] = "A atualização foi bem sucedida, porém não encontramos os dados do ambiente no banco!"
+        Errors[642] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do ambiente no banco!"
+        Errors[643] = "Erro na atualização do ambiente!"
+        Errors[644] = "O id do ambiente não foi localizado!"
+        Errors[645] = "Erro interno na Api - atualizar ambiente!"
+        Errors[651] = "O nome do ambiente a ser alterado não foi passado ou está incorreto!"
+        Errors[652] = "Erro interno na Api - Atualizar nome do ambiente!"
+        Errors[661] = "Erro ao atualizar a descrição do ambiente!"
+        Errors[662] = "A descrição do ambiente a ser alterado não foi passado ou está incorreto!"
+        Errors[663] = "Erro interno na Api - Atualizar descrição do ambiente!"
+        Errors[671] = "A exclusão do ambiente não foi bem sucedida!"
+        Errors[672] = "A exclusão foi bem sucedida, mas ocorreu um erro ao buscar os índices do ambiente!"
+        Errors[673] = "Erro na exclusão do ambiente!"
+        Errors[674] = "Ambiente já excluído!"
+        Errors[675] = "Erro interno na Api - excluir ambiente!"
 
         error = Errors[int] if int in Errors.keys() else None
 
@@ -405,49 +426,69 @@ class WebApi(Bottle):
 
         # TipoDispositivo
 
-        self.route("/microservices/web/dispositivo/tipo/get/all", method="GET", callback=self.TipoDispositivoGetAll)
+        self.route("/microservices/web/dispositivo/tipo/get/all", method = "GET", callback = self.TipoDispositivoGetAll)
 
-        self.route("/microservices/web/dispositivo/tipo/get/actives", method="GET", callback=self.TipoDispositivoGetAll)
+        self.route("/microservices/web/dispositivo/tipo/get/actives", method = "GET", callback = self.TipoDispositivoGetAll)
 
-        self.route("/microservices/web/dispositivo/tipo/getby/id", method="GET", callback=self.TipoDispositivoGetById)
+        self.route("/microservices/web/dispositivo/tipo/getby/id", method = "GET", callback = self.TipoDispositivoGetById)
 
-        self.route("/microservices/web/dispositivo/tipo/getby/name", method="GET", callback=self.TipoDispositivoGetByName)
+        self.route("/microservices/web/dispositivo/tipo/getby/name", method = "GET", callback = self.TipoDispositivoGetByName)
 
-        self.route("/microservices/web/dispositivo/tipo/insert", method="POST", callback=self.TipoDispositivoInsert)
+        self.route("/microservices/web/dispositivo/tipo/insert", method = "POST", callback = self.TipoDispositivoInsert)
 
-        self.route("/microservices/web/dispositivo/tipo/update", method="PUT", callback=self.TipoDispositivoUpdate)
+        self.route("/microservices/web/dispositivo/tipo/update", method = "PUT", callback = self.TipoDispositivoUpdate)
 
-        self.route("/microservices/web/dispositivo/tipo/update/name", method="PATCH", callback=self.TipoDispositivoUpdateName)
+        self.route("/microservices/web/dispositivo/tipo/update/name", method = "PATCH", callback = self.TipoDispositivoUpdateName)
 
-        self.route("/microservices/web/dispositivo/tipo/delete", method="DELETE", callback=self.TipoDispositivoDelete)
+        self.route("/microservices/web/dispositivo/tipo/delete", method = "DELETE", callback = self.TipoDispositivoDelete)
 
         # Dispositivo
 
-        self.route("/microservices/web/dispositivo/get/all", method="GET", callback=self.DispositivoGetAll)
+        self.route("/microservices/web/dispositivo/get/all", method = "GET", callback = self.DispositivoGetAll)
 
-        self.route("/microservices/web/dispositivo/get/actives", method="GET", callback=self.DispositivoGetAll)
+        self.route("/microservices/web/dispositivo/get/actives", method = "GET", callback = self.DispositivoGetAll)
 
-        self.route("/microservices/web/dispositivo/getby/id", method="GET", callback=self.DispositivoGetById)
+        self.route("/microservices/web/dispositivo/getby/id", method = "GET", callback = self.DispositivoGetById)
 
-        self.route("/microservices/web/dispositivo/getby/id/type", method="GET", callback=self.DispositivoGetById)
+        self.route("/microservices/web/dispositivo/getby/id/type", method = "GET", callback = self.DispositivoGetById)
 
-        self.route("/microservices/web/dispositivo/getby/id/environment", method="GET", callback=self.DispositivoGetById)
+        self.route("/microservices/web/dispositivo/getby/id/environment", method = "GET", callback = self.DispositivoGetById)
 
-        self.route("/microservices/web/dispositivo/getby/string/name", method="GET", callback=self.DispositivoGetByString)
+        self.route("/microservices/web/dispositivo/getby/string/name", method = "GET", callback = self.DispositivoGetByString)
 
-        self.route("/microservices/web/dispositivo/getby/string/code", method="GET", callback=self.DispositivoGetByString)
+        self.route("/microservices/web/dispositivo/getby/string/code", method = "GET", callback = self.DispositivoGetByString)
 
-        self.route("/microservices/web/dispositivo/insert", method="POST", callback=self.DispositivoInsert)
+        self.route("/microservices/web/dispositivo/insert", method = "POST", callback = self.DispositivoInsert)
 
-        self.route("/microservices/web/dispositivo/update", method="PUT", callback=self.DispositivoUpdate)
+        self.route("/microservices/web/dispositivo/update", method = "PUT", callback = self.DispositivoUpdate)
 
-        self.route("/microservices/web/dispositivo/update/name", method="PATCH", callback=self.DispositivoUpdateName) 
+        self.route("/microservices/web/dispositivo/update/name", method = "PATCH", callback = self.DispositivoUpdateName) 
             
-        self.route("/microservices/web/dispositivo/update/code", method="PATCH", callback=self.DispositivoUpdateCode) 
+        self.route("/microservices/web/dispositivo/update/code", method = "PATCH", callback = self.DispositivoUpdateCode) 
                
-        self.route("/microservices/web/dispositivo/delete", method="DELETE", callback=self.DispositivoDelete)
+        self.route("/microservices/web/dispositivo/delete", method = "DELETE", callback = self.DispositivoDelete)
 
         # Ambiente
+
+        self.route("/microservices/web/ambiente/get/all", method = "GET", callback = self.AmbienteGetAll)
+
+        self.route("/microservices/web/ambiente/get/actives", method = "GET", callback = self.AmbienteGetAll)
+
+        self.route("/microservices/web/ambiente/getby/id", method = "GET", callback = self.AmbienteGetById)
+
+        self.route("/microservices/web/ambiente/getby/string/name", method = "GET", callback = self.AmbienteGetByString)
+
+        self.route("/microservices/web/ambiente/getby/string/description", method = "GET", callback = self.AmbienteGetByString)
+
+        self.route("/microservices/web/ambiente/insert", method = "POST", callback = self.AmbienteInsert)
+
+        self.route("/microservices/web/ambiente/update", method = "PUT", callback = self.AmbienteUpdate)
+
+        self.route("/microservices/web/ambiente/update/name", method = "PATCH", callback = self.AmbienteUpdateName)
+
+        self.route("/microservices/web/ambiente/update/description", method = "PATCH", callback = self.AmbienteUpdateDescription)
+
+        self.route("/microservices/web/ambiente/delete", method = "DELETE", callback = self.AmbienteDelete)
 
         # Medição
 
@@ -629,7 +670,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()
                             Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode[401]})
+                            Errors.append({"msg": ErrorsDict.errorcode(411)})
 
                         finally:
 
@@ -713,7 +754,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()
                             Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(401)})
+                            Errors.append({"msg": ErrorsDict.errorcode(411)})
 
                         finally:
 
@@ -826,7 +867,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(435)})
+                Errors.append({"msg": ErrorsDict.errorcode(434)})
             
             finally:
             
@@ -1033,13 +1074,13 @@ class WebApi(Bottle):
                                     if not Data:
 
                                         Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(451)})
+                                        Errors.append({"msg": ErrorsDict.errorcode(441)})
                                 
                                 except:
 
                                     self.conn.rollback()                            
                                     Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(452)})
+                                    Errors.append({"msg": ErrorsDict.errorcode(442)})
                             
                                 finally:
                             
@@ -1049,7 +1090,7 @@ class WebApi(Bottle):
 
                                 self.conn.rollback()                            
                                 Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(453)})
+                                Errors.append({"msg": ErrorsDict.errorcode(443)})
                             
                             finally:
                             
@@ -1067,7 +1108,7 @@ class WebApi(Bottle):
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(455)})
+                        Errors.append({"msg": ErrorsDict.errorcode(451)})
                 
                 else:
                 
@@ -1077,7 +1118,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(456)})
+                Errors.append({"msg": ErrorsDict.errorcode(452)})
             
             finally:
             
@@ -1374,7 +1415,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(503)})
+                Errors.append({"msg": ErrorsDict.errorcode(511)})
             
             finally:
             
@@ -1449,7 +1490,7 @@ class WebApi(Bottle):
             
                             self.conn.rollback()                            
                             Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(504)})
+                            Errors.append({"msg": ErrorsDict.errorcode(521)})
                         
                         finally:
                         
@@ -1472,7 +1513,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(505)})
+                Errors.append({"msg": ErrorsDict.errorcode(522)})
             
             finally:
             
@@ -1595,13 +1636,13 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(511)})
+                                    Errors.append({"msg": ErrorsDict.errorcode(531)})
                             
                             except:
 
                                 self.conn.rollback()
                                 Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(512)})
+                                Errors.append({"msg": ErrorsDict.errorcode(532)})
                             
                             finally:
                             
@@ -1611,7 +1652,7 @@ class WebApi(Bottle):
                             
                             self.conn.rollback()
                             Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(513)})
+                            Errors.append({"msg": ErrorsDict.errorcode(533)})
                         
                         finally:
                         
@@ -1620,7 +1661,7 @@ class WebApi(Bottle):
                     except:
                     
                         Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(514)})
+                        Errors.append({"msg": ErrorsDict.errorcode(534)})
 
                 elif MandatoryVarsExists == False:
 
@@ -1785,13 +1826,13 @@ class WebApi(Bottle):
                                         if not Data:
                                         
                                             Sucess = False
-                                            Errors.append({"msg": ErrorsDict.errorcode(521)})
+                                            Errors.append({"msg": ErrorsDict.errorcode(541)})
                                     
                                     except:
 
                                         self.conn.rollback()                                    
                                         Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(522)})
+                                        Errors.append({"msg": ErrorsDict.errorcode(542)})
                                     
                                     finally:
                                     
@@ -1801,7 +1842,7 @@ class WebApi(Bottle):
 
                                     self.conn.rollback()                                
                                     Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(523)})
+                                    Errors.append({"msg": ErrorsDict.errorcode(543)})
                                 
                                 finally:
                                 
@@ -1820,7 +1861,7 @@ class WebApi(Bottle):
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(524)})
+                        Errors.append({"msg": ErrorsDict.errorcode(544)})
                     
                 else:
                 
@@ -1830,7 +1871,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(525)})
+                Errors.append({"msg": ErrorsDict.errorcode(545)})
             
             finally:
             
@@ -1905,13 +1946,13 @@ class WebApi(Bottle):
                                     if not Data:
 
                                         Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(531)})
+                                        Errors.append({"msg": ErrorsDict.errorcode(541)})
                                 
                                 except:
 
                                     self.conn.rollback()                            
                                     Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(532)})
+                                    Errors.append({"msg": ErrorsDict.errorcode(542)})
                             
                                 finally:
                             
@@ -1921,7 +1962,7 @@ class WebApi(Bottle):
 
                                 self.conn.rollback()                            
                                 Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(533)})
+                                Errors.append({"msg": ErrorsDict.errorcode(543)})
                             
                             finally:
                             
@@ -1930,7 +1971,7 @@ class WebApi(Bottle):
                         else:
                         
                             Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(534)})
+                            Errors.append({"msg": ErrorsDict.errorcode(544)})
 
                             for error in DataBeforeErrors:
 
@@ -1939,7 +1980,7 @@ class WebApi(Bottle):
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(535)})
+                        Errors.append({"msg": ErrorsDict.errorcode(551)})
                 
                 else:
                 
@@ -1949,7 +1990,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(536)})
+                Errors.append({"msg": ErrorsDict.errorcode(552)})
             
             finally:
             
@@ -2024,13 +2065,13 @@ class WebApi(Bottle):
                                     if not Data:
 
                                         Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(531)})
+                                        Errors.append({"msg": ErrorsDict.errorcode(541)})
                                 
                                 except:
 
                                     self.conn.rollback()                            
                                     Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(532)})
+                                    Errors.append({"msg": ErrorsDict.errorcode(542)})
                             
                                 finally:
                             
@@ -2040,7 +2081,7 @@ class WebApi(Bottle):
 
                                 self.conn.rollback()                            
                                 Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(541)})
+                                Errors.append({"msg": ErrorsDict.errorcode(543)})
                             
                             finally:
                             
@@ -2049,7 +2090,7 @@ class WebApi(Bottle):
                         else:
                         
                             Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(534)})
+                            Errors.append({"msg": ErrorsDict.errorcode(544)})
 
                             for error in DataBeforeErrors:
 
@@ -2058,7 +2099,7 @@ class WebApi(Bottle):
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(542)})
+                        Errors.append({"msg": ErrorsDict.errorcode(561)})
                 
                 else:
                 
@@ -2068,7 +2109,7 @@ class WebApi(Bottle):
             except:
             
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(543)})
+                Errors.append({"msg": ErrorsDict.errorcode(562)})
             
             finally:
             
@@ -2153,13 +2194,13 @@ class WebApi(Bottle):
                                     if Data:
 
                                         Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(551)})
+                                        Errors.append({"msg": ErrorsDict.errorcode(571)})
 
                                 except:
 
                                     self.conn.rollback()
                                     Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(552)})
+                                    Errors.append({"msg": ErrorsDict.errorcode(572)})
 
                                 finally:
                                 
@@ -2169,7 +2210,7 @@ class WebApi(Bottle):
 
                                 self.conn.rollback()                
                                 Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(553)})
+                                Errors.append({"msg": ErrorsDict.errorcode(573)})
                             
                             finally:
 
@@ -2178,12 +2219,12 @@ class WebApi(Bottle):
                         else:
                         
                             Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(554)})
+                            Errors.append({"msg": ErrorsDict.errorcode(574)})
                     
                     else:
                     
                         Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(534)})
+                        Errors.append({"msg": ErrorsDict.errorcode(544)})
 
                         for error in DataBeforeErrors:
 
@@ -2197,7 +2238,7 @@ class WebApi(Bottle):
             except:
 
                 Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(555)})
+                Errors.append({"msg": ErrorsDict.errorcode(575)})
 
             finally:
 
@@ -2210,7 +2251,901 @@ class WebApi(Bottle):
 
             return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
 
+    #   Ambiente
+
+    def AmbienteGetAll(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            SQL     = "SELECT * FROM AMBIENTE "
+            Sucess  = True
+            Errors  = []
+            Data    = []
+
+            try:
+            
+                chamada = request['bottle.route'].rule.replace("/microservices/web/ambiente/get/", "")
+
+                if chamada == "actives":
+
+                    SQL = SQL + "WHERE IND_SIT = 1 " 
+
+                SQL = SQL + "ORDER BY IDAMBIENTE"
+
+                cur = self.conn.cursor()
+                cur.execute(SQL)
+                row_headers = [x[0] for x in cur.description]
+                rv = cur.fetchall()
+                self.conn.commit()
+
+                for result in rv:
+
+                    Data.append(dict(zip(row_headers, result)))
+
+            except:
+
+                self.conn.rollback()
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(601)})
+            
+            finally:
+            
+                cur.close()
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def AmbienteGetById(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+
+                if variavelStatus == True:
+                
+                    idbusca = list(list(variavelData)[0].values())[0]
+                
+                    if(str(idbusca).isnumeric()):
+                
+                        SQL = "SELECT * FROM AMBIENTE WHERE 1 = 1 "
+
+                        route   = "/microservices/web/ambiente/getby/id"
+                        chamada = request['bottle.route'].rule.replace(route + "/", "")
+
+                        if      chamada == route \
+                            or  chamada == "/microservices/web/ambiente/delete" \
+                            or  chamada == "/microservices/web/ambiente/update" \
+                            or  chamada == "/microservices/web/ambiente/update/name" \
+                            or  chamada == "/microservices/web/ambiente/update/description":
+
+                            SQL = SQL + f"AND IDAMBIENTE = {idbusca} "
+                            returnLines = 1
+
+                        else:
+
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(108)})
+
+                            return({"sucess":Sucess,"errors":Errors,"data":Data})
+                
+                        try:
+
+                            SQL = SQL + "ORDER BY IDAMBIENTE"
+                
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
+                            self.conn.commit()
+
+                            counter = 1
+
+                            for result in rv:
+
+                                Data.append(dict(zip(row_headers, result)))
+                                if returnLines == counter:
+                                    break
+                                counter = counter + 1
+
+                        except:
+
+                            self.conn.rollback()                           
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(611)})
+                        
+                        finally:
+                        
+                            cur.close()
+                    
+                    elif str(idbusca) == "":
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(109)})
+                
+                else:
+                
+                    Sucess = False
+                    msgs = list(list(variavelErrors)[0].values())
+
+                    for msg in msgs:
+                    
+                        Errors.append({"msg": msg})
+            
+            except:
+            
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(612)})
+            
+            finally:
+            
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def AmbienteGetByString(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("textobusca", 1)
+
+                if variavelStatus == True:
+                
+                    textobusca = list(list(variavelData)[0].values())[0]
+                    textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
+
+                    if textobusca != "":
+                
+                        SQL = "SELECT * FROM AMBIENTE WHERE 1 = 1 "
+
+                        route = "/microservices/web/ambiente/getby/string"
+                        chamada = request['bottle.route'].rule.replace(route + "/", "")
+
+                        if chamada == "name":
+
+                            SQL = SQL + f"AND UPPER(NOME) LIKE '%{str(textobusca).upper()}%' "
+
+                        elif chamada == "description":
+
+                            SQL = SQL + f"AND UPPER(DESCRICAO) LIKE '%{str(textobusca).upper()}%' "
+
+                        else:
+
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(108)})
+
+                            return({"sucess":Sucess,"errors":Errors,"data":Data})
+
+                        try:
+
+                            SQL = SQL + "ORDER BY IDAMBIENTE"
+                    
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
+                            self.conn.commit()
+
+                            for result in rv:
+
+                                Data.append(dict(zip(row_headers, result)))
+
+                        except:
+            
+                            self.conn.rollback()                            
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(611)})
+                        
+                        finally:
+                        
+                            cur.close()
+
+                    else:
+
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
+                
+                else:
+                
+                    Sucess = False
+                    msgs = list(list(variavelErrors)[0].values())
+
+                    for msg in msgs:
+                    
+                        Errors.append({"msg": msg})
+            
+            except:
+            
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(621)})
+            
+            finally:
+            
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def AmbienteInsert(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:        
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                MandatoryVars = ["nome"]
+
+                MandatoryVarsExists = True
+
+                for var in MandatoryVars:
+
+                    if var not in FormData.keys():
+
+                        MandatoryVarsExists = False
+
+                MandatoryVarsTypes = True if FormData.get("nome") != "" else False   
+
+                if MandatoryVarsExists == True and MandatoryVarsTypes == True:
+
+                    try:
+                        
+                        nome        = FormData.get("nome")
+                        descricao   = FormData.get("descricao") if "descricao" in FormData.keys() else ""
+
+                        nome        = StringHandling.CleanSqlString(nome)
+                        descricao   = StringHandling.CleanSqlString(descricao)
+                            
+                        SQL = " INSERT INTO AMBIENTE    (" + \
+                                                            "NOME , " + \
+                                                            "DESCRICAO , " + \
+                                                            "IND_SIT" + \
+                                                        ")" + \
+                                "VALUES " + " ('{}', '{}', 1)".format(
+                                    nome ,
+                                    descricao
+                                )
+
+                        try:
+
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            self.conn.commit()
+
+                            try:
+
+                                SQL = "SELECT * FROM AMBIENTE ORDER BY IDAMBIENTE DESC LIMIT 1"
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
+                                self.conn.commit()
+
+                                for result in rv:
+
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
+
+                                if not Data:
+
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(631)})
+                            
+                            except:
+
+                                self.conn.rollback()
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(632)})
+                            
+                            finally:
+                            
+                                cur.close()
+                        
+                        except:
+                            
+                            self.conn.rollback()
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(633)})
+                        
+                        finally:
+                        
+                            cur.close()
+                    
+                    except:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(634)})
+
+                elif MandatoryVarsExists == False:
+
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(112)})
+
+                else: #MandatoryVarsTypes == False
+
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(113)})
+            
+            except:
+
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(114)})
+
+            finally:
+
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def AmbienteUpdate(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                idambiente = FormData.get("id") if "id" in FormData.keys() else None
+
+                if not FormData:
+
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(105)})
+
+                elif idambiente != None and str(idambiente).isnumeric():
+
+                    request.query.update({'idbusca': f'{idambiente}'})
+
+                    DataBefore          = json.loads(self.AmbienteGetById())
+                    DataBeforeStatus    = list(DataBefore.values())[0]
+                    DataBeforeErrors    = list(DataBefore.values())[1]
+                    DataBeforeData      = list(DataBefore.values())[2]
+
+                    if  DataBeforeStatus == True and DataBeforeData:
+
+                        nome                = FormData.get("nome")          if "nome"       in FormData.keys()  else None
+                        descricao           = FormData.get("descricao")     if "descricao"  in FormData.keys()  else None
+
+                        nome                =   StringHandling.CleanSqlString(nome) \
+                                                if nome != None else nome
+                        descricao           =   StringHandling.CleanSqlString(descricao) \
+                                                if descricao != None else descricao
+
+                        columns = 0
+                        SQL     = "UPDATE AMBIENTE SET "
+
+                        if nome != None and nome != "":
+
+                            SQL     = StringHandling.AddColumns(columns, SQL)
+                            SQL     = SQL + f"NOME = '{nome}'"
+                            columns = columns + 1
+
+                        if descricao != None and descricao != "":
+
+                            SQL     = StringHandling.AddColumns(columns, SQL)
+                            SQL     = SQL + f"DESCRICAO = '{descricao}'"
+                            columns = columns + 1
+
+                        if columns > 0:
+
+                            SQL = SQL + f" WHERE 1 = 1 AND IDAMBIENTE = {idambiente}"
+
+                            try:
+                            
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                self.conn.commit()
+
+                                try:
+                            
+                                    SQL =  f"SELECT * FROM AMBIENTE " + \
+                                           f"WHERE IDAMBIENTE = {idambiente} " + \
+                                            "ORDER BY IDAMBIENTE"
+                                    cur = self.conn.cursor()
+                                    cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
+                                    self.conn.commit()
+
+                                    for result in rv:
+                                    
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
+                                    
+                                    if not Data:
+                                    
+                                        Sucess = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(641)})
+                                
+                                except:
+
+                                    self.conn.rollback()                                    
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(642)})
+                                
+                                finally:
+                                
+                                    cur.close()
+                            
+                            except:
+
+                                self.conn.rollback()                                
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(643)})
+                            
+                            finally:
+                            
+                                cur.close()
+                        
+                        else:
+                        
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(106)})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(644)})
+                    
+                else:
+                
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
+            
+            except:
+            
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(645)})
+            
+            finally:
+            
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def AmbienteUpdateName(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                idambiente      = FormData.get("id")    if "id"     in FormData.keys()  else None
+                nome            = FormData.get("nome")  if "nome"   in FormData.keys()  else None
+                nome            = StringHandling.CleanSqlString(nome) if nome != None else nome
+
+                if idambiente != None and str(idambiente).isnumeric():
+
+                    if nome != None and nome != "":
+
+                        SQL = "UPDATE AMBIENTE SET NOME = '{}' WHERE IDAMBIENTE = {}".format(
+                            nome ,
+                            idambiente
+                        )
+                        request.query.update({'idbusca': f'{idambiente}'})
+                        DataBefore          = json.loads(self.AmbienteGetById())
+                        DataBeforeStatus    = list(DataBefore.values())[0]
+                        DataBeforeErrors    = list(DataBefore.values())[1]
+                        DataBeforeData      = list(DataBefore.values())[2]
+
+                        if  DataBeforeStatus == True and DataBeforeData:
+
+                            try:
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                self.conn.commit()
+
+                                try:
+
+                                    SQL =  f"SELECT * FROM AMBIENTE " + \
+                                           f"WHERE IDAMBIENTE = {idambiente} " + \
+                                            "ORDER BY IDAMBIENTE"
+
+                                    cur = self.conn.cursor()
+                                    cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
+                                    self.conn.commit()
+
+                                    for result in rv:
+
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
+
+                                    if not Data:
+
+                                        Sucess = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(541)})
+                                
+                                except:
+
+                                    self.conn.rollback()                            
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(642)})
+                            
+                                finally:
+                            
+                                    cur.close()
+                            
+                            except:
+
+                                self.conn.rollback()                            
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(643)})
+                            
+                            finally:
+                            
+                                cur.close()
+                        
+                        else:
+                        
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(644)})
+
+                            for error in DataBeforeErrors:
+
+                                Errors.append({"msg": list(error.values())[0]})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(651)})
+                
+                else:
+                
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
+            
+            except:
+            
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(652)})
+            
+            finally:
+            
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def AmbienteUpdateDescription(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                idambiente  = FormData.get("id")            if "id"         in FormData.keys()  else None
+                descricao   = FormData.get("descricao")     if "descricao"  in FormData.keys()  else None
+                descricao   = StringHandling.CleanSqlString(descricao) if descricao != None else descricao
+
+                if idambiente != None and str(idambiente).isnumeric():
+
+                    if descricao != None and descricao != "":
+
+                        SQL = "UPDATE AMBIENTE SET DESCRICAO = '{}' WHERE IDAMBIENTE = {}".format(
+                            descricao ,
+                            idambiente
+                        )
+                        request.query.update({'idbusca': f'{idambiente}'})
+                        DataBefore          = json.loads(self.AmbienteGetById())
+                        DataBeforeStatus    = list(DataBefore.values())[0]
+                        DataBeforeErrors    = list(DataBefore.values())[1]
+                        DataBeforeData      = list(DataBefore.values())[2]
+
+                        if  DataBeforeStatus == True and DataBeforeData:
+
+                            try:
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                self.conn.commit()
+
+                                try:
+
+                                    SQL =  f"SELECT * FROM AMBIENTE " + \
+                                           f"WHERE IDAMBIENTE = {idambiente} " + \
+                                            "ORDER BY IDAMBIENTE"
+
+                                    cur = self.conn.cursor()
+                                    cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
+                                    self.conn.commit()
+
+                                    for result in rv:
+
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
+
+                                    if not Data:
+
+                                        Sucess = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(641)})
+                                
+                                except:
+
+                                    self.conn.rollback()                            
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(642)})
+                            
+                                finally:
+                            
+                                    cur.close()
+                            
+                            except:
+
+                                self.conn.rollback()                            
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(661)})
+                            
+                            finally:
+                            
+                                cur.close()
+                        
+                        else:
+                        
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(644)})
+
+                            for error in DataBeforeErrors:
+
+                                Errors.append({"msg": list(error.values())[0]})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(662)})
+                
+                else:
+                
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
+            
+            except:
+            
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(663)})
+            
+            finally:
+            
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def AmbienteDelete(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus == True:
+
+            Sucess      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                idambiente = FormData.get("id") if "id" in FormData.keys() else None
+
+                if idambiente != None and str(idambiente).isnumeric():
+
+                    request.query.update({'idbusca': f'{idambiente}'})
+                    DataBefore          = json.loads(self.AmbienteGetById())
+                    DataBeforeStatus    = list(DataBefore.values())[0]
+                    DataBeforeErrors    = list(DataBefore.values())[1]
+                    DataBeforeData      = list(DataBefore.values())[2]
+                    Count               = 0
+                    IndSitPosition      = -1
+
+                    if DataBeforeData:               
+
+                        Keys = list(DataBeforeData)[0].keys()
+
+                        for i in Keys:
+
+                            if i == "ind_sit":
+
+                                IndSitPosition = Count
+
+                            Count = Count + 1
+
+                    if  DataBeforeStatus == True and DataBeforeData and IndSitPosition != -1:
+
+                        if  list(list(DataBeforeData)[0].values())[IndSitPosition] != 2:
+
+                            SQL = f"UPDATE AMBIENTE SET IND_SIT = 2 WHERE IDAMBIENTE = {idambiente}"
+
+                            try:
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                self.conn.commit()
+
+                                try:
+
+                                    SQL =  f"SELECT 1 FROM AMBIENTE " + \
+                                           f"WHERE IDAMBIENTE = {idambiente} AND IND_SIT <> 2 " + \
+                                            "ORDER BY IDAMBIENTE"
+
+                                    cur = self.conn.cursor()
+                                    cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
+                                    self.conn.commit()
+
+                                    for result in rv:
+
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
+
+                                    if Data:
+
+                                        Sucess = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(671)})
+
+                                except:
+
+                                    self.conn.rollback()
+                                    Sucess = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(672)})
+
+                                finally:
+                                
+                                    cur.close()
+                            
+                            except:
+
+                                self.conn.rollback()                
+                                Sucess = False
+                                Errors.append({"msg": ErrorsDict.errorcode(673)})
+                            
+                            finally:
+
+                                cur.close()
+                        
+                        else:
+                        
+                            Sucess = False
+                            Errors.append({"msg": ErrorsDict.errorcode(674)})
+                    
+                    else:
+                    
+                        Sucess = False
+                        Errors.append({"msg": ErrorsDict.errorcode(644)})
+
+                        for error in DataBeforeErrors:
+
+                            Errors.append({"msg": list(error.values())[0]})
+
+                else:
+
+                    Sucess = False
+                    Errors.append({"msg": ErrorsDict.errorcode(107)})
+
+            except:
+
+                Sucess = False
+                Errors.append({"msg": ErrorsDict.errorcode(675)})
+
+            finally:
+
+                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+
+    #   Medição
+
 if __name__ == '__main__':
+
 
     webapi = WebApi()
     webapi.run(host='0.0.0.0', port=8081, debug=True)
