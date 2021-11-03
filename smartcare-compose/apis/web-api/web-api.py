@@ -1341,6 +1341,12 @@ class WebApi(Bottle):
 
                         route   = "/microservices/web/dispositivo/getby/id"
                         chamada = request['bottle.route'].rule.replace(route + "/", "")
+                        anotherroutes = [   
+                                            "/microservices/web/dispositivo/update",
+                                            "/microservices/web/dispositivo/update/name", 
+                                            "/microservices/web/dispositivo/update/code",
+                                            "/microservices/web/dispositivo/delete"
+                                        ]
 
                         if chamada == "type":
 
@@ -1352,7 +1358,7 @@ class WebApi(Bottle):
                             SQL = SQL + f"AND IDAMBIENTE = {idbusca} "
                             returnLines = 100
 
-                        elif chamada == route or chamada == "/microservices/web/dispositivo/delete":
+                        elif chamada == route or chamada in anotherroutes:
 
                             SQL = SQL + f"AND IDDISPOSITIVO = {idbusca} "
                             returnLines = 1
@@ -2332,12 +2338,14 @@ class WebApi(Bottle):
 
                         route   = "/microservices/web/ambiente/getby/id"
                         chamada = request['bottle.route'].rule.replace(route + "/", "")
+                        anotherroutes = [
+                                            "/microservices/web/ambiente/update",
+                                            "/microservices/web/ambiente/update/name",
+                                            "/microservices/web/ambiente/update/description",
+                                            "/microservices/web/ambiente/delete"
+                                        ]
 
-                        if      chamada == route \
-                            or  chamada == "/microservices/web/ambiente/delete" \
-                            or  chamada == "/microservices/web/ambiente/update" \
-                            or  chamada == "/microservices/web/ambiente/update/name" \
-                            or  chamada == "/microservices/web/ambiente/update/description":
+                        if chamada == route or chamada in anotherroutes:
 
                             SQL = SQL + f"AND IDAMBIENTE = {idbusca} "
                             returnLines = 1
@@ -3145,7 +3153,6 @@ class WebApi(Bottle):
     #   Medição
 
 if __name__ == '__main__':
-
 
     webapi = WebApi()
     webapi.run(host='0.0.0.0', port=8081, debug=True)

@@ -28,7 +28,7 @@ services:
     depends_on:
       - web-api
   database:
-    image: postgres:9.6
+    image: postgres:12.0-alpine
     volumes:
       #Volume dos dados
       - database:/var/lib/postgres/data
