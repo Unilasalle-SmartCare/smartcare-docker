@@ -15,7 +15,7 @@ Este trabalho contém o compose(docker) do projeto smartcare, o que foi criado n
 -   - MACHINE LEARNING (Python 3.6)
 -   - FOOTSTEP (Python 3.6)
 - SERVIDOR IOT:
--   - BROCKER (Mosquitto 2.0)
+-   - BROKER (Mosquitto 2.0)
 
 OBS: Apenas as APIS e os SERVIDORES foram criados do zero, este trabalho possui contribuição de outros parceiros do projeto smartcare !
 
