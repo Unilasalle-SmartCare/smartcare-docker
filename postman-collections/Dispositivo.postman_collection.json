@@ -102,6 +102,34 @@
 			"response": []
 		},
 		{
+			"name": "buscar por id ambiente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dispositivo/buscar/id/ambiente?idbusca=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dispositivo",
+						"buscar",
+						"id",
+						"ambiente"
+					],
+					"query": [
+						{
+							"key": "idbusca",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "buscar por nome",
 			"request": {
 				"method": "GET",
