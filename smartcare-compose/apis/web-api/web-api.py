@@ -8,15 +8,15 @@ class PageError():
 
     def error400(error):
 
-        return json.dumps({"sucess": False, "error": [{"msg": "400 Bad Request"}], "data": [{}]})
+        return json.dumps({"success": False, "error": [{"msg": "400 Bad Request"}], "data": [{}]})
 
     def error401(error):
 
-        return json.dumps({"sucess": False, "error": [{"msg": "401 Unauthorised"}], "data": [{}]})
+        return json.dumps({"success": False, "error": [{"msg": "401 Unauthorised"}], "data": [{}]})
 
     def error403(error):
 
-        return json.dumps({"sucess": False, "error": [{"msg": "403 Forbidden"}], "data": [{}]})
+        return json.dumps({"success": False, "error": [{"msg": "403 Forbidden"}], "data": [{}]})
 
     def error404(error):
 
@@ -27,31 +27,31 @@ class PageError():
         # HTML = file.read()
         # file.close()
 
-        return json.dumps({"sucess": False, "errors": [{"msg": "404 Not Found"}], "data": [{}]})
+        return json.dumps({"success": False, "errors": [{"msg": "404 Not Found"}], "data": [{}]})
 
     def error405(error):
 
-        return json.dumps({"sucess": False, "errors": [{"msg": "405 Method Not Allowed"}], "data": [{}]})
+        return json.dumps({"success": False, "errors": [{"msg": "405 Method Not Allowed"}], "data": [{}]})
 
     def error408(error):
 
-        return json.dumps({"sucess": False, "errors": [{"msg": "408 Request Time-Out"}], "data": [{}]})
+        return json.dumps({"success": False, "errors": [{"msg": "408 Request Time-Out"}], "data": [{}]})
 
     def error500(error):
 
-        return json.dumps({"sucess": False, "errors": [{"msg": "500 Internal Server Error"}], "data": [{}]})
+        return json.dumps({"success": False, "errors": [{"msg": "500 Internal Server Error"}], "data": [{}]})
 
     def error501(error):
 
-        return json.dumps({"sucess": False, "errors": [{"msg": "501 Not Implemented"}], "data": [{}]})
+        return json.dumps({"success": False, "errors": [{"msg": "501 Not Implemented"}], "data": [{}]})
 
     def error502(error):
 
-        return json.dumps({"sucess": False, "errors": [{"msg": "502 Service Temporarily Overloaded"}], "data": [{}]})
+        return json.dumps({"success": False, "errors": [{"msg": "502 Service Temporarily Overloaded"}], "data": [{}]})
 
     def error503(error):
 
-        return json.dumps({"sucess": False, "errors": [{"msg": "503 Service Unavailable"}], "data": [{}]})
+        return json.dumps({"success": False, "errors": [{"msg": "503 Service Unavailable"}], "data": [{}]})
 
 class StringHandling():
 
@@ -91,7 +91,7 @@ class UrlHandling():
 
     def FindGetVars(varsearch):
 
-        Sucess  = True
+        Success  = True
         Errors  = []
         Data    = []
 
@@ -127,12 +127,12 @@ class UrlHandling():
 
             if repeats > 1:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(101)})
 
             elif repeats == 0:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(102)})
 
             else:
@@ -141,16 +141,16 @@ class UrlHandling():
 
         except:
 
-            Sucess = False
+            Success = False
             Errors.append({"msg": ErrorsDict.errorcode(103)})
 
         finally:
 
-            return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+            return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
     def OpenGetValues(varsearch, typereturn):
 
-        Sucess  = True
+        Success  = True
         Errors  = []
         Data    = []
 
@@ -169,7 +169,7 @@ class UrlHandling():
 
             else:
 
-                Sucess = False
+                Success = False
 
                 for error in variavelErrors:
 
@@ -177,24 +177,24 @@ class UrlHandling():
 
         except:
 
-            Sucess = False
+            Success = False
             Errors.append({"msg": ErrorsDict.errorcode(111)})
 
         finally:
 
             if typereturn == 1:
 
-                return Sucess, Errors, Data
+                return Success, Errors, Data
 
             else:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
 class Env():
 
     def DataBase():
 
-        Sucess  = True
+        Success  = True
         Errors  = []
         Data    = []
 
@@ -211,23 +211,23 @@ class Env():
 
             else:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(201)})
 
         except:
 
-            Sucess = False
+            Success = False
             Errors.append({"msg": ErrorsDict.errorcode(202)})
 
         finally:
 
-            return json.dumps({"Sucess": Sucess, "errors": Errors, "data": Data})
+            return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
 class ConnectDataBase():
 
     def Connection(WebApi):
 
-        Sucess  = True
+        Success  = True
         Errors  = []
         Data    = []
 
@@ -248,12 +248,12 @@ class ConnectDataBase():
                 except psycopg2.Error as ex:
                     
                     WebApi.conn = None
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(301) + " - {0}".format(ex)})
 
             else:
 
-                Sucess = False
+                Success = False
                 
                 for error in connectionErrors:
 
@@ -261,17 +261,17 @@ class ConnectDataBase():
 
         except:
 
-            Sucess = False
+            Success = False
 
             Errors.append({"msg": ErrorsDict.errorcode(302)})
 
         finally:
 
-            return json.dumps({"Sucess": Sucess, "errors": Errors, "data": Data})
+            return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
     def Status(WebApi):
 
-        Sucess = True
+        Success = True
         Errors = []
         Data = []
         
@@ -286,7 +286,7 @@ class ConnectDataBase():
                     connectionErrors = list(connection.values())[1]
                     connectionData = list(connection.values())[2]
 
-                    Sucess = connectionStatus
+                    Success = connectionStatus
                     
                     for error in connectionErrors:
                         
@@ -298,17 +298,17 @@ class ConnectDataBase():
 
                 except Exception as ex:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ex})
 
         except:
 
-            Sucess = False
+            Success = False
             Errors.append({"msg": ErrorsDict.errorcode(311)})
 
         finally:
 
-            return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+            return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
 class ErrorsDict():
 
@@ -345,14 +345,12 @@ class ErrorsDict():
         Errors[412] = "Erro interno na Api - busca tipo por id!"
         Errors[421] = "Erro interno na Api - busca tipo por nome!"
         Errors[431] = "A inserção foi bem sucedida, porém não encontramos os dados do tipo no banco!"
-        Errors[432] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do dado!"
-        Errors[433] = "Erro na inserção do tipo!"
-        Errors[434] = "Erro interno na Api - inserir tipo!"
+        Errors[432] = "Erro na inserção do tipo!"
+        Errors[433] = "Erro interno na Api - inserir tipo!"
         Errors[441] = "A atualização do tipo foi bem sucedida, porém não encontramos os dados do tipo no banco!"
-        Errors[442] = "A atualização do tipo foi bem sucedida, mas ocorreu um erro ao buscar os índices do tipo no banco!"
-        Errors[443] = "Erro na atualização do tipo!"
-        Errors[444] = "O id do tipo de dispositivo não foi localizado!"
-        Errors[445] = "Erro interno na Api - atualizar tipo!"
+        Errors[442] = "Erro na atualização do tipo!"
+        Errors[443] = "O id do tipo de dispositivo não foi localizado!"
+        Errors[444] = "Erro interno na Api - atualizar tipo!"
         Errors[451] = "O nome do tipo a ser alterado não foi passado ou está incorreto!"
         Errors[452] = "Erro interno na Api - Atualizar nome do tipo!"
         Errors[461] = "A exclusão do tipo não foi bem sucedida!"
@@ -366,14 +364,12 @@ class ErrorsDict():
         Errors[521] = "Erro na busca de dispositivo!"
         Errors[522] = "Erro interno na Api - busca dispositivo por texto!"
         Errors[531] = "A inserção foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
-        Errors[532] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo no banco!"
-        Errors[533] = "Erro na inserção dos dispositivo!"
-        Errors[534] = "Erro interno na Api - inserir dispositivo!"
+        Errors[532] = "Erro na inserção dos dispositivo!"
+        Errors[533] = "Erro interno na Api - inserir dispositivo!"
         Errors[541] = "A atualização foi bem sucedida, porém não encontramos os dados do dispositivo no banco!"
-        Errors[542] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do dispositivo no banco!"
-        Errors[543] = "Erro na atualização do dispositivo!"
-        Errors[544] = "O id do dispositivo não foi localizado!"
-        Errors[545] = "Erro interno na Api - atualizar dispositivo!"
+        Errors[542] = "Erro na atualização do dispositivo!"
+        Errors[543] = "O id do dispositivo não foi localizado!"
+        Errors[544] = "Erro interno na Api - atualizar dispositivo!"
         Errors[551] = "O nome do dispositivo a ser alterado não foi passado ou está incorreto!"
         Errors[552] = "Erro interno na Api - Atualizar nome do dispositivo!"
         Errors[561] = "O codigo do dispositivo a ser alterado não foi passado ou está incorreto!"
@@ -389,12 +385,10 @@ class ErrorsDict():
         Errors[612] = "Erro interno na Api - busca ambiente por id!"
         Errors[621] = "Erro interno na Api - busca ambiente por texto!"
         Errors[631] = "A inserção foi bem sucedida, porém não encontramos os dados do ambiente no banco!"
-        Errors[632] = "A inserção foi bem sucedida, mas ocorreu um erro ao buscar os índices do ambiente no banco!"
-        Errors[633] = "Erro na inserção dos ambiente!"
-        Errors[634] = "Erro interno na Api - inserir ambiente!"
+        Errors[632] = "Erro na inserção dos ambiente!"
+        Errors[633] = "Erro interno na Api - inserir ambiente!"
         Errors[641] = "A atualização foi bem sucedida, porém não encontramos os dados do ambiente no banco!"
-        Errors[642] = "A atualização foi bem sucedida, mas ocorreu um erro ao buscar os índices do ambiente no banco!"
-        Errors[643] = "Erro na atualização do ambiente!"
+        Errors[642] = "Erro na atualização do ambiente!"
         Errors[644] = "O id do ambiente não foi localizado!"
         Errors[645] = "Erro interno na Api - atualizar ambiente!"
         Errors[651] = "O nome do ambiente a ser alterado não foi passado ou está incorreto!"
@@ -407,6 +401,14 @@ class ErrorsDict():
         Errors[673] = "Erro na exclusão do ambiente!"
         Errors[674] = "Ambiente já excluído!"
         Errors[675] = "Erro interno na Api - excluir ambiente!"
+        #700 - USUARIO
+        Errors[701] = "Login não encontrado!"
+        Errors[702] = "Erro ao efetuar Login!"
+        Errors[703] = "Erro ao tratar Login e Senha!"
+        Errors[711] = "A inserção foi bem sucedida, porém não encontramos os dados do usuário no banco!"
+        Errors[712] = "Erro na inserção do usuário!"
+        Errors[713] = "Senha inválida! Ela deve ter mais de 6 dígitos e deve conferir com a confirmação!"
+        Errors[714] = "Erro interno na Api - inserir usuário!"
 
         error = Errors[int] if int in Errors.keys() else None
 
@@ -491,6 +493,12 @@ class WebApi(Bottle):
         self.route("/microservices/web/ambiente/delete", method = "DELETE", callback = self.AmbienteDelete)
 
         # Medição
+
+        # Usuario
+
+        self.route("/microservices/web/usuario/login", method = "POST", callback = self.UsuarioLogin)
+
+        self.route("/microservices/web/usuario/register", method = "POST", callback = self.UsuarioRegister)
 
         @self.error(400)
 
@@ -585,7 +593,7 @@ class WebApi(Bottle):
         if connectionStatus:
 
             SQL     = "SELECT * FROM TIPODISPOSITIVO "
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -612,21 +620,21 @@ class WebApi(Bottle):
             except:
 
                 self.conn.rollback()
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(401)})
 
             finally:
 
                 cur.close()
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
         
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def TipoDispositivoGetById(self):
 
@@ -637,7 +645,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -669,7 +677,7 @@ class WebApi(Bottle):
                         except:
 
                             self.conn.rollback()
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(411)})
 
                         finally:
@@ -678,17 +686,17 @@ class WebApi(Bottle):
 
                     elif str(idbusca) == "":
 
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(104)})
 
                     else:
 
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(109)})
 
                 else:
 
-                    Sucess = False
+                    Success = False
 
                     for error in variavelErrors:
 
@@ -696,19 +704,19 @@ class WebApi(Bottle):
                         
             except:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(412)})
 
             finally:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
         
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def TipoDispositivoGetByName(self):
 
@@ -719,7 +727,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -753,7 +761,7 @@ class WebApi(Bottle):
                         except:
 
                             self.conn.rollback()
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(411)})
 
                         finally:
@@ -762,11 +770,11 @@ class WebApi(Bottle):
 
                     else:
 
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(104)})
                 else:
 
-                    Sucess = False
+                    Success = False
 
                     for error in variavelErrors:
 
@@ -774,19 +782,19 @@ class WebApi(Bottle):
 
             except:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(421)})
 
             finally:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def TipoDispositivoInsert(self):
 
@@ -797,7 +805,7 @@ class WebApi(Bottle):
 
         if connectionStatus:        
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -809,51 +817,31 @@ class WebApi(Bottle):
 
                 if cadastra != None and cadastra != "":
                     
-                    SQL = "INSERT INTO TIPODISPOSITIVO (NOME, IND_SIT) VALUES " + f" ('{cadastra}', 1)"
+                    SQL = "INSERT INTO TIPODISPOSITIVO (NOME, IND_SIT) VALUES " + f" ('{cadastra}', 1) RETURNING *"
 
                     try:
 
                         cur = self.conn.cursor()
                         cur.execute(SQL)
+                        row_headers = [x[0] for x in cur.description]
+                        rv = cur.fetchall()
                         self.conn.commit()
 
-                        try:
+                        for result in rv:
 
-                            SQL =  f"SELECT * FROM TIPODISPOSITIVO " + \
-                                   f"WHERE NOME = '{cadastra}' " + \
-                                    "ORDER BY IDTIPO DESC LIMIT 1"
+                            Data.append(dict(zip(row_headers, result)))
+                            break
 
-                            cur = self.conn.cursor()
-                            cur.execute(SQL)
-                            row_headers = [x[0] for x in cur.description]
-                            rv = cur.fetchall()
-                            self.conn.commit()
+                        if not Data:
 
-                            for result in rv:
-
-                                Data.append(dict(zip(row_headers, result)))
-                                break
-
-                            if not Data:
-
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(431)})
-                        
-                        except:
-
-                            self.conn.rollback()
-                            Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(432)})
-                        
-                        finally:
-                        
-                            cur.close()
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(431)})
                     
                     except:
 
                         self.conn.rollback()                    
-                        Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(433)})
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(432)})
                     
                     finally:
                     
@@ -861,24 +849,24 @@ class WebApi(Bottle):
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(110)})
             
             except:
             
-                Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(434)})
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(433)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def TipoDispositivoUpdate(self):
 
@@ -889,7 +877,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -900,7 +888,7 @@ class WebApi(Bottle):
 
                 if not FormData:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(105)})
 
                 elif idtipo != None and str(idtipo).isnumeric():
@@ -927,51 +915,31 @@ class WebApi(Bottle):
 
                         if columns > 0:
 
-                            SQL = SQL + f" WHERE 1 = 1 AND IDTIPO = {idtipo}"
+                            SQL = SQL + f" WHERE 1 = 1 AND IDTIPO = {idtipo} RETURNING *"
                             
                             try:
-                            
+
                                 cur = self.conn.cursor()
                                 cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
                                 self.conn.commit()
 
-                                try:
-                            
-                                    SQL =  f"SELECT * FROM TIPODISPOSITIVO " + \
-                                           f"WHERE IDTIPO = {idtipo} " + \
-                                            "ORDER BY IDTIPO"
-
-                                    cur = self.conn.cursor()
-                                    cur.execute(SQL)
-                                    row_headers = [x[0] for x in cur.description]
-                                    rv = cur.fetchall()
-                                    self.conn.commit()
-
-                                    for result in rv:
-                                    
-                                        Data.append(dict(zip(row_headers, result)))
-                                        break
-                                    
-                                    if not Data:
-                                    
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(441)})
+                                for result in rv:
                                 
-                                except:
-
-                                    self.conn.rollback()                                
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(442)})
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
                                 
-                                finally:
+                                if not Data:
                                 
-                                    cur.close()
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(441)})
                             
                             except:
 
                                 self.conn.rollback()                            
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(443)})
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(442)})
                             
                             finally:
                             
@@ -979,13 +947,13 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(106)})
                     
                     else:
                     
-                        Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(444)})
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(443)})
 
                         for error in DataBeforeErrors:
 
@@ -993,24 +961,24 @@ class WebApi(Bottle):
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(445)})
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(444)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def TipoDispositivoUpdateName(self):
 
@@ -1021,7 +989,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -1036,7 +1004,7 @@ class WebApi(Bottle):
 
                     if nome != None and nome != "":
 
-                        SQL = "UPDATE TIPODISPOSITIVO SET NOME = '{}' WHERE IDTIPO = {}".format(
+                        SQL = "UPDATE TIPODISPOSITIVO SET NOME = '{}' WHERE IDTIPO = {} RETURNING *".format(
                             nome ,
                             idtipo
                         )
@@ -1052,45 +1020,25 @@ class WebApi(Bottle):
 
                                 cur = self.conn.cursor()
                                 cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
                                 self.conn.commit()
 
-                                try:
+                                for result in rv:
 
-                                    SQL =  f"SELECT * FROM TIPODISPOSITIVO " + \
-                                           f"WHERE IDTIPO = {idtipo} " + \
-                                            "ORDER BY IDTIPO"
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
 
-                                    cur = self.conn.cursor()
-                                    cur.execute(SQL)
-                                    row_headers = [x[0] for x in cur.description]
-                                    rv = cur.fetchall()
-                                    self.conn.commit()
+                                if not Data:
 
-                                    for result in rv:
-
-                                        Data.append(dict(zip(row_headers, result)))
-                                        break
-
-                                    if not Data:
-
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(441)})
-                                
-                                except:
-
-                                    self.conn.rollback()                            
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(442)})
-                            
-                                finally:
-                            
-                                    cur.close()
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(441)})
                             
                             except:
 
                                 self.conn.rollback()                            
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(443)})
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(442)})
                             
                             finally:
                             
@@ -1098,8 +1046,8 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(444)})
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(443)})
 
                             for error in DataBeforeErrors:
 
@@ -1107,29 +1055,29 @@ class WebApi(Bottle):
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(451)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(452)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def TipoDispositivoDelete(self):
 
@@ -1140,7 +1088,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -1202,13 +1150,13 @@ class WebApi(Bottle):
 
                                     if Data:
 
-                                        Sucess = False
+                                        Success = False
                                         Errors.append({"msg": ErrorsDict.errorcode(461)})
 
                                 except:
 
                                     self.conn.rollback()
-                                    Sucess = False
+                                    Success = False
                                     Errors.append({"msg": ErrorsDict.errorcode(462)})
 
                                 finally:
@@ -1218,7 +1166,7 @@ class WebApi(Bottle):
                             except:
 
                                 self.conn.rollback()                
-                                Sucess = False
+                                Success = False
                                 Errors.append({"msg": ErrorsDict.errorcode(463)})
                             
                             finally:
@@ -1227,13 +1175,13 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(464)})
                     
                     else:
                     
-                        Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(444)})
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(443)})
 
                         for error in DataBeforeErrors:
 
@@ -1241,24 +1189,24 @@ class WebApi(Bottle):
 
                 else:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
 
             except:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(465)})
 
             finally:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     #   Dispositivo
 
@@ -1272,7 +1220,7 @@ class WebApi(Bottle):
         if connectionStatus:
 
             SQL     = "SELECT * FROM DISPOSITIVO "
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -1299,20 +1247,20 @@ class WebApi(Bottle):
             except:
 
                 self.conn.rollback()
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(501)})
             
             finally:
             
                 cur.close()
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def DispositivoGetById(self):
 
@@ -1323,7 +1271,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -1365,10 +1313,10 @@ class WebApi(Bottle):
 
                         else:
 
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(108)})
 
-                            return({"sucess":Sucess,"errors":Errors,"data":Data})
+                            return({"success":Success,"errors":Errors,"data":Data})
                 
                         try:
 
@@ -1392,7 +1340,7 @@ class WebApi(Bottle):
                         except:
 
                             self.conn.rollback()                           
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(501)})
                         
                         finally:
@@ -1401,17 +1349,17 @@ class WebApi(Bottle):
                     
                     elif str(idbusca) == "":
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(104)})
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(109)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     msgs = list(list(variavelErrors)[0].values())
 
                     for msg in msgs:
@@ -1420,19 +1368,19 @@ class WebApi(Bottle):
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(511)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def DispositivoGetByString(self):
 
@@ -1443,7 +1391,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -1473,10 +1421,10 @@ class WebApi(Bottle):
 
                         else:
 
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(108)})
 
-                            return({"sucess":Sucess,"errors":Errors,"data":Data})
+                            return({"success":Success,"errors":Errors,"data":Data})
 
                         try:
 
@@ -1495,7 +1443,7 @@ class WebApi(Bottle):
                         except:
             
                             self.conn.rollback()                            
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(521)})
                         
                         finally:
@@ -1504,12 +1452,12 @@ class WebApi(Bottle):
 
                     else:
 
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(104)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     msgs = list(list(variavelErrors)[0].values())
 
                     for msg in msgs:
@@ -1518,19 +1466,19 @@ class WebApi(Bottle):
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(522)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def DispositivoInsert(self):
 
@@ -1541,7 +1489,7 @@ class WebApi(Bottle):
 
         if connectionStatus:        
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -1607,7 +1555,7 @@ class WebApi(Bottle):
                                                             "ORIENTACAO , " + \
                                                             "IND_SIT" + \
                                                         ")" + \
-                                "VALUES " + " ('{}', {}, {}, '{}', '{}', {}, {}, '{}', 1)".format(
+                                "VALUES " + " ('{}', {}, {}, '{}', '{}', {}, {}, '{}', 1) RETURNING *".format(
                                     codigodispositivo ,
                                     idtipo ,
                                     idambiente ,
@@ -1622,43 +1570,25 @@ class WebApi(Bottle):
 
                             cur = self.conn.cursor()
                             cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
                             self.conn.commit()
 
-                            try:
+                            for result in rv:
 
-                                SQL = "SELECT * FROM DISPOSITIVO ORDER BY IDDISPOSITIVO DESC LIMIT 1"
+                                Data.append(dict(zip(row_headers, result)))
+                                break
 
-                                cur = self.conn.cursor()
-                                cur.execute(SQL)
-                                row_headers = [x[0] for x in cur.description]
-                                rv = cur.fetchall()
-                                self.conn.commit()
+                            if not Data:
 
-                                for result in rv:
-
-                                    Data.append(dict(zip(row_headers, result)))
-                                    break
-
-                                if not Data:
-
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(531)})
-                            
-                            except:
-
-                                self.conn.rollback()
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(532)})
-                            
-                            finally:
-                            
-                                cur.close()
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(531)})
                         
                         except:
                             
                             self.conn.rollback()
-                            Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(533)})
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(532)})
                         
                         finally:
                         
@@ -1666,34 +1596,34 @@ class WebApi(Bottle):
                     
                     except:
                     
-                        Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(534)})
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(533)})
 
                 elif MandatoryVarsExists == False:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(112)})
 
                 else: #MandatoryVarsTypes == False
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(113)})
             
             except:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(114)})
 
             finally:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def DispositivoUpdate(self):
 
@@ -1704,7 +1634,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -1715,7 +1645,7 @@ class WebApi(Bottle):
 
                 if not FormData:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(105)})
 
                 elif iddispositivo != None and str(iddispositivo).isnumeric():
@@ -1805,50 +1735,31 @@ class WebApi(Bottle):
 
                             if columns > 0:
 
-                                SQL = SQL + f" WHERE 1 = 1 AND IDDISPOSITIVO = {iddispositivo}"
+                                SQL = SQL + f" WHERE 1 = 1 AND IDDISPOSITIVO = {iddispositivo} RETURNING *"
 
                                 try:
                                 
                                     cur = self.conn.cursor()
                                     cur.execute(SQL)
+                                    row_headers = [x[0] for x in cur.description]
+                                    rv = cur.fetchall()
                                     self.conn.commit()
 
-                                    try:
-                                
-                                        SQL =  f"SELECT * FROM DISPOSITIVO " + \
-                                               f"WHERE IDDISPOSITIVO = {iddispositivo} " + \
-                                                "ORDER BY IDDISPOSITIVO"
-                                        cur = self.conn.cursor()
-                                        cur.execute(SQL)
-                                        row_headers = [x[0] for x in cur.description]
-                                        rv = cur.fetchall()
-                                        self.conn.commit()
-
-                                        for result in rv:
-                                        
-                                            Data.append(dict(zip(row_headers, result)))
-                                            break
-                                        
-                                        if not Data:
-                                        
-                                            Sucess = False
-                                            Errors.append({"msg": ErrorsDict.errorcode(541)})
+                                    for result in rv:
                                     
-                                    except:
-
-                                        self.conn.rollback()                                    
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(542)})
+                                        Data.append(dict(zip(row_headers, result)))
+                                        break
                                     
-                                    finally:
+                                    if not Data:
                                     
-                                        cur.close()
+                                        Success = False
+                                        Errors.append({"msg": ErrorsDict.errorcode(541)})
                                 
                                 except:
 
                                     self.conn.rollback()                                
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(543)})
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(542)})
                                 
                                 finally:
                                 
@@ -1856,39 +1767,39 @@ class WebApi(Bottle):
                             
                             else:
                             
-                                Sucess = False
+                                Success = False
                                 Errors.append({"msg": ErrorsDict.errorcode(106)})
 
                         else:
 
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(115)})
                         
                     else:
                     
-                        Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(544)})
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(543)})
                     
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
-                Errors.append({"msg": ErrorsDict.errorcode(545)})
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(544)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def DispositivoUpdateName(self):
 
@@ -1899,7 +1810,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -1914,7 +1825,7 @@ class WebApi(Bottle):
 
                     if nome != None and nome != "":
 
-                        SQL = "UPDATE DISPOSITIVO SET NOME = '{}' WHERE IDDISPOSITIVO = {}".format(
+                        SQL = "UPDATE DISPOSITIVO SET NOME = '{}' WHERE IDDISPOSITIVO = {} RETURNING *".format(
                             nome ,
                             iddispositivo
                         )
@@ -1930,45 +1841,25 @@ class WebApi(Bottle):
 
                                 cur = self.conn.cursor()
                                 cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
                                 self.conn.commit()
 
-                                try:
+                                for result in rv:
 
-                                    SQL =  f"SELECT * FROM DISPOSITIVO " + \
-                                           f"WHERE IDDISPOSITIVO = {iddispositivo} " + \
-                                            "ORDER BY IDDISPOSITIVO"
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
 
-                                    cur = self.conn.cursor()
-                                    cur.execute(SQL)
-                                    row_headers = [x[0] for x in cur.description]
-                                    rv = cur.fetchall()
-                                    self.conn.commit()
+                                if not Data:
 
-                                    for result in rv:
-
-                                        Data.append(dict(zip(row_headers, result)))
-                                        break
-
-                                    if not Data:
-
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(541)})
-                                
-                                except:
-
-                                    self.conn.rollback()                            
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(542)})
-                            
-                                finally:
-                            
-                                    cur.close()
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(541)})
                             
                             except:
 
                                 self.conn.rollback()                            
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(543)})
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(542)})
                             
                             finally:
                             
@@ -1976,8 +1867,8 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(544)})
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(543)})
 
                             for error in DataBeforeErrors:
 
@@ -1985,29 +1876,29 @@ class WebApi(Bottle):
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(551)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(552)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def DispositivoUpdateCode(self):
 
@@ -2018,7 +1909,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -2033,7 +1924,7 @@ class WebApi(Bottle):
 
                     if codigo != None and codigo != "":
 
-                        SQL = "UPDATE DISPOSITIVO SET CODIGODISPOSITIVO = '{}' WHERE IDDISPOSITIVO = {}".format(
+                        SQL = "UPDATE DISPOSITIVO SET CODIGODISPOSITIVO = '{}' WHERE IDDISPOSITIVO = {} RETURNING *".format(
                             codigo ,
                             iddispositivo
                         )
@@ -2049,45 +1940,25 @@ class WebApi(Bottle):
 
                                 cur = self.conn.cursor()
                                 cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
                                 self.conn.commit()
 
-                                try:
+                                for result in rv:
 
-                                    SQL =  f"SELECT * FROM DISPOSITIVO " + \
-                                           f"WHERE IDDISPOSITIVO = {iddispositivo} " + \
-                                            "ORDER BY IDDISPOSITIVO"
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
 
-                                    cur = self.conn.cursor()
-                                    cur.execute(SQL)
-                                    row_headers = [x[0] for x in cur.description]
-                                    rv = cur.fetchall()
-                                    self.conn.commit()
+                                if not Data:
 
-                                    for result in rv:
-
-                                        Data.append(dict(zip(row_headers, result)))
-                                        break
-
-                                    if not Data:
-
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(541)})
-                                
-                                except:
-
-                                    self.conn.rollback()                            
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(542)})
-                            
-                                finally:
-                            
-                                    cur.close()
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(541)})
                             
                             except:
 
                                 self.conn.rollback()                            
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(543)})
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(542)})
                             
                             finally:
                             
@@ -2095,8 +1966,8 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(544)})
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(543)})
 
                             for error in DataBeforeErrors:
 
@@ -2104,29 +1975,29 @@ class WebApi(Bottle):
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(561)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(562)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def DispositivoDelete(self):
 
@@ -2137,7 +2008,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -2199,13 +2070,13 @@ class WebApi(Bottle):
 
                                     if Data:
 
-                                        Sucess = False
+                                        Success = False
                                         Errors.append({"msg": ErrorsDict.errorcode(571)})
 
                                 except:
 
                                     self.conn.rollback()
-                                    Sucess = False
+                                    Success = False
                                     Errors.append({"msg": ErrorsDict.errorcode(572)})
 
                                 finally:
@@ -2215,7 +2086,7 @@ class WebApi(Bottle):
                             except:
 
                                 self.conn.rollback()                
-                                Sucess = False
+                                Success = False
                                 Errors.append({"msg": ErrorsDict.errorcode(573)})
                             
                             finally:
@@ -2224,13 +2095,13 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(574)})
                     
                     else:
                     
-                        Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(544)})
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(543)})
 
                         for error in DataBeforeErrors:
 
@@ -2238,24 +2109,24 @@ class WebApi(Bottle):
 
                 else:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
 
             except:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(575)})
 
             finally:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     #   Ambiente
 
@@ -2269,7 +2140,7 @@ class WebApi(Bottle):
         if connectionStatus:
 
             SQL     = "SELECT * FROM AMBIENTE "
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -2296,20 +2167,20 @@ class WebApi(Bottle):
             except:
 
                 self.conn.rollback()
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(601)})
             
             finally:
             
                 cur.close()
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def AmbienteGetById(self):
 
@@ -2320,7 +2191,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -2352,10 +2223,10 @@ class WebApi(Bottle):
 
                         else:
 
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(108)})
 
-                            return({"sucess":Sucess,"errors":Errors,"data":Data})
+                            return({"success":Success,"errors":Errors,"data":Data})
                 
                         try:
 
@@ -2379,7 +2250,7 @@ class WebApi(Bottle):
                         except:
 
                             self.conn.rollback()                           
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(611)})
                         
                         finally:
@@ -2388,17 +2259,17 @@ class WebApi(Bottle):
                     
                     elif str(idbusca) == "":
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(104)})
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(109)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     msgs = list(list(variavelErrors)[0].values())
 
                     for msg in msgs:
@@ -2407,19 +2278,19 @@ class WebApi(Bottle):
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(612)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def AmbienteGetByString(self):
 
@@ -2430,7 +2301,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess  = True
+            Success  = True
             Errors  = []
             Data    = []
 
@@ -2460,10 +2331,10 @@ class WebApi(Bottle):
 
                         else:
 
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(108)})
 
-                            return({"sucess":Sucess,"errors":Errors,"data":Data})
+                            return({"success":Success,"errors":Errors,"data":Data})
 
                         try:
 
@@ -2482,7 +2353,7 @@ class WebApi(Bottle):
                         except:
             
                             self.conn.rollback()                            
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(611)})
                         
                         finally:
@@ -2491,12 +2362,12 @@ class WebApi(Bottle):
 
                     else:
 
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(104)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     msgs = list(list(variavelErrors)[0].values())
 
                     for msg in msgs:
@@ -2505,19 +2376,19 @@ class WebApi(Bottle):
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(621)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def AmbienteInsert(self):
 
@@ -2528,7 +2399,7 @@ class WebApi(Bottle):
 
         if connectionStatus:        
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -2562,7 +2433,7 @@ class WebApi(Bottle):
                                                             "DESCRICAO , " + \
                                                             "IND_SIT" + \
                                                         ")" + \
-                                "VALUES " + " ('{}', '{}', 1)".format(
+                                "VALUES " + " ('{}', '{}', 1) RETURNING *".format(
                                     nome ,
                                     descricao
                                 )
@@ -2571,43 +2442,25 @@ class WebApi(Bottle):
 
                             cur = self.conn.cursor()
                             cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
                             self.conn.commit()
 
-                            try:
+                            for result in rv:
 
-                                SQL = "SELECT * FROM AMBIENTE ORDER BY IDAMBIENTE DESC LIMIT 1"
+                                Data.append(dict(zip(row_headers, result)))
+                                break
 
-                                cur = self.conn.cursor()
-                                cur.execute(SQL)
-                                row_headers = [x[0] for x in cur.description]
-                                rv = cur.fetchall()
-                                self.conn.commit()
+                            if not Data:
 
-                                for result in rv:
-
-                                    Data.append(dict(zip(row_headers, result)))
-                                    break
-
-                                if not Data:
-
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(631)})
-                            
-                            except:
-
-                                self.conn.rollback()
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(632)})
-                            
-                            finally:
-                            
-                                cur.close()
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(631)})
                         
                         except:
                             
                             self.conn.rollback()
-                            Sucess = False
-                            Errors.append({"msg": ErrorsDict.errorcode(633)})
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(632)})
                         
                         finally:
                         
@@ -2615,34 +2468,34 @@ class WebApi(Bottle):
                     
                     except:
                     
-                        Sucess = False
-                        Errors.append({"msg": ErrorsDict.errorcode(634)})
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(633)})
 
                 elif MandatoryVarsExists == False:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(112)})
 
                 else: #MandatoryVarsTypes == False
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(113)})
             
             except:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(114)})
 
             finally:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def AmbienteUpdate(self):
 
@@ -2653,7 +2506,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -2664,7 +2517,7 @@ class WebApi(Bottle):
 
                 if not FormData:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(105)})
 
                 elif idambiente != None and str(idambiente).isnumeric():
@@ -2703,50 +2556,31 @@ class WebApi(Bottle):
 
                         if columns > 0:
 
-                            SQL = SQL + f" WHERE 1 = 1 AND IDAMBIENTE = {idambiente}"
+                            SQL = SQL + f" WHERE 1 = 1 AND IDAMBIENTE = {idambiente} RETURNING *"
 
                             try:
-                            
+                        
                                 cur = self.conn.cursor()
                                 cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
                                 self.conn.commit()
 
-                                try:
-                            
-                                    SQL =  f"SELECT * FROM AMBIENTE " + \
-                                           f"WHERE IDAMBIENTE = {idambiente} " + \
-                                            "ORDER BY IDAMBIENTE"
-                                    cur = self.conn.cursor()
-                                    cur.execute(SQL)
-                                    row_headers = [x[0] for x in cur.description]
-                                    rv = cur.fetchall()
-                                    self.conn.commit()
-
-                                    for result in rv:
-                                    
-                                        Data.append(dict(zip(row_headers, result)))
-                                        break
-                                    
-                                    if not Data:
-                                    
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(641)})
+                                for result in rv:
                                 
-                                except:
-
-                                    self.conn.rollback()                                    
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(642)})
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
                                 
-                                finally:
+                                if not Data:
                                 
-                                    cur.close()
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(641)})
                             
                             except:
 
                                 self.conn.rollback()                                
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(643)})
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(642)})
                             
                             finally:
                             
@@ -2754,34 +2588,34 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(106)})
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(644)})
                     
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(645)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def AmbienteUpdateName(self):
 
@@ -2792,7 +2626,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -2807,7 +2641,7 @@ class WebApi(Bottle):
 
                     if nome != None and nome != "":
 
-                        SQL = "UPDATE AMBIENTE SET NOME = '{}' WHERE IDAMBIENTE = {}".format(
+                        SQL = "UPDATE AMBIENTE SET NOME = '{}' WHERE IDAMBIENTE = {} RETURNING *".format(
                             nome ,
                             idambiente
                         )
@@ -2823,45 +2657,25 @@ class WebApi(Bottle):
 
                                 cur = self.conn.cursor()
                                 cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
                                 self.conn.commit()
 
-                                try:
+                                for result in rv:
 
-                                    SQL =  f"SELECT * FROM AMBIENTE " + \
-                                           f"WHERE IDAMBIENTE = {idambiente} " + \
-                                            "ORDER BY IDAMBIENTE"
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
 
-                                    cur = self.conn.cursor()
-                                    cur.execute(SQL)
-                                    row_headers = [x[0] for x in cur.description]
-                                    rv = cur.fetchall()
-                                    self.conn.commit()
+                                if not Data:
 
-                                    for result in rv:
-
-                                        Data.append(dict(zip(row_headers, result)))
-                                        break
-
-                                    if not Data:
-
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(541)})
-                                
-                                except:
-
-                                    self.conn.rollback()                            
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(642)})
-                            
-                                finally:
-                            
-                                    cur.close()
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(541)})
                             
                             except:
 
                                 self.conn.rollback()                            
-                                Sucess = False
-                                Errors.append({"msg": ErrorsDict.errorcode(643)})
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(642)})
                             
                             finally:
                             
@@ -2869,7 +2683,7 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(644)})
 
                             for error in DataBeforeErrors:
@@ -2878,29 +2692,29 @@ class WebApi(Bottle):
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(651)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(652)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def AmbienteUpdateDescription(self):
 
@@ -2911,7 +2725,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -2926,7 +2740,7 @@ class WebApi(Bottle):
 
                     if descricao != None and descricao != "":
 
-                        SQL = "UPDATE AMBIENTE SET DESCRICAO = '{}' WHERE IDAMBIENTE = {}".format(
+                        SQL = "UPDATE AMBIENTE SET DESCRICAO = '{}' WHERE IDAMBIENTE = {} RETURNING *".format(
                             descricao ,
                             idambiente
                         )
@@ -2942,44 +2756,24 @@ class WebApi(Bottle):
 
                                 cur = self.conn.cursor()
                                 cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
                                 self.conn.commit()
 
-                                try:
+                                for result in rv:
 
-                                    SQL =  f"SELECT * FROM AMBIENTE " + \
-                                           f"WHERE IDAMBIENTE = {idambiente} " + \
-                                            "ORDER BY IDAMBIENTE"
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
 
-                                    cur = self.conn.cursor()
-                                    cur.execute(SQL)
-                                    row_headers = [x[0] for x in cur.description]
-                                    rv = cur.fetchall()
-                                    self.conn.commit()
+                                if not Data:
 
-                                    for result in rv:
-
-                                        Data.append(dict(zip(row_headers, result)))
-                                        break
-
-                                    if not Data:
-
-                                        Sucess = False
-                                        Errors.append({"msg": ErrorsDict.errorcode(641)})
-                                
-                                except:
-
-                                    self.conn.rollback()                            
-                                    Sucess = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(642)})
-                            
-                                finally:
-                            
-                                    cur.close()
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(641)})
                             
                             except:
 
                                 self.conn.rollback()                            
-                                Sucess = False
+                                Success = False
                                 Errors.append({"msg": ErrorsDict.errorcode(661)})
                             
                             finally:
@@ -2988,7 +2782,7 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(644)})
 
                             for error in DataBeforeErrors:
@@ -2997,29 +2791,29 @@ class WebApi(Bottle):
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(662)})
                 
                 else:
                 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
             
             except:
             
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(663)})
             
             finally:
             
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     def AmbienteDelete(self):
 
@@ -3030,7 +2824,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Sucess      = True
+            Success      = True
             Errors      = []
             Data        = []
             FormData    = request.forms
@@ -3092,13 +2886,13 @@ class WebApi(Bottle):
 
                                     if Data:
 
-                                        Sucess = False
+                                        Success = False
                                         Errors.append({"msg": ErrorsDict.errorcode(671)})
 
                                 except:
 
                                     self.conn.rollback()
-                                    Sucess = False
+                                    Success = False
                                     Errors.append({"msg": ErrorsDict.errorcode(672)})
 
                                 finally:
@@ -3108,7 +2902,7 @@ class WebApi(Bottle):
                             except:
 
                                 self.conn.rollback()                
-                                Sucess = False
+                                Success = False
                                 Errors.append({"msg": ErrorsDict.errorcode(673)})
                             
                             finally:
@@ -3117,12 +2911,12 @@ class WebApi(Bottle):
                         
                         else:
                         
-                            Sucess = False
+                            Success = False
                             Errors.append({"msg": ErrorsDict.errorcode(674)})
                     
                     else:
                     
-                        Sucess = False
+                        Success = False
                         Errors.append({"msg": ErrorsDict.errorcode(644)})
 
                         for error in DataBeforeErrors:
@@ -3131,27 +2925,265 @@ class WebApi(Bottle):
 
                 else:
 
-                    Sucess = False
+                    Success = False
                     Errors.append({"msg": ErrorsDict.errorcode(107)})
 
             except:
 
-                Sucess = False
+                Success = False
                 Errors.append({"msg": ErrorsDict.errorcode(675)})
 
             finally:
 
-                return json.dumps({"sucess": Sucess, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
-            return json.dumps({"sucess": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     #   Medição
 
+    #   Usuario
+
+    def UsuarioLogin(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:        
+
+            Success      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                MandatoryVars = ["email", "password"]
+
+                MandatoryVarsExists = True
+
+                for var in MandatoryVars:
+
+                    if var not in FormData.keys():
+
+                        MandatoryVarsExists = False
+
+                MandatoryVarsTypes = True if MandatoryVarsExists else False
+
+                if MandatoryVarsExists and MandatoryVarsTypes:
+
+                    try:
+                        
+                        email       = FormData.get("email")
+                        password    = FormData.get("password")
+
+                        email       = StringHandling.CleanSqlString(email)      if email    != None     else email
+                        password    = StringHandling.CleanSqlString(password)   if password != None     else password
+                            
+                        SQL = f"    SELECT \
+                                        NOME AS NAME , \
+                                        EMAIL \
+                                    FROM    USUARIO \
+                                    WHERE   1 = 1 \
+                                        AND UPPER(EMAIL) = UPPER('{email}') \
+                                        AND UPPER(SENHA) = UPPER('{password}') "
+
+                        try:
+
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
+                            self.conn.commit()
+
+                            for result in rv:
+
+                                Data.append(dict(zip(row_headers, result)))
+                                break
+
+                            if not Data:
+
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(701)})
+                        
+                        except:
+                            
+                            self.conn.rollback()
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(702)})
+                        
+                        finally:
+                        
+                            cur.close()
+                    
+                    except:
+                    
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(703)})
+
+                elif MandatoryVarsExists == False:
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(112)})
+
+                else: #MandatoryVarsTypes == False
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(113)})
+            
+            except:
+
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(114)})
+
+            finally:
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def UsuarioRegister(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:        
+
+            Success      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                MandatoryVars = ["username", "email", "password", "passwordconfirmation"]
+
+                MandatoryVarsExists = True
+
+                for var in MandatoryVars:
+
+                    if var not in FormData.keys():
+
+                        MandatoryVarsExists = False
+
+                MandatoryVarsTypes = True if MandatoryVarsExists else False
+
+                if MandatoryVarsExists and MandatoryVarsTypes:
+
+                    try:
+                        
+                        username = FormData.get("username")
+                        email = FormData.get("email")
+                        password = FormData.get("password")
+                        passwordconfirmation = FormData.get("passwordconfirmation")
+
+                        username                = StringHandling.CleanSqlString(username)   if username != None     else username
+                        email                   = StringHandling.CleanSqlString(email)      if email    != None     else email
+                        password                = StringHandling.CleanSqlString(password)   if password != None     else password
+                        passwordconfirmation    = StringHandling.CleanSqlString(passwordconfirmation) \
+                                                  if passwordconfirmation != None     else passwordconfirmation
+
+                        if len(password) >= 6 and password == passwordconfirmation:
+                            
+                            SQL = " INSERT INTO USUARIO (" + \
+                                                                "NOME , " + \
+                                                                "EMAIL , " + \
+                                                                "SENHA , " + \
+                                                                "IND_SIT" + \
+                                                            ")" + \
+                                    "VALUES " + " ('{}', '{}', '{}', 1) RETURNING EMAIL".format(
+                                        username,
+                                        email,
+                                        password
+                                    )
+
+                            try:
+
+                                cur = self.conn.cursor()
+                                cur.execute(SQL)
+                                row_headers = [x[0] for x in cur.description]
+                                rv = cur.fetchall()
+                                self.conn.commit()
+
+                                for result in rv:
+
+                                    Data.append(dict(zip(row_headers, result)))
+                                    break
+
+                                if not Data:
+
+                                    Success = False
+                                    Errors.append({"msg": ErrorsDict.errorcode(711)})
+                            
+                            except psycopg2.Error as ex:
+
+                                psycopgError = ""
+
+                                if ex.pgcode == "23505": #CODIGO 23505 == UniqueViolation
+
+                                    psycopgError = " - Email já cadastrado!"
+                                
+                                self.conn.rollback()
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(712) + psycopgError})
+
+                            except:
+    
+                                self.conn.rollback()
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(712)})
+                            
+                            finally:
+                            
+                                cur.close()
+                        else:
+                            
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(713)})
+                    
+                    except:
+                    
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(714)})
+
+                elif MandatoryVarsExists == False:
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(112)})
+
+                else: #MandatoryVarsTypes == False
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(113)})
+            
+            except:
+
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(114)})
+
+            finally:
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 if __name__ == '__main__':
 
     webapi = WebApi()
