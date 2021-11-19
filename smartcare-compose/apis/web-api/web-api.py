@@ -3184,6 +3184,7 @@ class WebApi(Bottle):
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+            
 if __name__ == '__main__':
 
     webapi = WebApi()

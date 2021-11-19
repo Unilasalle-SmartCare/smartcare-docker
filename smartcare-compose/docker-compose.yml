@@ -1,8 +1,8 @@
 version: '3'
 volumes:
   # todos containers que precisam de persistencia de dados devem ter um vomule configurado
-  web:
   database:
+  web:
   web-api:
 networks:
   # todas redes precisam ser declaradas
@@ -31,7 +31,7 @@ services:
     image: postgres:12.0-alpine
     volumes:
       #Volume dos dados
-      - database:/var/lib/postgres/data
+      - database:/var/lib/postgresql/data
       #Scripts
       - ./data-base/scripts:/docker-entrypoint-initdb.d
     environment:
