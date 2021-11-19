@@ -161,7 +161,7 @@ class UrlHandling():
             variavelErrors  = list(variavel.values())[1]
             variavelData    = list(variavel.values())[2]
 
-            if variavelStatus == True:
+            if variavelStatus:
 
                 for data in variavelData:
 
@@ -238,7 +238,7 @@ class ConnectDataBase():
             connectionErrors    = list(dsn.values())[1]
             connectionData      = list(dsn.values())[2]
 
-            if connectionStatus == True:
+            if connectionStatus:
                 try:
                     
                     connect = psycopg2.connect(list(list(connectionData)[0].values())[0])
@@ -582,7 +582,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             SQL     = "SELECT * FROM TIPODISPOSITIVO "
             Sucess  = True
@@ -635,7 +635,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess  = True
             Errors  = []
@@ -645,7 +645,7 @@ class WebApi(Bottle):
 
                 variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
 
-                if variavelStatus == True:
+                if variavelStatus:
 
                     idbusca = list(list(variavelData)[0].values())[0]
 
@@ -717,7 +717,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess  = True
             Errors  = []
@@ -727,7 +727,7 @@ class WebApi(Bottle):
 
                 variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("nomebusca", 1)
 
-                if variavelStatus == True:
+                if variavelStatus:
 
                     nomebusca = list(list(variavelData)[0].values())[0]
                     nomebusca = StringHandling.CleanSqlString(nomebusca)
@@ -795,7 +795,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:        
+        if connectionStatus:        
 
             Sucess      = True
             Errors      = []
@@ -887,7 +887,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -911,7 +911,7 @@ class WebApi(Bottle):
                     DataBeforeErrors    = list(DataBefore.values())[1]
                     DataBeforeData      = list(DataBefore.values())[2]
 
-                    if  DataBeforeStatus == True and DataBeforeData:
+                    if  DataBeforeStatus and DataBeforeData:
 
                         columns = 0
                         SQL     = "UPDATE TIPODISPOSITIVO SET "
@@ -1019,7 +1019,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -1046,7 +1046,7 @@ class WebApi(Bottle):
                         DataBeforeErrors    = list(DataBefore.values())[1]
                         DataBeforeData      = list(DataBefore.values())[2]                        
 
-                        if  DataBeforeStatus == True and DataBeforeData:
+                        if  DataBeforeStatus and DataBeforeData:
 
                             try:
 
@@ -1138,7 +1138,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -1171,7 +1171,7 @@ class WebApi(Bottle):
 
                             Count = Count + 1
 
-                    if  DataBeforeStatus == True and DataBeforeData and IndSitPosition != -1:
+                    if  DataBeforeStatus and DataBeforeData and IndSitPosition != -1:
 
                         if  list(list(DataBeforeData)[0].values())[IndSitPosition] != 2:
 
@@ -1269,7 +1269,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             SQL     = "SELECT * FROM DISPOSITIVO "
             Sucess  = True
@@ -1321,7 +1321,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess  = True
             Errors  = []
@@ -1331,7 +1331,7 @@ class WebApi(Bottle):
 
                 variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
 
-                if variavelStatus == True:
+                if variavelStatus:
                 
                     idbusca = list(list(variavelData)[0].values())[0]
                 
@@ -1441,7 +1441,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess  = True
             Errors  = []
@@ -1451,7 +1451,7 @@ class WebApi(Bottle):
 
                 variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("textobusca", 1)
 
-                if variavelStatus == True:
+                if variavelStatus:
                 
                     textobusca = list(list(variavelData)[0].values())[0]
                     textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
@@ -1539,7 +1539,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:        
+        if connectionStatus:        
 
             Sucess      = True
             Errors      = []
@@ -1560,17 +1560,17 @@ class WebApi(Bottle):
 
                 MandatoryVarsTypes = True
 
-                if MandatoryVarsExists == True:
+                if MandatoryVarsExists:
 
                     idtipo      = FormData.get("tipo")
                     idambiente  = FormData.get("ambiente")
                     eixox       = FormData.get("eixox")
                     eixoy       = FormData.get("eixoy")
                     
-                    MandatoryVarsTypes = True   if  (       str(idtipo).isnumeric() == True \
-                                                        and str(idambiente).isnumeric() == True \
-                                                        and StringHandling.isnumber(eixox) == True \
-                                                        and StringHandling.isnumber(eixoy) == True \
+                    MandatoryVarsTypes = True   if  (       str(idtipo).isnumeric() \
+                                                        and str(idambiente).isnumeric() \
+                                                        and StringHandling.isnumber(eixox) \
+                                                        and StringHandling.isnumber(eixoy) \
                                                     ) \
                                                 else False
 
@@ -1578,7 +1578,7 @@ class WebApi(Bottle):
 
                     MandatoryVarsTypes = False
 
-                if MandatoryVarsExists == True and MandatoryVarsTypes == True:
+                if MandatoryVarsExists and MandatoryVarsTypes:
 
                     try:
                         
@@ -1702,7 +1702,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -1727,7 +1727,7 @@ class WebApi(Bottle):
                     DataBeforeErrors    = list(DataBefore.values())[1]
                     DataBeforeData      = list(DataBefore.values())[2]
 
-                    if  DataBeforeStatus == True and DataBeforeData:
+                    if  DataBeforeStatus and DataBeforeData:
 
                         codigodispositivo   = FormData.get("codigo")        if "codigo"     in FormData.keys()  else None
                         idtipo              = FormData.get("tipo")          if "tipo"       in FormData.keys()  else None
@@ -1747,10 +1747,10 @@ class WebApi(Bottle):
                         orientacao          =   StringHandling.CleanSqlString(orientacao) \
                                                 if orientacao != None else orientacao
 
-                        if      (   str(idtipo).isnumeric()         == True     or idtipo       == None ) \
-                            and (   str(idambiente).isnumeric()     == True     or idambiente   == None ) \
-                            and (   StringHandling.isnumber(eixox)  == True     or eixox        == None ) \
-                            and (   StringHandling.isnumber(eixoy)  == True     or eixoy        == None ):
+                        if      (   str(idtipo).isnumeric()             or idtipo       == None ) \
+                            and (   str(idambiente).isnumeric()         or idambiente   == None ) \
+                            and (   StringHandling.isnumber(eixox)      or eixox        == None ) \
+                            and (   StringHandling.isnumber(eixoy)      or eixoy        == None ):
 
                             columns = 0
                             SQL     = "UPDATE DISPOSITIVO SET "
@@ -1897,7 +1897,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -1924,7 +1924,7 @@ class WebApi(Bottle):
                         DataBeforeErrors    = list(DataBefore.values())[1]
                         DataBeforeData      = list(DataBefore.values())[2]                        
 
-                        if  DataBeforeStatus == True and DataBeforeData:
+                        if  DataBeforeStatus and DataBeforeData:
 
                             try:
 
@@ -2016,7 +2016,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -2043,7 +2043,7 @@ class WebApi(Bottle):
                         DataBeforeErrors    = list(DataBefore.values())[1]
                         DataBeforeData      = list(DataBefore.values())[2]                        
 
-                        if  DataBeforeStatus == True and DataBeforeData:
+                        if  DataBeforeStatus and DataBeforeData:
 
                             try:
 
@@ -2135,7 +2135,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -2168,7 +2168,7 @@ class WebApi(Bottle):
 
                             Count = Count + 1
 
-                    if  DataBeforeStatus == True and DataBeforeData and IndSitPosition != -1:
+                    if  DataBeforeStatus and DataBeforeData and IndSitPosition != -1:
 
                         if  list(list(DataBeforeData)[0].values())[IndSitPosition] != 2:
 
@@ -2266,7 +2266,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             SQL     = "SELECT * FROM AMBIENTE "
             Sucess  = True
@@ -2318,7 +2318,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess  = True
             Errors  = []
@@ -2328,7 +2328,7 @@ class WebApi(Bottle):
 
                 variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
 
-                if variavelStatus == True:
+                if variavelStatus:
                 
                     idbusca = list(list(variavelData)[0].values())[0]
                 
@@ -2428,7 +2428,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess  = True
             Errors  = []
@@ -2438,7 +2438,7 @@ class WebApi(Bottle):
 
                 variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("textobusca", 1)
 
-                if variavelStatus == True:
+                if variavelStatus:
                 
                     textobusca = list(list(variavelData)[0].values())[0]
                     textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
@@ -2526,7 +2526,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:        
+        if connectionStatus:        
 
             Sucess      = True
             Errors      = []
@@ -2547,7 +2547,7 @@ class WebApi(Bottle):
 
                 MandatoryVarsTypes = True if FormData.get("nome") != "" else False   
 
-                if MandatoryVarsExists == True and MandatoryVarsTypes == True:
+                if MandatoryVarsExists and MandatoryVarsTypes:
 
                     try:
                         
@@ -2651,7 +2651,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -2676,7 +2676,7 @@ class WebApi(Bottle):
                     DataBeforeErrors    = list(DataBefore.values())[1]
                     DataBeforeData      = list(DataBefore.values())[2]
 
-                    if  DataBeforeStatus == True and DataBeforeData:
+                    if  DataBeforeStatus and DataBeforeData:
 
                         nome                = FormData.get("nome")          if "nome"       in FormData.keys()  else None
                         descricao           = FormData.get("descricao")     if "descricao"  in FormData.keys()  else None
@@ -2790,7 +2790,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -2817,7 +2817,7 @@ class WebApi(Bottle):
                         DataBeforeErrors    = list(DataBefore.values())[1]
                         DataBeforeData      = list(DataBefore.values())[2]
 
-                        if  DataBeforeStatus == True and DataBeforeData:
+                        if  DataBeforeStatus and DataBeforeData:
 
                             try:
 
@@ -2909,7 +2909,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -2936,7 +2936,7 @@ class WebApi(Bottle):
                         DataBeforeErrors    = list(DataBefore.values())[1]
                         DataBeforeData      = list(DataBefore.values())[2]
 
-                        if  DataBeforeStatus == True and DataBeforeData:
+                        if  DataBeforeStatus and DataBeforeData:
 
                             try:
 
@@ -3028,7 +3028,7 @@ class WebApi(Bottle):
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
 
-        if connectionStatus == True:
+        if connectionStatus:
 
             Sucess      = True
             Errors      = []
@@ -3061,7 +3061,7 @@ class WebApi(Bottle):
 
                             Count = Count + 1
 
-                    if  DataBeforeStatus == True and DataBeforeData and IndSitPosition != -1:
+                    if  DataBeforeStatus and DataBeforeData and IndSitPosition != -1:
 
                         if  list(list(DataBeforeData)[0].values())[IndSitPosition] != 2:
 
