@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "490f15a9-678a-499a-afd8-4febb1fdf7a4",
+		"name": "Usuário",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "suporte@smartcare.com.br",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "PETECASMARTCARE",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "novo usuario",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "teste@teste.com.br",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "teste123",
+							"type": "text"
+						},
+						{
+							"key": "passwordconfirmation",
+							"value": "teste123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/usuario/cadastro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"usuario",
+						"cadastro"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
