@@ -61,6 +61,41 @@ services:
       - DB_USER=smartcare
       - DB_PASS=820cfb9bb413498ae07941b7bac0582b
       - DB_NAME=smartcare_db
-    
+  iot:
+    image: eclipse-mosquitto:1.6.15
+    # volumes:
+    #   - ./iot/mosquitto:/mosquitto
+    working_dir: /mosquitto
+    ports:
+      - 1883:1883
+    networks:
+      - iot
+  iot-api:
+    image: python:3.6
+    volumes:
+      - ./apis/iot-api:/iot-api
+    working_dir: /iot-api
+    command: bash ./iot-api.sh
+    networks:
+      - database
+      - iot
+    depends_on:
+      - iot
+    environment:
+      #Variáveis de ambiente são obrigatórias para dados sensíveis
+      - DB_HOST=database
+      - DB_USER=smartcare
+      - DB_PASS=820cfb9bb413498ae07941b7bac0582b
+      - DB_NAME=smartcare_db
+  publisher:
+    image: python:3.6
+    volumes:
+      - ./iot/publisher:/publisher
+    working_dir: /publisher
+    command: bash ./publisher.sh
+    networks:
+      - iot
+    depends_on:
+      - iot-api
     
       
