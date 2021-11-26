@@ -450,6 +450,8 @@ class WebApi(Bottle):
 
         self.route("/microservices/web/dispositivo/get/actives", method = "GET", callback = self.DispositivoGetAll)
 
+        self.route("/microservices/web/dispositivo/get/pending", method = "GET", callback = self.DispositivoGetAll)        
+
         self.route("/microservices/web/dispositivo/getby/id", method = "GET", callback = self.DispositivoGetById)
 
         self.route("/microservices/web/dispositivo/getby/id/type", method = "GET", callback = self.DispositivoGetById)
@@ -1231,6 +1233,10 @@ class WebApi(Bottle):
                 if chamada == "actives":
 
                     SQL = SQL + "WHERE IND_SIT = 1 " 
+
+                if chamada == "pending":
+
+                    SQL = SQL + "WHERE IND_SIT = 3 " 
 
                 SQL = SQL + "ORDER BY IDDISPOSITIVO"
 
