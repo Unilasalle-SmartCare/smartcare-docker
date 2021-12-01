@@ -6,10 +6,13 @@ volumes:
   web-api:
 networks:
   # todas redes precisam ser declaradas
-  alerts:
+  # alerts: essa rede será implementada em trabalhos futuros
   database:
   dataprocessing:
   iot:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
   web:
     # driver:
 services:
@@ -56,7 +59,6 @@ services:
     depends_on:
       - database
     environment:
-      #Variáveis de ambiente são obrigatórias para dados sensíveis
       - DB_HOST=database
       - DB_USER=smartcare
       - DB_PASS=820cfb9bb413498ae07941b7bac0582b
@@ -77,25 +79,57 @@ services:
     working_dir: /iot-api
     command: bash ./iot-api.sh
     networks:
-      - database
-      - iot
+      database:
+      iot:
+        ipv4_address: 172.20.0.5
+    ports:
+      - 8082:8082
     depends_on:
       - iot
     environment:
-      #Variáveis de ambiente são obrigatórias para dados sensíveis
       - DB_HOST=database
       - DB_USER=smartcare
       - DB_PASS=820cfb9bb413498ae07941b7bac0582b
       - DB_NAME=smartcare_db
-  publisher:
+  iot-subscriber:
     image: python:3.6
     volumes:
-      - ./iot/publisher:/publisher
-    working_dir: /publisher
-    command: bash ./publisher.sh
+      - ./iot/iot-subscriber:/iot-subscriber
+    working_dir: /iot-subscriber
+    command: bash ./iot-subscriber.sh
+    networks:
+      - iot
+    depends_on:
+      - iot
+  measurements-publisher:
+    image: python:3.6
+    volumes:
+      - ./iot/measurements-publisher:/measurements-publisher
+    working_dir: /measurements-publisher
+    command: bash ./measurements-publisher.sh
     networks:
       - iot
     depends_on:
       - iot-api
+  alerts-publisher:
+    image: python:3.6
+    volumes:
+      - ./iot/alerts-publisher:/alerts-publisher
+    working_dir: /alerts-publisher
+    command: bash ./alerts-publisher.sh
+    networks:
+      - iot
+    depends_on:
+      - iot-api
+  # data-processing:
+  #   image: python:3.6
+  #   volumes:environment:
+  #     - ./apis/data-processing-api:/data-processing-api
+  #   working_dir: /data-processing-api
+  #   command: bash ./data-processing-api.sh
+  #   networks:environment:
+  #     - database
+  #     - dataprocessing
+  #   depends_on:
+  #     - database
     
-      

@@ -7,8 +7,8 @@ SET ROLE SMARTCARE;
 -- DROP PROCEDURE IF EXISTS public.usp_insere_medicao(character varying, timestamp without time zone, character varying, character);
 
 CREATE OR REPLACE PROCEDURE public.usp_insere_medicao(
-	codigo_dispositivo character varying,
-	data_hora timestamp without time zone,
+  codigo_dispositivo character varying,
+  data_hora timestamp without time zone,
 	valor character varying,
 	unidade character)
 LANGUAGE 'plpgsql'
@@ -57,8 +57,4 @@ BEGIN
     FROM    DISPOSITIVO_CODIGO;
         
 END;
-    
-    
-    
-    
 $BODY$;

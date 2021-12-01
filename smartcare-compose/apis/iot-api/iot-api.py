@@ -1,102 +1,71 @@
-import base64
-import json
-
-import paho.mqtt.client as mqtt
-import pylint
-import datetime
-import psycopg2
+from flask import Flask
 import os
+import psycopg2
 
-def on_connect(mqttc, mosq, obj,rc):
+conn = None
 
-    print("Connected with result code:"+str(rc))
-    mqttc.subscribe('home/#')
+try:
+    
+    db_host = os.getenv("DB_HOST", "")
+    db_user = os.getenv("DB_USER", "")
+    db_name = os.getenv("DB_NAME", "")
+    db_pass = os.getenv("DB_PASS", "")
 
-def on_message(mqttc,obj,msg):
+    if db_host != "" and db_user != "" and db_name != "" and db_pass != "":
 
-    print("Mensagem recebida: ")
-    print(msg.payload.decode('utf-8'))
-    print("Topico: "+ msg.topic)
+        conn = psycopg2.connect(f"dbname={db_name} user={db_user} password={db_pass} host={db_host}")
 
-    rssi = -1
+        print("IOT-API - Conectada ao banco de dados!")
 
-    Topico = str(msg.topic)
-    Payload = str(msg.payload.decode('utf-8'))
+except:
 
-    print("--------Topico---------")
-    print(Topico)
-    print("-------Payload---------")
-    print(Payload)
-    print("-----------------------")
+    conn = None
 
-    x = json.loads(msg.payload)
-    Topic_Handle(str(msg.topic), Payload)
+    print("IOT-API - Não pôde se conectar ao banco de dados!")
 
-def on_log(mqttc,obj,level,buf):
+IotApi = Flask(__name__)
 
-    print("message:" + str(buf))
-    print("userdata:" + str(obj))
+@IotApi.route("/")
+def Home():
 
-def on_publish(mosq, obj, mid):
+    return 'Esta é a IOT API, um servidor flask dedicado à camada IOT do projeto Smartcare!'
 
-    print("mid: " + str(mid))
+@IotApi.route("/alert")
+def GetAlert():
 
-def on_subscribe(mosq, obj, mid, granted_qos):
+    try:
 
-    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+        cur = conn.cursor()
+        cur.execute(f"SELECT BIT_ALERTA FROM PACIENTE")
+        rv = cur.fetchone()
+        conn.commit()
 
-def Topic_Handle(topic, value):
+        return str(rv).replace(",", "").replace("(", "").replace(")", "")
 
-    print(topic , value)
+    except:
+        
+        print("IOT-API - Erro ao ler alertas do paciente!")
 
-    topic_array = topic.split("/")
+        return "False"
 
-    print(topic_array)
+@IotApi.route("/insert/measurement/<CodigoDispositivo>/<DataHora>/<Valor>")
+def InsertMeasurement(CodigoDispositivo, DataHora, Valor):
 
-    if topic_array[2] == "sensor":
+    try:
 
-        print(topic_array)
+        cur = conn.cursor()
+        cur.execute(f"CALL PUBLIC.USP_INSERE_MEDICAO ('{CodigoDispositivo}','{DataHora}','{Valor}','Null')")
+        conn.commit()
 
-        CodigoDispositivo =  topic_array[3]
+        return "True"
 
-        print(CodigoDispositivo)
+    except Exception as ex:
 
-        DataHora = datetime.datetime.today()
+        print(ex.__cause__)
+        return(ex)
 
-        Valor = list(json.loads(value).values())[0]
+if __name__ == "__main__":
+    
+    IotApi.run(host="0.0.0.0", port=8082, debug=True)
 
-        try:
-            
-            db_host = os.getenv("DB_HOST", "")
-            db_user = os.getenv("DB_USER", "")
-            db_name = os.getenv("DB_NAME", "")
-            db_pass = os.getenv("DB_PASS", "")
-
-            conn = psycopg2.connect(f'dbname={db_name} user={db_user} password={db_pass} host={db_host}')
-            cur = conn.cursor()
-            cur.execute(f"CALL PUBLIC.USP_INSERE_MEDICAO ('{CodigoDispositivo}','{DataHora}','{Valor}','Null')")
-            conn.commit()
-            conn.close()
-
-            print ("Medição cadastrada no Banco de Dados.")        
-            print ("")
-
-        except Exception as ex:
-
-            print(ex.__cause__)
-            print(ex)
-
-mqttc= mqtt.Client("sql_handle")
-mqttc.on_connect=on_connect
-mqttc.on_message=on_message
-mqttc.on_log=on_log
-mqttc.on_publish=on_publish
-mqttc.on_subscribe=on_subscribe
-# mqttc.username_pw_set("smartcare","unilasalle")
-
-mqttc.connect("iot", 1883, 60)
-
-run = True
-while run:
-    mqttc.loop()
-
+conn.close()
