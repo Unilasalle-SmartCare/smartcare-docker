@@ -1,3 +1,3 @@
 #!/bin/sh
-pip install psycopg2==2.7.3.2 flask
+pip install flask requests
 python -u data-fusion.py

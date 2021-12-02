@@ -4,7 +4,7 @@ import paho.mqtt.client as paho
 import requests
 import time
 
-broker = "iot"
+broker = "broker"
 port = 1883
 
 def on_publish(client, userdata, result):  

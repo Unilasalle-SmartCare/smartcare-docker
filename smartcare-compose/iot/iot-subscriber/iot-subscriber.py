@@ -93,7 +93,7 @@ mqttc.on_log        = on_log
 mqttc.on_publish    = on_publish
 mqttc.on_subscribe  = on_subscribe
 
-mqttc.connect("iot", 1883, 60)
+mqttc.connect("broker", 1883, 60)
 
 run = True
 while run:

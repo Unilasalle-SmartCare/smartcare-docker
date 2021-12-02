@@ -1,7 +1,13 @@
 version: '3'
 volumes:
   # todos containers que precisam de persistencia de dados devem ter um vomule configurado
+  alerts-publisher:
+  broker:
   database:
+  data-processing-api:
+  iot-api:
+  iot-subscriber:
+  measurements-publisher:
   web:
   web-api:
 networks:
@@ -9,6 +15,9 @@ networks:
   # alerts: essa rede será implementada em trabalhos futuros
   database:
   dataprocessing:
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
   iot:
     ipam:
       config:
@@ -55,6 +64,7 @@ services:
     command: bash ./web-api.sh
     networks:
       - database
+      - dataprocessing
       - web
     depends_on:
       - database
@@ -63,7 +73,7 @@ services:
       - DB_USER=smartcare
       - DB_PASS=820cfb9bb413498ae07941b7bac0582b
       - DB_NAME=smartcare_db
-  iot:
+  broker:
     image: eclipse-mosquitto:1.6.15
     # volumes:
     #   - ./iot/mosquitto:/mosquitto
@@ -121,15 +131,35 @@ services:
       - iot
     depends_on:
       - iot-api
-  # data-processing:
-  #   image: python:3.6
-  #   volumes:environment:
-  #     - ./apis/data-processing-api:/data-processing-api
-  #   working_dir: /data-processing-api
-  #   command: bash ./data-processing-api.sh
-  #   networks:environment:
-  #     - database
-  #     - dataprocessing
-  #   depends_on:
-  #     - database
-    
+  data-processing-api:
+    image: python:3.6
+    volumes:
+      - ./apis/data-processing-api:/data-processing-api
+    working_dir: /data-processing-api
+    command: bash ./data-processing-api.sh
+    networks:
+      database:
+      dataprocessing:
+        ipv4_address: 172.21.0.6
+    ports:
+      - 8083:8083
+    depends_on:
+      - database
+    environment:
+      - DB_HOST=database
+      - DB_USER=smartcare
+      - DB_PASS=820cfb9bb413498ae07941b7bac0582b
+      - DB_NAME=smartcare_db
+  data-fusion:
+    image: python:3.6
+    volumes:
+      - ./data-processing/data-fusion:/data-fusion
+    working_dir: /data-fusion
+    command: bash ./data-fusion.sh
+    networks:
+      dataprocessing:
+        ipv4_address: 172.21.0.7
+    ports:
+      - 5000:5000
+    depends_on:
+      - data-processing-api

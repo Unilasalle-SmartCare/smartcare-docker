@@ -35,12 +35,20 @@ def GetAlert():
 
     try:
 
-        cur = conn.cursor()
-        cur.execute(f"SELECT BIT_ALERTA FROM PACIENTE")
-        rv = cur.fetchone()
-        conn.commit()
+        if conn != None:
 
-        return str(rv).replace(",", "").replace("(", "").replace(")", "")
+            cur = conn.cursor()
+            cur.execute(f"SELECT BIT_ALERTA FROM PACIENTE")
+            rv = cur.fetchone()
+            conn.commit()
+
+            return str(rv).replace(",", "").replace("(", "").replace(")", "")
+        
+        else:
+
+            print("IOT-API - Sem conexão com o banco de dados!")
+
+            return "False"
 
     except:
         
@@ -53,11 +61,19 @@ def InsertMeasurement(CodigoDispositivo, DataHora, Valor):
 
     try:
 
-        cur = conn.cursor()
-        cur.execute(f"CALL PUBLIC.USP_INSERE_MEDICAO ('{CodigoDispositivo}','{DataHora}','{Valor}','Null')")
-        conn.commit()
+        if conn != None:
 
-        return "True"
+            cur = conn.cursor()
+            cur.execute(f"CALL PUBLIC.USP_INSERE_MEDICAO ('{CodigoDispositivo}','{DataHora}','{Valor}','Null')")
+            conn.commit()
+
+            return "True"
+
+        else:
+
+            print("IOT-API - Sem conexão com o banco de dados!")
+
+            return "False"
 
     except Exception as ex:
 

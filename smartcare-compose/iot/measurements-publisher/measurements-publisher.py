@@ -3,7 +3,7 @@ import json
 import time
 import random
 
-broker = "iot"
+broker = "broker"
 port = 1883
 
 def on_publish(client,userdata,result):  
