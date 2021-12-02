@@ -1,7 +1,10 @@
-import psycopg2
+import ast
+from bottle import Bottle, request
+from datetime import datetime
 import json
 import os
-from bottle import Bottle, request
+import psycopg2
+import requests
 from urllib.parse import parse_qs
 
 class PageError():
@@ -87,6 +90,32 @@ class StringHandling():
 
         return str
 
+    def isdatetime(string):
+
+        Retorno = True
+
+        try:
+
+            formato = f"%Y%m%d %H:%M:%S"
+
+            datetime.strptime(string, formato)
+
+        except:
+
+            try:
+
+                formato = f"%Y%m%d"
+
+                datetime.strptime(string, formato)
+
+            except:
+
+                Retorno = False
+
+        finally:
+
+            return Retorno
+
 class UrlHandling():
 
     def FindGetVars(varsearch):
@@ -109,21 +138,6 @@ class UrlHandling():
 
                         search = j
                         repeats = repeats + 1
-                        
-            params2 = request.query.keys()
-
-            for i in params2:
-
-                if i == varsearch:
-
-                    values = request.query.values()
-
-                    for j in values:
-
-                        if j != search:
-                            
-                            search = j
-                            repeats = repeats + 1
 
             if repeats > 1:
 
@@ -401,14 +415,17 @@ class ErrorsDict():
         Errors[673] = "Erro na exclusão do ambiente!"
         Errors[674] = "Ambiente já excluído!"
         Errors[675] = "Erro interno na Api - excluir ambiente!"
-        #700 - USUARIO
-        Errors[701] = "Login não encontrado!"
-        Errors[702] = "Erro ao efetuar Login!"
-        Errors[703] = "Erro ao tratar Login e Senha!"
-        Errors[711] = "A inserção foi bem sucedida, porém não encontramos os dados do usuário no banco!"
-        Errors[712] = "Erro na inserção do usuário!"
-        Errors[713] = "Senha inválida! Ela deve ter mais de 6 dígitos e deve conferir com a confirmação!"
-        Errors[714] = "Erro interno na Api - inserir usuário!"
+        #700 - MEDICAO
+        Errors[701] = "As datas passadas estão num formato inválido!"
+        Errors[702] = "Erro ao Buscar medições!"
+        #800 - USUARIO
+        Errors[801] = "Login não encontrado!"
+        Errors[802] = "Erro ao efetuar Login!"
+        Errors[803] = "Erro ao tratar Login e Senha!"
+        Errors[811] = "A inserção foi bem sucedida, porém não encontramos os dados do usuário no banco!"
+        Errors[812] = "Erro na inserção do usuário!"
+        Errors[813] = "Senha inválida! Ela deve ter mais de 6 dígitos e deve conferir com a confirmação!"
+        Errors[814] = "Erro interno na Api - inserir usuário!"
 
         error = Errors[int] if int in Errors.keys() else None
 
@@ -496,11 +513,23 @@ class WebApi(Bottle):
 
         # Medição
 
+        self.route("/microservices/web/medicao/tratada", method = "GET", callback = self.MedicaoTratada)
+
         # Usuario
 
         self.route("/microservices/web/usuario/login", method = "POST", callback = self.UsuarioLogin)
 
         self.route("/microservices/web/usuario/register", method = "POST", callback = self.UsuarioRegister)
+
+        # Enfermidade
+
+        # Estado
+
+        # Cidade
+
+        # Paciente
+
+        # Alerta
 
         @self.error(400)
 
@@ -2952,6 +2981,55 @@ class WebApi(Bottle):
 
     #   Medição
 
+    def MedicaoTratada(self):
+
+        Success = True
+        Errors  = []
+        Data    = []
+
+        try:
+
+            DataInicioStatus, DataInicioErrors, DataInicioData = UrlHandling.OpenGetValues("datainicio", 1)
+
+            DataFimStatus, DataFimErrors, DataFimData = UrlHandling.OpenGetValues("datafim", 1)
+
+            if DataInicioStatus and DataFimStatus:
+
+                DataInicioBusca = list(list(DataInicioData)[0].values())[0]
+
+                DataFimBusca = list(list(DataFimData)[0].values())[0]
+
+                if StringHandling.isdatetime(DataInicioBusca) and StringHandling.isdatetime(DataFimBusca):
+
+                    request = requests.get(f"http://172.21.0.6:8083/medicao/tratada/{DataInicioBusca}/{DataFimBusca}")
+                    
+                    Medicao = request.json()
+
+                    Medicao = Medicao["data"]
+
+                    Data = Medicao
+
+                else:
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(701)})
+
+            else:
+
+                Success = False
+                Errors.append({"msg": DataInicioErrors})
+                Errors.append({"msg": DataFimErrors})
+
+        except:
+
+            Success = False
+            Errors.append({"msg": ErrorsDict.errorcode(702)})
+            
+
+        finally:
+
+            return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
     #   Usuario
 
     def UsuarioLogin(self):
@@ -3016,13 +3094,13 @@ class WebApi(Bottle):
                             if not Data:
 
                                 Success = False
-                                Errors.append({"msg": ErrorsDict.errorcode(701)})
+                                Errors.append({"msg": ErrorsDict.errorcode(801)})
                         
                         except:
                             
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrorsDict.errorcode(702)})
+                            Errors.append({"msg": ErrorsDict.errorcode(802)})
                         
                         finally:
                         
@@ -3031,7 +3109,7 @@ class WebApi(Bottle):
                     except:
                     
                         Success = False
-                        Errors.append({"msg": ErrorsDict.errorcode(703)})
+                        Errors.append({"msg": ErrorsDict.errorcode(803)})
 
                 elif MandatoryVarsExists == False:
 
@@ -3132,7 +3210,7 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Success = False
-                                    Errors.append({"msg": ErrorsDict.errorcode(711)})
+                                    Errors.append({"msg": ErrorsDict.errorcode(811)})
                             
                             except psycopg2.Error as ex:
 
@@ -3144,13 +3222,13 @@ class WebApi(Bottle):
                                 
                                 self.conn.rollback()
                                 Success = False
-                                Errors.append({"msg": ErrorsDict.errorcode(712) + psycopgError})
+                                Errors.append({"msg": ErrorsDict.errorcode(812) + psycopgError})
 
                             except:
     
                                 self.conn.rollback()
                                 Success = False
-                                Errors.append({"msg": ErrorsDict.errorcode(712)})
+                                Errors.append({"msg": ErrorsDict.errorcode(812)})
                             
                             finally:
                             
@@ -3158,12 +3236,12 @@ class WebApi(Bottle):
                         else:
                             
                             Success = False
-                            Errors.append({"msg": ErrorsDict.errorcode(713)})
+                            Errors.append({"msg": ErrorsDict.errorcode(813)})
                     
                     except:
                     
                         Success = False
-                        Errors.append({"msg": ErrorsDict.errorcode(714)})
+                        Errors.append({"msg": ErrorsDict.errorcode(814)})
 
                 elif MandatoryVarsExists == False:
 
