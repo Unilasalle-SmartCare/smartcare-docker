@@ -1,4 +1,5 @@
 from flask import Flask
+import json
 import os
 import psycopg2
 
@@ -28,7 +29,9 @@ IotApi = Flask(__name__)
 @IotApi.route("/")
 def Home():
 
-    return 'Esta é a IOT API, um servidor flask dedicado à camada IOT do projeto Smartcare!'
+    Data = [{"msg": "Esta é a IOT API, um servidor flask dedicado à camada IOT do projeto Smartcare!"}]
+
+    return json.dumps({"success": True, "errors": [], "data": Data})
 
 @IotApi.route("/alert")
 def GetAlert():
@@ -39,22 +42,24 @@ def GetAlert():
 
             cur = conn.cursor()
             cur.execute(f"SELECT BIT_ALERTA FROM PACIENTE")
-            rv = cur.fetchone()
+            rv = cur.fetchone()[0]
             conn.commit()
 
-            return str(rv).replace(",", "").replace("(", "").replace(")", "")
+            Data = [{"alert": rv}]
+
+            return json.dumps({"success": True, "errors": [], "data": Data})
         
         else:
 
-            print("IOT-API - Sem conexão com o banco de dados!")
+            Errors = [{"msg": "IOT-API - Sem conexão com o banco de dados!"}]
 
-            return "False"
+            return json.dumps({"success": False, "errors": Errors, "data": []})
 
     except:
         
-        print("IOT-API - Erro ao ler alertas do paciente!")
+        Errors = [{"msg": "IOT-API - Erro ao ler alertas do paciente!"}]
 
-        return "False"
+        return json.dumps({"success": False, "errors": Errors, "data": []})
 
 @IotApi.route("/insert/measurement/<CodigoDispositivo>/<DataHora>/<Valor>")
 def InsertMeasurement(CodigoDispositivo, DataHora, Valor):
@@ -67,18 +72,19 @@ def InsertMeasurement(CodigoDispositivo, DataHora, Valor):
             cur.execute(f"CALL PUBLIC.USP_INSERE_MEDICAO ('{CodigoDispositivo}','{DataHora}','{Valor}','Null')")
             conn.commit()
 
-            return "True"
+            return json.dumps({"success": True, "errors": [], "data": []})
 
         else:
 
-            print("IOT-API - Sem conexão com o banco de dados!")
+            Errors = [{"msg": "IOT-API - Sem conexão com o banco de dados!"}]
 
-            return "False"
+            return json.dumps({"success": False, "errors": Errors, "data": []})
 
     except Exception as ex:
 
-        print(ex.__cause__)
-        return(ex)
+        Errors = [{"msg": str(ex)}]
+
+        return json.dumps({"success": False, "errors": Errors, "data": []})
 
 if __name__ == "__main__":
     

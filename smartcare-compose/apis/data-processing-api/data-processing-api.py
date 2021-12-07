@@ -30,7 +30,9 @@ IotApi = Flask(__name__)
 @IotApi.route("/")
 def Home():
 
-    return 'Esta é a DATA-PROCESSING-API, um servidor flask dedicado à camada DATA-PROCESSING do projeto Smartcare!'
+    Data = [{"msg": "Esta é a DATA-PROCESSING-API, um servidor flask dedicado à camada DATA-PROCESSING do projeto Smartcare!"}]
+
+    return json.dumps({"success": True, "errors": [], "data": Data})
 
 @IotApi.route("/medicao/<DataInicio>/<DataFim>")
 def Medicao(DataInicio, DataFim):
@@ -60,12 +62,14 @@ def Medicao(DataInicio, DataFim):
 
             print("DATA-PROCESSING-API - Sem conexão com o banco de dados!")
 
-            return "False"
+            return json.dumps({"success": False, "errors": [{"msg":"Sem conexão com o banco de dados!"}], "data": []})
 
     except Exception as ex:
 
-        print(ex.__cause__)
-        return(ex)
+        Errors = []
+        Errors.append({"msg": str(ex)})
+
+        return json.dumps({"success": False, "errors": Errors, "data": []})
 
 @IotApi.route("/medicao/tratada/<DataInicio>/<DataFim>")
 def MedicaoTratada(DataInicio, DataFim):

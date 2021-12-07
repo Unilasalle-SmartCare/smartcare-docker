@@ -61,9 +61,9 @@ def Topic_Handle(topic, value):
             
             request = requests.get(f"http://172.20.0.5:8082/insert/measurement/{CodigoDispositivo}/{DataHora}/{Valor}")
 
-            CadastroStatus = str(request.content).replace("b", "").replace("'", "")
+            CadastroStatus = request.json()
 
-            if CadastroStatus == "True":
+            if CadastroStatus["success"]:
 
                 print("Dados de Medição cadastrado no banco de dados!")
 
@@ -80,9 +80,9 @@ def Topic_Handle(topic, value):
 
         print("Mensagem recebida: " + topic + " " + str(value))
 
-        AlertStatus = list(json.loads(value).values())[0]
+        AlertStatus = json.loads(value)["msg"]
 
-        if AlertStatus == "True":
+        if AlertStatus:
 
             print("Alerta detectado, atuador acionado!")
 

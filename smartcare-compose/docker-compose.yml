@@ -95,7 +95,7 @@ services:
     ports:
       - 8082:8082
     depends_on:
-      - iot
+      - database
     environment:
       - DB_HOST=database
       - DB_USER=smartcare
@@ -110,7 +110,8 @@ services:
     networks:
       - iot
     depends_on:
-      - iot
+      - broker
+      - iot-api
   measurements-publisher:
     image: python:3.6
     volumes:
@@ -120,6 +121,7 @@ services:
     networks:
       - iot
     depends_on:
+      - broker
       - iot-api
   alerts-publisher:
     image: python:3.6
@@ -130,6 +132,7 @@ services:
     networks:
       - iot
     depends_on:
+      - broker
       - iot-api
   data-processing-api:
     image: python:3.6

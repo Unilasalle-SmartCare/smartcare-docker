@@ -20,15 +20,23 @@ while True:
     client1.on_publish = on_publish
     client1.connect(broker, port)
 
-    try:
+    AlertStatus = False
 
-        AlertStatus = False
+    try:
 
         request = requests.get("http://172.20.0.5:8082/alert")
 
-        AlertStatus = str(request.content).replace("b", "").replace("'", "")
+        response = request.json()
 
-        print("Leitura de alerta capturada no banco:", AlertStatus)
+        if response["success"]:
+
+            AlertStatus = response["data"][0]["alert"]
+
+            print("Leitura de alerta capturada no banco:", AlertStatus)
+
+        else:
+
+            print("Erro na iot api: ", response["errors"])
 
     except Exception as ex:
 
