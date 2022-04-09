@@ -1,4 +1,3 @@
-import ast
 from bottle import Bottle, request
 from datetime import datetime
 import json
@@ -152,6 +151,27 @@ class UrlHandling():
             else:
 
                 Data.append({varsearch: search})
+
+            if not Success:
+
+                try:
+
+                    keys = request.query.keys()
+
+                    for key in keys:
+
+                        if key == "idbusca":
+
+                            idbusca = request.query.get("idbusca")
+                            Data.append({varsearch: idbusca})
+
+                            Success = True
+                            Errors.clear()
+                
+                except:
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(102)+ " - Erro na segunda tentativa de encontrar a variável"})
 
         except:
 

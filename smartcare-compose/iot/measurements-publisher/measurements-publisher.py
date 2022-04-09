@@ -1,7 +1,7 @@
-import paho.mqtt.client as paho
 import json
-import time
+import paho.mqtt.client as paho
 import random
+import time
 
 broker = "broker"
 port = 1883
