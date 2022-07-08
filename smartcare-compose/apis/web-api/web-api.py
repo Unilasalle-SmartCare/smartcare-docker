@@ -545,6 +545,8 @@ class WebApi(Bottle):
 
         # Estado
 
+        self.route("/microservices/web/estado/get/all", method = "GET", callback = self.EstadoGetAll)
+        
         # Cidade
 
         # Paciente
@@ -3288,7 +3290,58 @@ class WebApi(Bottle):
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def EstadoGetAll(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            SQL     = "SELECT * FROM ESTADO "
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
             
+                chamada = request['bottle.route'].rule.replace("/microservices/web/Estado/get/", "")
+
+                if chamada == "actives":
+
+                    SQL = SQL + "WHERE IND_SIT = 1 " 
+
+                SQL = SQL + "ORDER BY IDESTADO"
+
+                cur = self.conn.cursor()
+                cur.execute(SQL)
+                row_headers = [x[0] for x in cur.description]
+                rv = cur.fetchall()
+                self.conn.commit()
+
+                for result in rv:
+
+                    Data.append(dict(zip(row_headers, result)))
+
+            except:
+
+                self.conn.rollback()
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(601)})
+            
+            finally:
+            
+                cur.close()
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})            
 if __name__ == '__main__':
 
     webapi = WebApi()
