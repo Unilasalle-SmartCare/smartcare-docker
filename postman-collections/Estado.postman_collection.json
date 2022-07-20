@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "3cce2044-937e-48d6-93a0-cba52e47af45",
+		"name": "Estado",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/estado/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"estado",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
