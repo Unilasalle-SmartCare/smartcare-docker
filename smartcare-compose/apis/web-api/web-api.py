@@ -545,7 +545,13 @@ class WebApi(Bottle):
 
         # Estado
 
+        self.route("/microservices/web/estado/get/all", method = "GET", callback = self.EstadoGetAll)
+        
         # Cidade
+
+        self.route("/microservices/web/cidade/get/all", method = "GET", callback = self.CidadeGetAll)
+
+        self.route("/microservices/web/cidade/getby/id/estado", method = "GET", callback = self.CidadeGetByIdEstado)
 
         # Paciente
 
@@ -3288,7 +3294,185 @@ class WebApi(Bottle):
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+    #Estado
+    
+    def EstadoGetAll(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            SQL     = "SELECT * FROM ESTADO "
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                SQL = SQL + "ORDER BY IDESTADO"
+
+                cur = self.conn.cursor()
+                cur.execute(SQL)
+                row_headers = [x[0] for x in cur.description]
+                rv = cur.fetchall()
+                self.conn.commit()
+
+                for result in rv:
+
+                    Data.append(dict(zip(row_headers, result)))
+
+            except:
+
+                self.conn.rollback()
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(601)})
             
+            finally:
+            
+                cur.close()
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})            
+
+    def CidadeGetAll(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            SQL     = "SELECT * FROM CIDADE "
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                SQL = SQL + "ORDER BY IDCIDADE"
+
+                cur = self.conn.cursor()
+                cur.execute(SQL)
+                row_headers = [x[0] for x in cur.description]
+                rv = cur.fetchall()
+                self.conn.commit()
+
+                for result in rv:
+
+                    Data.append(dict(zip(row_headers, result)))
+
+            except:
+
+                self.conn.rollback()
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(401)})
+
+            finally:
+
+                cur.close()
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+        
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+
+    def CidadeGetByIdEstado(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+
+                if variavelStatus:
+
+                    idbusca = list(list(variavelData)[0].values())[0]
+
+                    if(str(idbusca).isnumeric()):
+
+                        SQL = f"SELECT * FROM CIDADE WHERE 1 = 1 AND IDESTADO = {idbusca} ORDER BY NOME ASC"
+
+                        try:
+
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
+                            self.conn.commit()
+
+                            for result in rv:
+
+                                Data.append(dict(zip(row_headers, result)))
+
+                        except:
+
+                            self.conn.rollback()
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(411)})
+
+                        finally:
+
+                            cur.close()
+
+                    elif str(idbusca) == "":
+
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
+
+                    else:
+
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(109)})
+
+                else:
+
+                    Success = False
+
+                    for error in variavelErrors:
+
+                        Errors.append({"msg": list(error.values())[0]})
+                        
+            except:
+
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(412)})
+
+            finally:
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+        
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+
 if __name__ == '__main__':
 
     webapi = WebApi()
