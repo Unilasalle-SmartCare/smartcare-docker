@@ -543,6 +543,8 @@ class WebApi(Bottle):
 
         # Enfermidade
 
+        self.route("/microservices/web/enfermidade/get/all", method = "GET", callback = self.EnfermidadeGetAll)
+
         # Estado
 
         self.route("/microservices/web/estado/get/all", method = "GET", callback = self.EstadoGetAll)
@@ -554,6 +556,20 @@ class WebApi(Bottle):
         self.route("/microservices/web/cidade/getby/id/estado", method = "GET", callback = self.CidadeGetByIdEstado)
 
         # Paciente
+
+        self.route("/microservices/web/paciente/get/all", method = "GET", callback = self.PacienteGetAll)
+
+        self.route("/microservices/web/paciente/getby/id", method = "GET", callback = self.PacienteGetById)
+
+        self.route("/microservices/web/paciente/getby/string/nome", method = "GET", callback = self.PacienteGetByString)
+
+        self.route("/microservices/web/paciente/getby/string/cpf", method = "GET", callback = self.PacienteGetByString)
+
+        #self.route("/microservices/web/paciente/insert", method = "POST", callback = self.PacienteInsert)
+
+        #self.route("/microservices/web/paciente/update", method = "PUT", callback = self.PacienteUpdate)
+
+        #self.route("/microservices/web/paciente/delete", method = "DELETE", callback = self.PacienteDelete)
 
         # Alerta
 
@@ -3295,7 +3311,7 @@ class WebApi(Bottle):
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
-    #Estado
+    #   Estado
     
     def EstadoGetAll(self):
 
@@ -3343,6 +3359,8 @@ class WebApi(Bottle):
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})            
 
+    #   Cidade
+
     def CidadeGetAll(self):
 
         connection          = json.loads(ConnectDataBase.Status(self))
@@ -3389,7 +3407,6 @@ class WebApi(Bottle):
             Errors = [{"msg": ErrorsDict.errorcode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
-
 
     def CidadeGetByIdEstado(self):
 
@@ -3472,6 +3489,283 @@ class WebApi(Bottle):
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
+    #   Enfermidade
+
+    def EnfermidadeGetAll(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            SQL     = "SELECT * FROM ENFERMIDADE "
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                SQL = SQL + "ORDER BY IDENFERMIDADE"
+
+                cur = self.conn.cursor()
+                cur.execute(SQL)
+                row_headers = [x[0] for x in cur.description]
+                rv = cur.fetchall()
+                self.conn.commit()
+
+                for result in rv:
+
+                    Data.append(dict(zip(row_headers, result)))
+
+            except:
+
+                self.conn.rollback()
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(401)})
+
+            finally:
+
+                cur.close()
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+        
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+    #   Paciente
+    
+    def PacienteGetAll(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            SQL     = "SELECT * FROM PACIENTE "
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                SQL = SQL + "ORDER BY IDPACIENTE"
+
+                cur = self.conn.cursor()
+                cur.execute(SQL)
+                row_headers = [x[0] for x in cur.description]
+                rv = cur.fetchall()
+                self.conn.commit()
+
+                for result in rv:
+
+                    Data.append(dict(zip(row_headers, result)))
+
+            except:
+
+                self.conn.rollback()
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(401)})
+
+            finally:
+
+                cur.close()
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+        
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def PacienteGetById(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+
+                if variavelStatus:
+
+                    idbusca = list(list(variavelData)[0].values())[0]
+
+                    if(str(idbusca).isnumeric()):
+
+                        SQL = f"SELECT * FROM PACIENTE WHERE 1 = 1 AND IDPACIENTE = {idbusca} ORDER BY IDPACIENTE"
+
+                        try:
+
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
+                            self.conn.commit()
+
+                            for result in rv:
+
+                                Data.append(dict(zip(row_headers, result)))
+                                break
+
+                        except:
+
+                            self.conn.rollback()
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(411)})
+
+                        finally:
+
+                            cur.close()
+
+                    elif str(idbusca) == "":
+
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
+
+                    else:
+
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(109)})
+
+                else:
+
+                    Success = False
+
+                    for error in variavelErrors:
+
+                        Errors.append({"msg": list(error.values())[0]})
+                        
+            except:
+
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(412)})
+
+            finally:
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+    def PacienteGetByString(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:
+
+            Success  = True
+            Errors  = []
+            Data    = []
+
+            try:
+
+                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("textobusca", 1)
+
+                if variavelStatus:
+                
+                    textobusca = list(list(variavelData)[0].values())[0]
+                    textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
+
+                    if textobusca != "":
+                
+                        SQL = "SELECT * FROM PACIENTE WHERE 1 = 1 "
+
+                        route = "/microservices/web/paciente/getby/string"
+                        chamada = request['bottle.route'].rule.replace(route + "/", "")
+
+                        if chamada == "name":
+
+                            SQL = SQL + f"AND UPPER(NOME) LIKE '%{str(textobusca).upper()}%' "
+
+                        elif chamada == "cpf":
+
+                            SQL = SQL + f"AND CPF LIKE '{str(textobusca).upper()}' "
+
+                        else:
+
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(108)})
+
+                            return({"success":Success,"errors":Errors,"data":Data})
+
+                        try:
+
+                            SQL = SQL + "ORDER BY IDPACIENTE"
+                    
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
+                            self.conn.commit()
+
+                            for result in rv:
+
+                                Data.append(dict(zip(row_headers, result)))
+
+                        except:
+            
+                            self.conn.rollback()                            
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(611)})
+                        
+                        finally:
+                        
+                            cur.close()
+
+                    else:
+
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(104)})
+                
+                else:
+                
+                    Success = False
+                    msgs = list(list(variavelErrors)[0].values())
+
+                    for msg in msgs:
+                    
+                        Errors.append({"msg": msg})
+            
+            except:
+            
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(621)})
+            
+            finally:
+            
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
 if __name__ == '__main__':
 
