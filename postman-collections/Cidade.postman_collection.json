@@ -1,0 +1,25 @@
+{
+	"info": {
+		"_postman_id": "dc31ced9-9826-4512-ad53-4c973aa06c06",
+		"name": "Cidade",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "listar",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar por Id Estado",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
