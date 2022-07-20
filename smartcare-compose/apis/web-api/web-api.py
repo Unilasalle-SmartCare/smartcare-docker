@@ -3312,12 +3312,6 @@ class WebApi(Bottle):
             Data    = []
 
             try:
-            
-                chamada = request['bottle.route'].rule.replace("/microservices/web/Estado/get/", "")
-
-                if chamada == "actives":
-
-                    SQL = SQL + "WHERE IND_SIT = 1 " 
 
                 SQL = SQL + "ORDER BY IDESTADO"
 
