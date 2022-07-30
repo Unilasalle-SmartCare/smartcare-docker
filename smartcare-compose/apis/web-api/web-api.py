@@ -565,7 +565,7 @@ class WebApi(Bottle):
 
         self.route("/microservices/web/paciente/getby/string/cpf", method = "GET", callback = self.PacienteGetByString)
 
-        #self.route("/microservices/web/paciente/insert", method = "POST", callback = self.PacienteInsert)
+        self.route("/microservices/web/paciente/insert", method = "POST", callback = self.PacienteInsert)
 
         #self.route("/microservices/web/paciente/update", method = "PUT", callback = self.PacienteUpdate)
 
@@ -3767,6 +3767,161 @@ class WebApi(Bottle):
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
+    def PacienteInsert(self):
+
+        connection          = json.loads(ConnectDataBase.Status(self))
+        connectionStatus    = list(connection.values())[0]
+        connectionErrors    = list(connection.values())[1]
+        connectionData      = list(connection.values())[2]
+
+        if connectionStatus:        
+
+            Success      = True
+            Errors      = []
+            Data        = []
+            FormData    = request.forms
+
+            try:
+
+                MandatoryVars = ["cpf", "nome", "nascimento", "idenfermidade", "estagio_enfermidade"]
+
+                MandatoryVarsExists = True
+
+                for var in MandatoryVars:
+
+                    if var not in FormData.keys():
+
+                        MandatoryVarsExists = False
+
+                MandatoryVarsTypes = True
+
+                if MandatoryVarsExists:
+
+                    cpf      = FormData.get("cpf")
+                    nome     = FormData.get("nome")
+                    nascimento  = FormData.get("nascimento")
+                    idenfermidade = FormData.get("enfermidade")
+                    estagio_enfermidade = FormData.get("estagio_enfermidade")
+                    
+                    MandatoryVarsTypes = True   if  (       str(idenfermidade).isnumeric() \
+                                                            and StringHandling.isdatetime(nascimento) \
+                                                    ) \
+                                                else False
+
+                else:
+
+                    MandatoryVarsTypes = False
+
+                if MandatoryVarsExists and MandatoryVarsTypes:
+
+                    try:
+                        
+                        cpf                 = FormData.get("cpf")
+                        nome                = FormData.get("nome")
+                        nascimento          = FormData.get("nascimento")
+                        idenfermidade       = FormData.get("enfermidade") if "enfermidade" in FormData.keys() else None
+                        idcidade            = FormData.get("cidade") if "cidade" in FormData.keys() else None
+                        idestado            = FormData.get("estado") if "estado" in FormData.keys() else None 
+                        bairro              = FormData.get("bairro")
+                        endereco            = FormData.get("endereco")
+                        complemento         = FormData.get("complemento")
+                        bit_alerta          = FormData.get("bit_alerta")
+                        ind_sit             = FormData.get("ind_sit")
+
+                        cpf                 = StringHandling.CleanSqlString(cpf)
+                        nome                = StringHandling.CleanSqlString(nome)
+                        estagio_enfermidade = StringHandling.CleanSqlString(estagio_enfermidade)
+                        bairro              = StringHandling.CleanSqlString(bairro)
+                        endereco            = StringHandling.CleanSqlString(endereco)
+                        complemento         = StringHandling.CleanSqlString(complemento)
+                            
+                        SQL = " INSERT INTO PACIENTE (" + \
+                                                            "CPF , " + \
+                                                            "NOME , " + \
+                                                            "NASCIMENTO , " + \
+                                                            "IDENFERMIDADE , " + \
+                                                            "ESTAGIO_ENFERMIDADE , " + \
+                                                            "IDESTADO , " + \
+                                                            "IDCIDADE , " + \
+                                                            "BAIRRO , " + \
+                                                            "ENDERECO , " + \
+                                                            "COMPLEMENTO , " + \
+                                                            "BIT_ALERTA , " + \
+                                                            "IND_SIT" + \
+                                                        ")" + \
+                                "VALUES " + " ('{}', '{}', '{}', {}, '{}', {}, {}, '{}','{}','{}', 1, 1) RETURNING *".format(
+                                    cpf ,
+                                    nome ,
+                                    nascimento ,
+                                    idenfermidade ,
+                                    estagio_enfermidade ,
+                                    idestado ,
+                                    idcidade ,
+                                    bairro ,
+                                    endereco ,
+                                    complemento 
+                                )
+
+                        try:
+
+                            cur = self.conn.cursor()
+                            cur.execute(SQL)
+                            row_headers = [x[0] for x in cur.description]
+                            rv = cur.fetchall()
+                            self.conn.commit()
+
+                            for result in rv:
+
+                                Data.append(dict(zip(row_headers, result)))
+                                break
+
+                            if not Data:
+
+                                Success = False
+                                Errors.append({"msg": ErrorsDict.errorcode(531)})
+                        
+                        except:
+                            
+                            self.conn.rollback()
+                            Success = False
+                            Errors.append({"msg": ErrorsDict.errorcode(532)})
+                        
+                        finally:
+                        
+                            cur.close()
+                    
+                    except:
+                    
+                        Success = False
+                        Errors.append({"msg": ErrorsDict.errorcode(533)})
+
+                elif MandatoryVarsExists == False:
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(112)})
+
+                else: #MandatoryVarsTypes == False
+
+                    Success = False
+                    Errors.append({"msg": ErrorsDict.errorcode(113)})
+            
+            except:
+
+                Success = False
+                Errors.append({"msg": ErrorsDict.errorcode(114)})
+
+            finally:
+
+                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+
+        else:
+
+            # connectionErrors só será passado para usuarioid 1(suporte)
+            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+
+ 
 if __name__ == '__main__':
 
     webapi = WebApi()
