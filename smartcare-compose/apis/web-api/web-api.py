@@ -1,11 +1,12 @@
 from bottle import Bottle, request
 from datetime import datetime
+from urllib.parse import parse_qs
 import json
 import os
 import psycopg2
 import requests
-from urllib.parse import parse_qs
 import ErrorsDict
+import ListHandling
 
 class PageError():
 
@@ -450,7 +451,7 @@ class WebApi(Bottle):
 
         self.route("/microservices/web/paciente/getby/id", method = "GET", callback = self.PacienteGetById)
 
-        self.route("/microservices/web/paciente/getby/string/nome", method = "GET", callback = self.PacienteGetByString)
+        self.route("/microservices/web/paciente/getby/string/name", method = "GET", callback = self.PacienteGetByString)
 
         self.route("/microservices/web/paciente/getby/string/cpf", method = "GET", callback = self.PacienteGetByString)
 
@@ -3439,7 +3440,8 @@ class WebApi(Bottle):
         if connectionStatus:
 
             SQL     = "SELECT * FROM PACIENTE "
-            Success  = True
+
+            Success = True
             Errors  = []
             Data    = []
 
@@ -3454,6 +3456,8 @@ class WebApi(Bottle):
                 self.conn.commit()
 
                 for result in rv:
+
+                    result = ListHandling.MapDate.ToString(result)
 
                     Data.append(dict(zip(row_headers, result)))
 
@@ -3485,7 +3489,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Success  = True
+            Success = True
             Errors  = []
             Data    = []
 
@@ -3510,6 +3514,8 @@ class WebApi(Bottle):
                             self.conn.commit()
 
                             for result in rv:
+
+                                result = ListHandling.MapDate.ToString(result)
 
                                 Data.append(dict(zip(row_headers, result)))
                                 break
@@ -3567,7 +3573,7 @@ class WebApi(Bottle):
 
         if connectionStatus:
 
-            Success  = True
+            Success = True
             Errors  = []
             Data    = []
 
@@ -3613,6 +3619,8 @@ class WebApi(Bottle):
                             self.conn.commit()
 
                             for result in rv:
+
+                                result = ListHandling.MapDate.ToString(result)
 
                                 Data.append(dict(zip(row_headers, result)))
 
