@@ -5,7 +5,7 @@ import os
 import psycopg2
 import requests
 from urllib.parse import parse_qs
-import ErrosDict as ErrosFile
+import ErrorsDict
 
 class PageError():
 
@@ -142,12 +142,12 @@ class UrlHandling():
             if repeats > 1:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(101)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(101)})
 
             elif repeats == 0:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(102)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(102)})
 
             else:
 
@@ -172,12 +172,12 @@ class UrlHandling():
                 except:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(102)+ " - Erro na segunda tentativa de encontrar a variável"})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(102)+ " - Erro na segunda tentativa de encontrar a variável"})
 
         except:
 
             Success = False
-            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(103)})
+            Errors.append({"msg": ErrorsDict.Get.ByCode(103)})
 
         finally:
 
@@ -213,7 +213,7 @@ class UrlHandling():
         except:
 
             Success = False
-            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(111)})
+            Errors.append({"msg": ErrorsDict.Get.ByCode(111)})
 
         finally:
 
@@ -247,12 +247,12 @@ class Env():
             else:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(201)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(201)})
 
         except:
 
             Success = False
-            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(202)})
+            Errors.append({"msg": ErrorsDict.Get.ByCode(202)})
 
         finally:
 
@@ -284,7 +284,7 @@ class ConnectDataBase():
                     
                     WebApi.conn = None
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(301) + " - {0}".format(ex)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(301) + " - {0}".format(ex)})
 
             else:
 
@@ -298,7 +298,7 @@ class ConnectDataBase():
 
             Success = False
 
-            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(302)})
+            Errors.append({"msg": ErrorsDict.Get.ByCode(302)})
 
         finally:
 
@@ -339,7 +339,7 @@ class ConnectDataBase():
         except:
 
             Success = False
-            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(311)})
+            Errors.append({"msg": ErrorsDict.Get.ByCode(311)})
 
         finally:
 
@@ -583,7 +583,7 @@ class WebApi(Bottle):
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(401)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(401)})
 
             finally:
 
@@ -594,7 +594,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -640,7 +640,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(411)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(411)})
 
                         finally:
 
@@ -649,12 +649,12 @@ class WebApi(Bottle):
                     elif str(idbusca) == "":
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
 
                     else:
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(109)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(109)})
 
                 else:
 
@@ -667,7 +667,7 @@ class WebApi(Bottle):
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(412)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(412)})
 
             finally:
 
@@ -676,7 +676,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -724,7 +724,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(411)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(411)})
 
                         finally:
 
@@ -733,7 +733,7 @@ class WebApi(Bottle):
                     else:
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
                 else:
 
                     Success = False
@@ -745,7 +745,7 @@ class WebApi(Bottle):
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(421)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(421)})
 
             finally:
 
@@ -754,7 +754,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -797,13 +797,13 @@ class WebApi(Bottle):
                         if not Data:
 
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(431)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(431)})
                     
                     except:
 
                         self.conn.rollback()                    
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(432)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(432)})
                     
                     finally:
                     
@@ -812,12 +812,12 @@ class WebApi(Bottle):
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(110)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(110)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(433)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(433)})
             
             finally:
             
@@ -826,7 +826,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -851,7 +851,7 @@ class WebApi(Bottle):
                 if not FormData:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(105)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(105)})
 
                 elif idtipo != None and str(idtipo).isnumeric():
 
@@ -895,13 +895,13 @@ class WebApi(Bottle):
                                 if not Data:
                                 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(441)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(441)})
                             
                             except:
 
                                 self.conn.rollback()                            
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(442)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(442)})
                             
                             finally:
                             
@@ -910,12 +910,12 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(106)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(106)})
                     
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(443)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(443)})
 
                         for error in DataBeforeErrors:
 
@@ -924,12 +924,12 @@ class WebApi(Bottle):
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(444)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(444)})
             
             finally:
             
@@ -938,7 +938,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -994,13 +994,13 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(441)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(441)})
                             
                             except:
 
                                 self.conn.rollback()                            
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(442)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(442)})
                             
                             finally:
                             
@@ -1009,7 +1009,7 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(443)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(443)})
 
                             for error in DataBeforeErrors:
 
@@ -1018,17 +1018,17 @@ class WebApi(Bottle):
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(451)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(451)})
                 
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(452)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(452)})
             
             finally:
             
@@ -1037,7 +1037,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1113,13 +1113,13 @@ class WebApi(Bottle):
                                     if Data:
 
                                         Success = False
-                                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(461)})
+                                        Errors.append({"msg": ErrorsDict.Get.ByCode(461)})
 
                                 except:
 
                                     self.conn.rollback()
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(462)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(462)})
 
                                 finally:
                                 
@@ -1129,7 +1129,7 @@ class WebApi(Bottle):
 
                                 self.conn.rollback()                
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(463)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(463)})
                             
                             finally:
 
@@ -1138,12 +1138,12 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(464)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(464)})
                     
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(443)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(443)})
 
                         for error in DataBeforeErrors:
 
@@ -1152,12 +1152,12 @@ class WebApi(Bottle):
                 else:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
 
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(465)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(465)})
 
             finally:
 
@@ -1166,7 +1166,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1214,7 +1214,7 @@ class WebApi(Bottle):
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(501)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(501)})
             
             finally:
             
@@ -1224,7 +1224,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1280,7 +1280,7 @@ class WebApi(Bottle):
                         else:
 
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(108)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(108)})
 
                             return({"success":Success,"errors":Errors,"data":Data})
                 
@@ -1307,7 +1307,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()                           
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(501)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(501)})
                         
                         finally:
                         
@@ -1316,12 +1316,12 @@ class WebApi(Bottle):
                     elif str(idbusca) == "":
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
                     
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(109)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(109)})
                 
                 else:
                 
@@ -1335,7 +1335,7 @@ class WebApi(Bottle):
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(511)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(511)})
             
             finally:
             
@@ -1344,7 +1344,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1388,7 +1388,7 @@ class WebApi(Bottle):
                         else:
 
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(108)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(108)})
 
                             return({"success":Success,"errors":Errors,"data":Data})
 
@@ -1410,7 +1410,7 @@ class WebApi(Bottle):
             
                             self.conn.rollback()                            
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(521)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(521)})
                         
                         finally:
                         
@@ -1419,7 +1419,7 @@ class WebApi(Bottle):
                     else:
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
                 
                 else:
                 
@@ -1433,7 +1433,7 @@ class WebApi(Bottle):
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(522)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(522)})
             
             finally:
             
@@ -1442,7 +1442,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1548,13 +1548,13 @@ class WebApi(Bottle):
                             if not Data:
 
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(531)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(531)})
                         
                         except:
                             
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(532)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(532)})
                         
                         finally:
                         
@@ -1563,22 +1563,22 @@ class WebApi(Bottle):
                     except:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(533)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(533)})
 
                 elif MandatoryVarsExists == False:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(112)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(112)})
 
                 else: #MandatoryVarsTypes == False
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(113)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(113)})
             
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(114)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(114)})
 
             finally:
 
@@ -1587,7 +1587,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1612,7 +1612,7 @@ class WebApi(Bottle):
                 if not FormData:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(105)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(105)})
 
                 elif iddispositivo != None and str(iddispositivo).isnumeric():
 
@@ -1719,13 +1719,13 @@ class WebApi(Bottle):
                                     if not Data:
                                     
                                         Success = False
-                                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(541)})
+                                        Errors.append({"msg": ErrorsDict.Get.ByCode(541)})
                                 
                                 except:
 
                                     self.conn.rollback()                                
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(542)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(542)})
                                 
                                 finally:
                                 
@@ -1734,27 +1734,27 @@ class WebApi(Bottle):
                             else:
                             
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(106)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(106)})
 
                         else:
 
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(115)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(115)})
                         
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(543)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(543)})
                     
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(544)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(544)})
             
             finally:
             
@@ -1763,7 +1763,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1819,13 +1819,13 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(541)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(541)})
                             
                             except:
 
                                 self.conn.rollback()                            
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(542)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(542)})
                             
                             finally:
                             
@@ -1834,7 +1834,7 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(543)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(543)})
 
                             for error in DataBeforeErrors:
 
@@ -1843,17 +1843,17 @@ class WebApi(Bottle):
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(551)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(551)})
                 
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(552)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(552)})
             
             finally:
             
@@ -1862,7 +1862,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -1918,13 +1918,13 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(541)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(541)})
                             
                             except:
 
                                 self.conn.rollback()                            
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(542)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(542)})
                             
                             finally:
                             
@@ -1933,7 +1933,7 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(543)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(543)})
 
                             for error in DataBeforeErrors:
 
@@ -1942,17 +1942,17 @@ class WebApi(Bottle):
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(561)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(561)})
                 
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(562)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(562)})
             
             finally:
             
@@ -1961,7 +1961,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2037,13 +2037,13 @@ class WebApi(Bottle):
                                     if Data:
 
                                         Success = False
-                                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(571)})
+                                        Errors.append({"msg": ErrorsDict.Get.ByCode(571)})
 
                                 except:
 
                                     self.conn.rollback()
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(572)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(572)})
 
                                 finally:
                                 
@@ -2053,7 +2053,7 @@ class WebApi(Bottle):
 
                                 self.conn.rollback()                
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(573)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(573)})
                             
                             finally:
 
@@ -2062,12 +2062,12 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(574)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(574)})
                     
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(543)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(543)})
 
                         for error in DataBeforeErrors:
 
@@ -2076,12 +2076,12 @@ class WebApi(Bottle):
                 else:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
 
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(575)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(575)})
 
             finally:
 
@@ -2090,7 +2090,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2134,7 +2134,7 @@ class WebApi(Bottle):
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(601)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(601)})
             
             finally:
             
@@ -2144,7 +2144,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2190,7 +2190,7 @@ class WebApi(Bottle):
                         else:
 
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(108)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(108)})
 
                             return({"success":Success,"errors":Errors,"data":Data})
                 
@@ -2217,7 +2217,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()                           
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(611)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(611)})
                         
                         finally:
                         
@@ -2226,12 +2226,12 @@ class WebApi(Bottle):
                     elif str(idbusca) == "":
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
                     
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(109)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(109)})
                 
                 else:
                 
@@ -2245,7 +2245,7 @@ class WebApi(Bottle):
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(612)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(612)})
             
             finally:
             
@@ -2254,7 +2254,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2298,7 +2298,7 @@ class WebApi(Bottle):
                         else:
 
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(108)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(108)})
 
                             return({"success":Success,"errors":Errors,"data":Data})
 
@@ -2320,7 +2320,7 @@ class WebApi(Bottle):
             
                             self.conn.rollback()                            
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(611)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(611)})
                         
                         finally:
                         
@@ -2329,7 +2329,7 @@ class WebApi(Bottle):
                     else:
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
                 
                 else:
                 
@@ -2343,7 +2343,7 @@ class WebApi(Bottle):
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(621)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(621)})
             
             finally:
             
@@ -2352,7 +2352,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2420,13 +2420,13 @@ class WebApi(Bottle):
                             if not Data:
 
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(631)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(631)})
                         
                         except:
                             
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(632)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(632)})
                         
                         finally:
                         
@@ -2435,22 +2435,22 @@ class WebApi(Bottle):
                     except:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(633)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(633)})
 
                 elif MandatoryVarsExists == False:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(112)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(112)})
 
                 else: #MandatoryVarsTypes == False
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(113)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(113)})
             
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(114)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(114)})
 
             finally:
 
@@ -2459,7 +2459,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2484,7 +2484,7 @@ class WebApi(Bottle):
                 if not FormData:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(105)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(105)})
 
                 elif idambiente != None and str(idambiente).isnumeric():
 
@@ -2540,13 +2540,13 @@ class WebApi(Bottle):
                                 if not Data:
                                 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(641)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(641)})
                             
                             except:
 
                                 self.conn.rollback()                                
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(642)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(642)})
                             
                             finally:
                             
@@ -2555,22 +2555,22 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(106)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(106)})
                     
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(644)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(644)})
                     
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(645)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(645)})
             
             finally:
             
@@ -2579,7 +2579,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2635,13 +2635,13 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(541)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(541)})
                             
                             except:
 
                                 self.conn.rollback()                            
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(642)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(642)})
                             
                             finally:
                             
@@ -2650,7 +2650,7 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(644)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(644)})
 
                             for error in DataBeforeErrors:
 
@@ -2659,17 +2659,17 @@ class WebApi(Bottle):
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(651)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(651)})
                 
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(652)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(652)})
             
             finally:
             
@@ -2678,7 +2678,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2734,13 +2734,13 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(641)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(641)})
                             
                             except:
 
                                 self.conn.rollback()                            
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(661)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(661)})
                             
                             finally:
                             
@@ -2749,7 +2749,7 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(644)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(644)})
 
                             for error in DataBeforeErrors:
 
@@ -2758,17 +2758,17 @@ class WebApi(Bottle):
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(662)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(662)})
                 
                 else:
                 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
             
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(663)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(663)})
             
             finally:
             
@@ -2777,7 +2777,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2853,13 +2853,13 @@ class WebApi(Bottle):
                                     if Data:
 
                                         Success = False
-                                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(671)})
+                                        Errors.append({"msg": ErrorsDict.Get.ByCode(671)})
 
                                 except:
 
                                     self.conn.rollback()
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(672)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(672)})
 
                                 finally:
                                 
@@ -2869,7 +2869,7 @@ class WebApi(Bottle):
 
                                 self.conn.rollback()                
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(673)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(673)})
                             
                             finally:
 
@@ -2878,12 +2878,12 @@ class WebApi(Bottle):
                         else:
                         
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(674)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(674)})
                     
                     else:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(644)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(644)})
 
                         for error in DataBeforeErrors:
 
@@ -2892,12 +2892,12 @@ class WebApi(Bottle):
                 else:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(107)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(107)})
 
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(675)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(675)})
 
             finally:
 
@@ -2906,7 +2906,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -2943,7 +2943,7 @@ class WebApi(Bottle):
                 else:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(701)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(701)})
 
             else:
 
@@ -2954,7 +2954,7 @@ class WebApi(Bottle):
         except:
 
             Success = False
-            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(702)})
+            Errors.append({"msg": ErrorsDict.Get.ByCode(702)})
             
 
         finally:
@@ -3025,13 +3025,13 @@ class WebApi(Bottle):
                             if not Data:
 
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(801)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(801)})
                         
                         except:
                             
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(802)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(802)})
                         
                         finally:
                         
@@ -3040,22 +3040,22 @@ class WebApi(Bottle):
                     except:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(803)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(803)})
 
                 elif MandatoryVarsExists == False:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(112)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(112)})
 
                 else: #MandatoryVarsTypes == False
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(113)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(113)})
             
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(114)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(114)})
 
             finally:
 
@@ -3064,7 +3064,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -3141,7 +3141,7 @@ class WebApi(Bottle):
                                 if not Data:
 
                                     Success = False
-                                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(811)})
+                                    Errors.append({"msg": ErrorsDict.Get.ByCode(811)})
                             
                             except psycopg2.Error as ex:
 
@@ -3153,13 +3153,13 @@ class WebApi(Bottle):
                                 
                                 self.conn.rollback()
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(812) + psycopgError})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(812) + psycopgError})
 
                             except:
     
                                 self.conn.rollback()
                                 Success = False
-                                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(812)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(812)})
                             
                             finally:
                             
@@ -3167,27 +3167,27 @@ class WebApi(Bottle):
                         else:
                             
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(813)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(813)})
                     
                     except:
                     
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(814)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(814)})
 
                 elif MandatoryVarsExists == False:
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(112)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(112)})
 
                 else: #MandatoryVarsTypes == False
 
                     Success = False
-                    Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(113)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(113)})
             
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(114)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(114)})
 
             finally:
 
@@ -3196,7 +3196,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -3234,7 +3234,7 @@ class WebApi(Bottle):
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(601)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(601)})
             
             finally:
             
@@ -3244,7 +3244,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})            
 
@@ -3282,7 +3282,7 @@ class WebApi(Bottle):
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(401)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(401)})
 
             finally:
 
@@ -3293,7 +3293,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -3338,7 +3338,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(411)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(411)})
 
                         finally:
 
@@ -3347,12 +3347,12 @@ class WebApi(Bottle):
                     elif str(idbusca) == "":
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
 
                     else:
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(109)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(109)})
 
                 else:
 
@@ -3365,7 +3365,7 @@ class WebApi(Bottle):
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(412)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(412)})
 
             finally:
 
@@ -3374,7 +3374,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -3412,7 +3412,7 @@ class WebApi(Bottle):
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(401)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(401)})
 
             finally:
 
@@ -3423,7 +3423,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -3461,7 +3461,7 @@ class WebApi(Bottle):
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(401)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(401)})
 
             finally:
 
@@ -3472,7 +3472,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -3518,7 +3518,7 @@ class WebApi(Bottle):
 
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(411)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(411)})
 
                         finally:
 
@@ -3527,12 +3527,12 @@ class WebApi(Bottle):
                     elif str(idbusca) == "":
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
 
                     else:
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(109)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(109)})
 
                 else:
 
@@ -3545,7 +3545,7 @@ class WebApi(Bottle):
             except:
 
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(412)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(412)})
 
             finally:
 
@@ -3554,7 +3554,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
@@ -3598,7 +3598,7 @@ class WebApi(Bottle):
                         else:
 
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(108)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(108)})
 
                             return({"success":Success,"errors":Errors,"data":Data})
 
@@ -3620,7 +3620,7 @@ class WebApi(Bottle):
             
                             self.conn.rollback()                            
                             Success = False
-                            Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(611)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(611)})
                         
                         finally:
                         
@@ -3629,7 +3629,7 @@ class WebApi(Bottle):
                     else:
 
                         Success = False
-                        Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(104)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(104)})
                 
                 else:
                 
@@ -3643,7 +3643,7 @@ class WebApi(Bottle):
             except:
             
                 Success = False
-                Errors.append({"msg": ErrosFile.ErrorsDict.errorcode(621)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(621)})
             
             finally:
             
@@ -3652,7 +3652,7 @@ class WebApi(Bottle):
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrosFile.ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
