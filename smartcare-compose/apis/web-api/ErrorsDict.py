@@ -1,6 +1,6 @@
-class ErrorsDict():
+class Get():
     
-    def errorcode(int):
+    def ByCode(int):
 
         Errors = {}
         #TRATAMENTO DE VARIAVEIS
