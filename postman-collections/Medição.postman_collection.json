@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "2c27e145-55c5-44e8-881f-27db4c941b1b",
+		"name": "Medição",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16695356"
+	},
+	"item": [
+		{
+			"name": "Medição tratada",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/medicao/tratada?datainicio=20210101&datafim=20211202",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"medicao",
+						"tratada"
+					],
+					"query": [
+						{
+							"key": "datainicio",
+							"value": "20210101"
+						},
+						{
+							"key": "datafim",
+							"value": "20211202"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

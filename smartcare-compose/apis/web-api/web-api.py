@@ -1,351 +1,13 @@
 from bottle import Bottle, request
-from datetime import datetime
-from urllib.parse import parse_qs
+import ConnectDataBase
+import ErrorsDict
+import ErrorsPages
 import json
-import os
+import ListHandling
 import psycopg2
 import requests
-import ErrorsDict
-import ListHandling
-
-class PageError():
-
-    def error400(error):
-
-        return json.dumps({"success": False, "error": [{"msg": "400 Bad Request"}], "data": [{}]})
-
-    def error401(error):
-
-        return json.dumps({"success": False, "error": [{"msg": "401 Unauthorised"}], "data": [{}]})
-
-    def error403(error):
-
-        return json.dumps({"success": False, "error": [{"msg": "403 Forbidden"}], "data": [{}]})
-
-    def error404(error):
-
-        # Se em algum momento for usar html como resposta de erro
-        # import codecs
-
-        # file = codecs.open("./error-pages/404.html", "r", "utf-8")
-        # HTML = file.read()
-        # file.close()
-
-        return json.dumps({"success": False, "errors": [{"msg": "404 Not Found"}], "data": [{}]})
-
-    def error405(error):
-
-        return json.dumps({"success": False, "errors": [{"msg": "405 Method Not Allowed"}], "data": [{}]})
-
-    def error408(error):
-
-        return json.dumps({"success": False, "errors": [{"msg": "408 Request Time-Out"}], "data": [{}]})
-
-    def error500(error):
-
-        return json.dumps({"success": False, "errors": [{"msg": "500 Internal Server Error"}], "data": [{}]})
-
-    def error501(error):
-
-        return json.dumps({"success": False, "errors": [{"msg": "501 Not Implemented"}], "data": [{}]})
-
-    def error502(error):
-
-        return json.dumps({"success": False, "errors": [{"msg": "502 Service Temporarily Overloaded"}], "data": [{}]})
-
-    def error503(error):
-
-        return json.dumps({"success": False, "errors": [{"msg": "503 Service Unavailable"}], "data": [{}]})
-
-class StringHandling():
-
-    def AddColumns(columns, str):
-
-        if columns > 0:
-
-            return str + ","
-
-        else:
-
-            return str
-
-    def isnumber(string):
-
-        try:
-
-            float(string)
-
-            return True
-
-        except:
-
-            return False
-
-    def CleanSqlString(str):
-
-        Remove = "'" #adicionar aqui os caracteres a serem removidos
-
-        for c in Remove:
-
-            str = str.replace(c, "")
-
-        return str
-
-    def isdatetime(string):
-
-        Retorno = True
-
-        try:
-
-            formato = f"%Y%m%d %H:%M:%S"
-
-            datetime.strptime(string, formato)
-
-        except:
-
-            try:
-
-                formato = f"%Y%m%d"
-
-                datetime.strptime(string, formato)
-
-            except:
-
-                Retorno = False
-
-        finally:
-
-            return Retorno
-
-class UrlHandling():
-
-    def FindGetVars(varsearch):
-
-        Success  = True
-        Errors  = []
-        Data    = []
-
-        try:
-
-            params  = parse_qs(request.query_string)
-            search  = 0
-            repeats = 0
-
-            for i in params:
-
-                if i == varsearch:
-
-                    for j in params[i]:
-
-                        search = j
-                        repeats = repeats + 1
-
-            if repeats > 1:
-
-                Success = False
-                Errors.append({"msg": ErrorsDict.Get.ByCode(101)})
-
-            elif repeats == 0:
-
-                Success = False
-                Errors.append({"msg": ErrorsDict.Get.ByCode(102)})
-
-            else:
-
-                Data.append({varsearch: search})
-
-            if not Success:
-
-                try:
-
-                    keys = request.query.keys()
-
-                    for key in keys:
-
-                        if key == "idbusca":
-
-                            idbusca = request.query.get("idbusca")
-                            Data.append({varsearch: idbusca})
-
-                            Success = True
-                            Errors.clear()
-                
-                except:
-
-                    Success = False
-                    Errors.append({"msg": ErrorsDict.Get.ByCode(102)+ " - Erro na segunda tentativa de encontrar a variável"})
-
-        except:
-
-            Success = False
-            Errors.append({"msg": ErrorsDict.Get.ByCode(103)})
-
-        finally:
-
-            return json.dumps({"success": Success, "errors": Errors, "data": Data})
-
-    def OpenGetValues(varsearch, typereturn):
-
-        Success  = True
-        Errors  = []
-        Data    = []
-
-        try:
-
-            variavel        = json.loads(UrlHandling.FindGetVars(varsearch))
-            variavelStatus  = list(variavel.values())[0]
-            variavelErrors  = list(variavel.values())[1]
-            variavelData    = list(variavel.values())[2]
-
-            if variavelStatus:
-
-                for data in variavelData:
-
-                    Data.append({f"{varsearch}": list(data.values())[0]})
-
-            else:
-
-                Success = False
-
-                for error in variavelErrors:
-
-                    Errors.append({"msg": f"{list(error.values())[0]}"})
-
-        except:
-
-            Success = False
-            Errors.append({"msg": ErrorsDict.Get.ByCode(111)})
-
-        finally:
-
-            if typereturn == 1:
-
-                return Success, Errors, Data
-
-            else:
-
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
-
-class Env():
-
-    def DataBase():
-
-        Success  = True
-        Errors  = []
-        Data    = []
-
-        try:
-
-            db_host = os.getenv("DB_HOST", "")
-            db_user = os.getenv("DB_USER", "")
-            db_name = os.getenv("DB_NAME", "")
-            db_pass = os.getenv("DB_PASS", "")
-
-            if db_host != "" and db_user != "" and db_name != "" and db_pass:
-
-                Data.append({"data": f"dbname={db_name} user={db_user} password={db_pass} host={db_host}"})
-
-            else:
-
-                Success = False
-                Errors.append({"msg": ErrorsDict.Get.ByCode(201)})
-
-        except:
-
-            Success = False
-            Errors.append({"msg": ErrorsDict.Get.ByCode(202)})
-
-        finally:
-
-            return json.dumps({"success": Success, "errors": Errors, "data": Data})
-
-class ConnectDataBase():
-
-    def Connection(WebApi):
-
-        Success  = True
-        Errors  = []
-        Data    = []
-
-        try:
-
-            dsn                 = json.loads(Env.DataBase())
-            connectionStatus    = list(dsn.values())[0]
-            connectionErrors    = list(dsn.values())[1]
-            connectionData      = list(dsn.values())[2]
-
-            if connectionStatus:
-                try:
-                    
-                    connect = psycopg2.connect(list(list(connectionData)[0].values())[0])
-                    WebApi.conn = connect
-                    Data.append({"data": f"{connect}"})
-
-                except psycopg2.Error as ex:
-                    
-                    WebApi.conn = None
-                    Success = False
-                    Errors.append({"msg": ErrorsDict.Get.ByCode(301) + " - {0}".format(ex)})
-
-            else:
-
-                Success = False
-                
-                for error in connectionErrors:
-
-                    Errors.append({"msg": list(error.values())[0]})
-
-        except:
-
-            Success = False
-
-            Errors.append({"msg": ErrorsDict.Get.ByCode(302)})
-
-        finally:
-
-            return json.dumps({"success": Success, "errors": Errors, "data": Data})
-
-    def Status(WebApi):
-
-        Success = True
-        Errors = []
-        Data = []
-        
-        try:
-            
-            if WebApi.conn == None:
-                
-                try:
-
-                    connection = json.loads(ConnectDataBase.Connection(WebApi))
-                    connectionStatus = list(connection.values())[0]
-                    connectionErrors = list(connection.values())[1]
-                    connectionData = list(connection.values())[2]
-
-                    Success = connectionStatus
-                    
-                    for error in connectionErrors:
-                        
-                        Errors.append({"msg": list(error.values())[0]})
-
-                    for data in connectionData:
-
-                        Data.append({"msg": list(data.values())[0]})
-
-                except Exception as ex:
-
-                    Success = False
-                    Errors.append({"msg": ex})
-
-        except:
-
-            Success = False
-            Errors.append({"msg": ErrorsDict.Get.ByCode(311)})
-
-        finally:
-
-            return json.dumps({"success": Success, "errors": Errors, "data": Data})
-
+import StringHandling
+import UrlHandling
 
 class WebApi(Bottle):
 
@@ -467,65 +129,65 @@ class WebApi(Bottle):
 
         def error_handler_400(error):
 
-            return PageError.error400(error)
+            return ErrorsPages.Get.error400(error)
 
         @self.error(401)
 
         def error_handler_401(error):
 
-            return PageError.error401(error)
+            return ErrorsPages.Get.error401(error)
 
         @self.error(403)
 
         def error_handler_403(error):
 
-            return PageError.error403(error)
+            return ErrorsPages.Get.error403(error)
 
         @self.error(404)
 
         def error_handler_404(error):
 
-            return PageError.error404(error)
+            return ErrorsPages.Get.error404(error)
 
         @self.error(405)
 
         def error_handler_405(error):
 
-            return PageError.error405(error)
+            return ErrorsPages.Get.error405(error)
 
         @self.error(408)
 
         def error_handler_408(error):
 
-            return PageError.error408(error)
+            return ErrorsPages.Get.error408(error)
 
         @self.error(500)
 
         def error_handler_500(error):
 
-            return PageError.error500(error)
+            return ErrorsPages.Get.error500(error)
 
         @self.error(501)
 
         def error_handler_501(error):
 
-            return PageError.error501(error)
+            return ErrorsPages.Get.error501(error)
 
         @self.error(502)
 
         def error_handler_502(error):
 
-            return PageError.error502(error)
+            return ErrorsPages.Get.error502(error)
 
         @self.error(503)
 
         def error_handler_503(error):
 
-            return PageError.error503(error)
+            return ErrorsPages.Get.error503(error)
 
         try:
 
-            connection          = json.loads(ConnectDataBase.Connection(self))
+            connection          = json.loads(ConnectDataBase.Get.Connection(self))
             connectionStatus    = list(connection.values())[0]
             connectionErrors    = list(connection.values())[1]
             connectionData      = list(connection.values())[2]
@@ -542,13 +204,13 @@ class WebApi(Bottle):
         except:
             
             print("Connection error!")
-            print(ConnectDataBase.Connection(self))
+            print(ConnectDataBase.Get.Connection(self))
 
     #   TipoDispositivo
 
     def TipoDispositivoGetAll(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -601,7 +263,7 @@ class WebApi(Bottle):
 
     def TipoDispositivoGetById(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -614,7 +276,7 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("idbusca", 1)
 
                 if variavelStatus:
 
@@ -683,7 +345,7 @@ class WebApi(Bottle):
 
     def TipoDispositivoGetByName(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -696,12 +358,12 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("nomebusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("nomebusca", 1)
 
                 if variavelStatus:
 
                     nomebusca = list(list(variavelData)[0].values())[0]
-                    nomebusca = StringHandling.CleanSqlString(nomebusca)
+                    nomebusca = StringHandling.Do.CleanSqlString(nomebusca)
 
                     if str(nomebusca) != "":
 
@@ -761,7 +423,7 @@ class WebApi(Bottle):
 
     def TipoDispositivoInsert(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -776,7 +438,7 @@ class WebApi(Bottle):
             try:
 
                 cadastra = FormData.get("cadastra") if "cadastra" in FormData.keys() else None
-                cadastra = StringHandling.CleanSqlString(cadastra) if cadastra != None else cadastra
+                cadastra = StringHandling.Do.CleanSqlString(cadastra) if cadastra != None else cadastra
 
                 if cadastra != None and cadastra != "":
                     
@@ -833,7 +495,7 @@ class WebApi(Bottle):
 
     def TipoDispositivoUpdate(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -868,11 +530,11 @@ class WebApi(Bottle):
                         SQL     = "UPDATE TIPODISPOSITIVO SET "
 
                         nome = FormData.get("nome") if "nome" in FormData.keys() else None
-                        nome = StringHandling.CleanSqlString(nome) if nome != None else nome
+                        nome = StringHandling.Do.CleanSqlString(nome) if nome != None else nome
                     
                         if nome != None and nome != "":
 
-                            SQL     = StringHandling.AddColumns(columns, SQL)
+                            SQL     = StringHandling.Do.AddColumns(columns, SQL)
                             SQL     = SQL + f"NOME = '{nome}'"
                             columns = columns + 1
 
@@ -945,7 +607,7 @@ class WebApi(Bottle):
 
     def TipoDispositivoUpdateName(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -961,7 +623,7 @@ class WebApi(Bottle):
 
                 idtipo  = FormData.get("id")    if "id"     in FormData.keys()  else None
                 nome    = FormData.get("nome")  if "nome"   in FormData.keys()  else None
-                nome    = StringHandling.CleanSqlString(nome) if nome != None else nome
+                nome    = StringHandling.Do.CleanSqlString(nome) if nome != None else nome
 
                 if idtipo != None and str(idtipo).isnumeric():
 
@@ -1044,7 +706,7 @@ class WebApi(Bottle):
 
     def TipoDispositivoDelete(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1175,7 +837,7 @@ class WebApi(Bottle):
 
     def DispositivoGetAll(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1231,7 +893,7 @@ class WebApi(Bottle):
 
     def DispositivoGetById(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1244,7 +906,7 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("idbusca", 1)
 
                 if variavelStatus:
                 
@@ -1351,7 +1013,7 @@ class WebApi(Bottle):
 
     def DispositivoGetByString(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1364,12 +1026,12 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("textobusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("textobusca", 1)
 
                 if variavelStatus:
                 
                     textobusca = list(list(variavelData)[0].values())[0]
-                    textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
+                    textobusca = StringHandling.Do.CleanSqlString(textobusca) if textobusca != None else textobusca
 
                     if textobusca != "":
                 
@@ -1449,7 +1111,7 @@ class WebApi(Bottle):
 
     def DispositivoInsert(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1484,8 +1146,8 @@ class WebApi(Bottle):
                     
                     MandatoryVarsTypes = True   if  (       str(idtipo).isnumeric() \
                                                         and str(idambiente).isnumeric() \
-                                                        and StringHandling.isnumber(eixox) \
-                                                        and StringHandling.isnumber(eixoy) \
+                                                        and StringHandling.Is.number(eixox) \
+                                                        and StringHandling.Is.number(eixoy) \
                                                     ) \
                                                 else False
 
@@ -1506,10 +1168,10 @@ class WebApi(Bottle):
                         eixoy               = FormData.get("eixoy")
                         orientacao          = FormData.get("orientacao")
 
-                        codigodispositivo   = StringHandling.CleanSqlString(codigodispositivo)
-                        nome                = StringHandling.CleanSqlString(nome)
-                        descricao           = StringHandling.CleanSqlString(descricao)
-                        orientacao          = StringHandling.CleanSqlString(orientacao)
+                        codigodispositivo   = StringHandling.Do.CleanSqlString(codigodispositivo)
+                        nome                = StringHandling.Do.CleanSqlString(nome)
+                        descricao           = StringHandling.Do.CleanSqlString(descricao)
+                        orientacao          = StringHandling.Do.CleanSqlString(orientacao)
                             
                         SQL = " INSERT INTO DISPOSITIVO (" + \
                                                             "CODIGODISPOSITIVO , " + \
@@ -1594,7 +1256,7 @@ class WebApi(Bottle):
 
     def DispositivoUpdate(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1635,68 +1297,68 @@ class WebApi(Bottle):
                         eixoy               = FormData.get("eixoy")         if "eixoy"      in FormData.keys()  else None
                         orientacao          = FormData.get("orientacao")    if "orientacao" in FormData.keys()  else None
 
-                        codigodispositivo   =   StringHandling.CleanSqlString(codigodispositivo) \
+                        codigodispositivo   =   StringHandling.Do.CleanSqlString(codigodispositivo) \
                                                 if codigodispositivo != None else codigodispositivo
-                        nome                =   StringHandling.CleanSqlString(nome) \
+                        nome                =   StringHandling.Do.CleanSqlString(nome) \
                                                 if nome != None else nome
-                        descricao           =   StringHandling.CleanSqlString(descricao) \
+                        descricao           =   StringHandling.Do.CleanSqlString(descricao) \
                                                 if descricao != None else descricao
-                        orientacao          =   StringHandling.CleanSqlString(orientacao) \
+                        orientacao          =   StringHandling.Do.CleanSqlString(orientacao) \
                                                 if orientacao != None else orientacao
 
                         if      (   str(idtipo).isnumeric()             or idtipo       == None ) \
                             and (   str(idambiente).isnumeric()         or idambiente   == None ) \
-                            and (   StringHandling.isnumber(eixox)      or eixox        == None ) \
-                            and (   StringHandling.isnumber(eixoy)      or eixoy        == None ):
+                            and (   StringHandling.Is.number(eixox)      or eixox        == None ) \
+                            and (   StringHandling.Is.number(eixoy)      or eixoy        == None ):
 
                             columns = 0
                             SQL     = "UPDATE DISPOSITIVO SET "
 
                             if codigodispositivo != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"CODIGODISPOSITIVO = '{codigodispositivo}'"
                                 columns = columns + 1
 
                             if idtipo != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"IDTIPO = '{idtipo}'"
                                 columns = columns + 1
 
                             if idambiente != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"IDAMBIENTE = '{idambiente}'"
                                 columns = columns + 1
 
                             if nome != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"NOME = '{nome}'"
                                 columns = columns + 1
 
                             if descricao != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"DESCRICAO = '{descricao}'"
                                 columns = columns + 1
 
                             if eixox != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"EIXO_X = '{eixox}'"
                                 columns = columns + 1
 
                             if eixoy != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"EIXO_Y = '{eixoy}'"
                                 columns = columns + 1
 
                             if orientacao != None:
 
-                                SQL     = StringHandling.AddColumns(columns, SQL)
+                                SQL     = StringHandling.Do.AddColumns(columns, SQL)
                                 SQL     = SQL + f"ORIENTACAO = '{orientacao}'"
                                 columns = columns + 1
 
@@ -1770,7 +1432,7 @@ class WebApi(Bottle):
 
     def DispositivoUpdateName(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1786,7 +1448,7 @@ class WebApi(Bottle):
 
                 iddispositivo   = FormData.get("id")    if "id"     in FormData.keys()  else None
                 nome            = FormData.get("nome")  if "nome"   in FormData.keys()  else None
-                nome            = StringHandling.CleanSqlString(nome) if nome != None else nome
+                nome            = StringHandling.Do.CleanSqlString(nome) if nome != None else nome
 
                 if iddispositivo != None and str(iddispositivo).isnumeric():
 
@@ -1869,7 +1531,7 @@ class WebApi(Bottle):
 
     def DispositivoUpdateCode(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -1885,7 +1547,7 @@ class WebApi(Bottle):
 
                 iddispositivo   = FormData.get("id")        if "id"     in FormData.keys()  else None
                 codigo          = FormData.get("codigo")    if "codigo" in FormData.keys()  else None
-                codigo          = StringHandling.CleanSqlString(codigo) if codigo != None   else codigo
+                codigo          = StringHandling.Do.CleanSqlString(codigo) if codigo != None   else codigo
 
                 if iddispositivo != None and str(iddispositivo).isnumeric():
 
@@ -1968,7 +1630,7 @@ class WebApi(Bottle):
 
     def DispositivoDelete(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2099,7 +1761,7 @@ class WebApi(Bottle):
 
     def AmbienteGetAll(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2151,7 +1813,7 @@ class WebApi(Bottle):
 
     def AmbienteGetById(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2164,7 +1826,7 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("idbusca", 1)
 
                 if variavelStatus:
                 
@@ -2261,7 +1923,7 @@ class WebApi(Bottle):
 
     def AmbienteGetByString(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2274,12 +1936,12 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("textobusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("textobusca", 1)
 
                 if variavelStatus:
                 
                     textobusca = list(list(variavelData)[0].values())[0]
-                    textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
+                    textobusca = StringHandling.Do.CleanSqlString(textobusca) if textobusca != None else textobusca
 
                     if textobusca != "":
                 
@@ -2359,7 +2021,7 @@ class WebApi(Bottle):
 
     def AmbienteInsert(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2392,8 +2054,8 @@ class WebApi(Bottle):
                         nome        = FormData.get("nome")
                         descricao   = FormData.get("descricao") if "descricao" in FormData.keys() else ""
 
-                        nome        = StringHandling.CleanSqlString(nome)
-                        descricao   = StringHandling.CleanSqlString(descricao)
+                        nome        = StringHandling.Do.CleanSqlString(nome)
+                        descricao   = StringHandling.Do.CleanSqlString(descricao)
                             
                         SQL = " INSERT INTO AMBIENTE    (" + \
                                                             "NOME , " + \
@@ -2466,7 +2128,7 @@ class WebApi(Bottle):
 
     def AmbienteUpdate(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2501,9 +2163,9 @@ class WebApi(Bottle):
                         nome                = FormData.get("nome")          if "nome"       in FormData.keys()  else None
                         descricao           = FormData.get("descricao")     if "descricao"  in FormData.keys()  else None
 
-                        nome                =   StringHandling.CleanSqlString(nome) \
+                        nome                =   StringHandling.Do.CleanSqlString(nome) \
                                                 if nome != None else nome
-                        descricao           =   StringHandling.CleanSqlString(descricao) \
+                        descricao           =   StringHandling.Do.CleanSqlString(descricao) \
                                                 if descricao != None else descricao
 
                         columns = 0
@@ -2511,13 +2173,13 @@ class WebApi(Bottle):
 
                         if nome != None and nome != "":
 
-                            SQL     = StringHandling.AddColumns(columns, SQL)
+                            SQL     = StringHandling.Do.AddColumns(columns, SQL)
                             SQL     = SQL + f"NOME = '{nome}'"
                             columns = columns + 1
 
                         if descricao != None and descricao != "":
 
-                            SQL     = StringHandling.AddColumns(columns, SQL)
+                            SQL     = StringHandling.Do.AddColumns(columns, SQL)
                             SQL     = SQL + f"DESCRICAO = '{descricao}'"
                             columns = columns + 1
 
@@ -2586,7 +2248,7 @@ class WebApi(Bottle):
 
     def AmbienteUpdateName(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2602,7 +2264,7 @@ class WebApi(Bottle):
 
                 idambiente      = FormData.get("id")    if "id"     in FormData.keys()  else None
                 nome            = FormData.get("nome")  if "nome"   in FormData.keys()  else None
-                nome            = StringHandling.CleanSqlString(nome) if nome != None else nome
+                nome            = StringHandling.Do.CleanSqlString(nome) if nome != None else nome
 
                 if idambiente != None and str(idambiente).isnumeric():
 
@@ -2685,7 +2347,7 @@ class WebApi(Bottle):
 
     def AmbienteUpdateDescription(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2701,7 +2363,7 @@ class WebApi(Bottle):
 
                 idambiente  = FormData.get("id")            if "id"         in FormData.keys()  else None
                 descricao   = FormData.get("descricao")     if "descricao"  in FormData.keys()  else None
-                descricao   = StringHandling.CleanSqlString(descricao) if descricao != None else descricao
+                descricao   = StringHandling.Do.CleanSqlString(descricao) if descricao != None else descricao
 
                 if idambiente != None and str(idambiente).isnumeric():
 
@@ -2784,7 +2446,7 @@ class WebApi(Bottle):
 
     def AmbienteDelete(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2921,9 +2583,9 @@ class WebApi(Bottle):
 
         try:
 
-            DataInicioStatus, DataInicioErrors, DataInicioData = UrlHandling.OpenGetValues("datainicio", 1)
+            DataInicioStatus, DataInicioErrors, DataInicioData = UrlHandling.Do.OpenGetValues("datainicio", 1)
 
-            DataFimStatus, DataFimErrors, DataFimData = UrlHandling.OpenGetValues("datafim", 1)
+            DataFimStatus, DataFimErrors, DataFimData = UrlHandling.Do.OpenGetValues("datafim", 1)
 
             if DataInicioStatus and DataFimStatus:
 
@@ -2966,7 +2628,7 @@ class WebApi(Bottle):
 
     def UsuarioLogin(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -2999,8 +2661,8 @@ class WebApi(Bottle):
                         email       = FormData.get("email")
                         password    = FormData.get("password")
 
-                        email       = StringHandling.CleanSqlString(email)      if email    != None     else email
-                        password    = StringHandling.CleanSqlString(password)   if password != None     else password
+                        email       = StringHandling.Do.CleanSqlString(email)      if email    != None     else email
+                        password    = StringHandling.Do.CleanSqlString(password)   if password != None     else password
                             
                         SQL = f"    SELECT \
                                         NOME AS NAME , \
@@ -3071,7 +2733,7 @@ class WebApi(Bottle):
 
     def UsuarioRegister(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3106,10 +2768,10 @@ class WebApi(Bottle):
                         password = FormData.get("password")
                         passwordconfirmation = FormData.get("passwordconfirmation")
 
-                        username                = StringHandling.CleanSqlString(username)   if username != None     else username
-                        email                   = StringHandling.CleanSqlString(email)      if email    != None     else email
-                        password                = StringHandling.CleanSqlString(password)   if password != None     else password
-                        passwordconfirmation    = StringHandling.CleanSqlString(passwordconfirmation) \
+                        username                = StringHandling.Do.CleanSqlString(username)   if username != None     else username
+                        email                   = StringHandling.Do.CleanSqlString(email)      if email    != None     else email
+                        password                = StringHandling.Do.CleanSqlString(password)   if password != None     else password
+                        passwordconfirmation    = StringHandling.Do.CleanSqlString(passwordconfirmation) \
                                                   if passwordconfirmation != None     else passwordconfirmation
 
                         if len(password) >= 6 and password == passwordconfirmation:
@@ -3205,7 +2867,7 @@ class WebApi(Bottle):
     
     def EstadoGetAll(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3253,7 +2915,7 @@ class WebApi(Bottle):
 
     def CidadeGetAll(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3300,7 +2962,7 @@ class WebApi(Bottle):
 
     def CidadeGetByIdEstado(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3313,7 +2975,7 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("idbusca", 1)
 
                 if variavelStatus:
 
@@ -3383,7 +3045,7 @@ class WebApi(Bottle):
 
     def EnfermidadeGetAll(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3432,7 +3094,7 @@ class WebApi(Bottle):
     
     def PacienteGetAll(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3482,7 +3144,7 @@ class WebApi(Bottle):
 
     def PacienteGetById(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3495,7 +3157,7 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("idbusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("idbusca", 1)
 
                 if variavelStatus:
 
@@ -3566,7 +3228,7 @@ class WebApi(Bottle):
 
     def PacienteGetByString(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -3579,12 +3241,12 @@ class WebApi(Bottle):
 
             try:
 
-                variavelStatus, variavelErrors, variavelData = UrlHandling.OpenGetValues("textobusca", 1)
+                variavelStatus, variavelErrors, variavelData = UrlHandling.Do.OpenGetValues("textobusca", 1)
 
                 if variavelStatus:
                 
                     textobusca = list(list(variavelData)[0].values())[0]
-                    textobusca = StringHandling.CleanSqlString(textobusca) if textobusca != None else textobusca
+                    textobusca = StringHandling.Do.CleanSqlString(textobusca) if textobusca != None else textobusca
 
                     if textobusca != "":
                 

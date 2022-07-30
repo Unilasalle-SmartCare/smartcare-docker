@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "9a08d1a6-b296-40fb-8947-e15641155e22",
+		"name": "Paciente",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16695356"
+	},
+	"item": [
+		{
+			"name": "listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/paciente/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"paciente",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/paciente/buscar/id?idbusca=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"paciente",
+						"buscar",
+						"id"
+					],
+					"query": [
+						{
+							"key": "idbusca",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar por nome",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/paciente/buscar/texto/nome?textobusca=joão",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"paciente",
+						"buscar",
+						"texto",
+						"nome"
+					],
+					"query": [
+						{
+							"key": "textobusca",
+							"value": "joão"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buscar por cpf",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/paciente/buscar/texto/cpf?textobusca=12345678910",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"paciente",
+						"buscar",
+						"texto",
+						"cpf"
+					],
+					"query": [
+						{
+							"key": "textobusca",
+							"value": "12345678910"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
