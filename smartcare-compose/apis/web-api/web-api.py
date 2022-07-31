@@ -1,11 +1,7 @@
-from bottle import Bottle, request
+from bottle import Bottle
 import ConnectDataBase
-import ErrorsDict
 import ErrorsPages
 import json
-import ListHandling
-import StringHandling
-import UrlHandling
 import WebApiAmbiente
 import WebApiCidade
 import WebApiDispositivo
