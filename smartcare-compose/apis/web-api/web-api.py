@@ -126,6 +126,11 @@ class WebApi(Bottle):
 
         #self.route("/microservices/web/paciente/delete", method = "DELETE", callback = self.PacienteDelete)
 
+        # Situacao
+        
+        # rota de getall
+        # rota de getbyid
+
         # Alerta
 
         @self.error(400)
@@ -277,7 +282,7 @@ class WebApi(Bottle):
 
     def AmbienteGetAll(self):
 
-        return WebApiAmbiente.route.Getall(self)
+        return WebApiAmbiente.route.GetAll(self)
 
     def AmbienteGetById(self):
 

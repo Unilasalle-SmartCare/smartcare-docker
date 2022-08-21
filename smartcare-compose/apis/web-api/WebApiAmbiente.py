@@ -4,6 +4,7 @@ import ErrorsDict
 import json
 import StringHandling
 import UrlHandling
+import sql.ambiente.AmbienteSQL as AmbienteSQL
 
 class route:
 
@@ -16,7 +17,6 @@ class route:
 
         if connectionStatus:
 
-            SQL     = "SELECT * FROM AMBIENTE "
             Success  = True
             Errors  = []
             Data    = []
@@ -25,11 +25,7 @@ class route:
             
                 chamada = request['bottle.route'].rule.replace("/microservices/web/ambiente/get/", "")
 
-                if chamada == "actives":
-
-                    SQL = SQL + "WHERE IND_SIT = 1 " 
-
-                SQL = SQL + "ORDER BY IDAMBIENTE"
+                SQL = AmbienteSQL.Get.Actives() if chamada == "actives" else AmbienteSQL.Get.All()
 
                 cur = self.conn.cursor()
                 cur.execute(SQL)
@@ -81,8 +77,6 @@ class route:
                     idbusca = list(list(variavelData)[0].values())[0]
                 
                     if(str(idbusca).isnumeric()):
-                
-                        SQL = "SELECT * FROM AMBIENTE WHERE 1 = 1 "
 
                         route   = "/microservices/web/ambiente/getby/id"
                         chamada = request['bottle.route'].rule.replace(route + "/", "")
@@ -95,7 +89,7 @@ class route:
 
                         if chamada == route or chamada in anotherroutes:
 
-                            SQL = SQL + f"AND IDAMBIENTE = {idbusca} "
+                            SQL = AmbienteSQL.Get.By.Id(idbusca)
                             returnLines = 1
 
                         else:
@@ -106,8 +100,6 @@ class route:
                             return({"success":Success,"errors":Errors,"data":Data})
                 
                         try:
-
-                            SQL = SQL + "ORDER BY IDAMBIENTE"
                 
                             cur = self.conn.cursor()
                             cur.execute(SQL)
@@ -192,19 +184,17 @@ class route:
                     textobusca = StringHandling.Do.CleanSqlString(textobusca) if textobusca != None else textobusca
 
                     if textobusca != "":
-                
-                        SQL = "SELECT * FROM AMBIENTE WHERE 1 = 1 "
 
                         route = "/microservices/web/ambiente/getby/string"
                         chamada = request['bottle.route'].rule.replace(route + "/", "")
 
                         if chamada == "name":
 
-                            SQL = SQL + f"AND UPPER(NOME) LIKE '%{str(textobusca).upper()}%' "
+                            SQL = AmbienteSQL.Get.By.Name(textobusca)
 
                         elif chamada == "description":
 
-                            SQL = SQL + f"AND UPPER(DESCRICAO) LIKE '%{str(textobusca).upper()}%' "
+                            SQL = AmbienteSQL.Get.By.Description(textobusca)
 
                         else:
 
@@ -214,8 +204,6 @@ class route:
                             return({"success":Success,"errors":Errors,"data":Data})
 
                         try:
-
-                            SQL = SQL + "ORDER BY IDAMBIENTE"
                     
                             cur = self.conn.cursor()
                             cur.execute(SQL)
@@ -304,16 +292,8 @@ class route:
 
                         nome        = StringHandling.Do.CleanSqlString(nome)
                         descricao   = StringHandling.Do.CleanSqlString(descricao)
-                            
-                        SQL = " INSERT INTO AMBIENTE    (" + \
-                                                            "NOME , " + \
-                                                            "DESCRICAO , " + \
-                                                            "IND_SIT" + \
-                                                        ")" + \
-                                "VALUES " + " ('{}', '{}', 1) RETURNING *".format(
-                                    nome ,
-                                    descricao
-                                )
+
+                        SQL = AmbienteSQL.Do.Insert(nome, descricao)
 
                         try:
 
@@ -416,24 +396,11 @@ class route:
                         descricao           =   StringHandling.Do.CleanSqlString(descricao) \
                                                 if descricao != None else descricao
 
-                        columns = 0
-                        SQL     = "UPDATE AMBIENTE SET "
+                        empty = [None, ""]
 
-                        if nome != None and nome != "":
+                        if nome not in empty or descricao not in empty:
 
-                            SQL     = StringHandling.Do.AddColumns(columns, SQL)
-                            SQL     = SQL + f"NOME = '{nome}'"
-                            columns = columns + 1
-
-                        if descricao != None and descricao != "":
-
-                            SQL     = StringHandling.Do.AddColumns(columns, SQL)
-                            SQL     = SQL + f"DESCRICAO = '{descricao}'"
-                            columns = columns + 1
-
-                        if columns > 0:
-
-                            SQL = SQL + f" WHERE 1 = 1 AND IDAMBIENTE = {idambiente} RETURNING *"
+                            SQL = AmbienteSQL.Do.Update(idambiente, nome, descricao)
 
                             try:
                         
@@ -518,10 +485,8 @@ class route:
 
                     if nome != None and nome != "":
 
-                        SQL = "UPDATE AMBIENTE SET NOME = '{}' WHERE IDAMBIENTE = {} RETURNING *".format(
-                            nome ,
-                            idambiente
-                        )
+                        SQL = AmbienteSQL.Do.UpdateColumn.Name(idambiente, nome)
+
                         request.query.update({'idbusca': f'{idambiente}'})
                         DataBefore          = json.loads(route.GetById(self))
                         DataBeforeStatus    = list(DataBefore.values())[0]
@@ -617,10 +582,8 @@ class route:
 
                     if descricao != None and descricao != "":
 
-                        SQL = "UPDATE AMBIENTE SET DESCRICAO = '{}' WHERE IDAMBIENTE = {} RETURNING *".format(
-                            descricao ,
-                            idambiente
-                        )
+                        SQL = AmbienteSQL.Do.UpdateColumn.Description(idambiente, descricao)
+
                         request.query.update({'idbusca': f'{idambiente}'})
                         DataBefore          = json.loads(route.GetById(self))
                         DataBeforeStatus    = list(DataBefore.values())[0]
@@ -736,7 +699,7 @@ class route:
 
                         if  list(list(DataBeforeData)[0].values())[IndSitPosition] != 2:
 
-                            SQL = f"UPDATE AMBIENTE SET IND_SIT = 2 WHERE IDAMBIENTE = {idambiente}"
+                            SQL = AmbienteSQL.Do.Delete(idambiente)
 
                             try:
 
@@ -746,9 +709,7 @@ class route:
 
                                 try:
 
-                                    SQL =  f"SELECT 1 FROM AMBIENTE " + \
-                                           f"WHERE IDAMBIENTE = {idambiente} AND IND_SIT <> 2 " + \
-                                            "ORDER BY IDAMBIENTE"
+                                    SQL =  AmbienteSQL.Do.VerifyExclusion(idambiente)
 
                                     cur = self.conn.cursor()
                                     cur.execute(SQL)
