@@ -1,6 +1,7 @@
 import ConnectDataBase
 import ErrorsDict
 import json
+import UrlHandling
 
 class route:
 
@@ -83,8 +84,6 @@ class route:
                             self.conn.commit()
 
                             for result in rv:
-
-                                result = ListHandling.MapDate.ToString(result)
 
                                 Data.append(dict(zip(row_headers, result)))
                                 break

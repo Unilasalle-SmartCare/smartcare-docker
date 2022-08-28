@@ -11,6 +11,7 @@ import WebApiTipoDispositivo
 import WebApiMedicao
 import WebApiPaciente
 import WebApiUsuario
+import WebApiSituacao
 
 class WebApi(Bottle):
 
