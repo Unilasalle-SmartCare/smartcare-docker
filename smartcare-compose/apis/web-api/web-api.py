@@ -127,9 +127,10 @@ class WebApi(Bottle):
         #self.route("/microservices/web/paciente/delete", method = "DELETE", callback = self.PacienteDelete)
 
         # Situacao
+
+        self.route("/microservices/web/situacao/get/all", method = "GET", callback = self.SituacaoGetAll)
         
-        # rota de getall
-        # rota de getbyid
+        self.route("/microservices/web/situacao/getby/id", method = "GET", callback = self.SituacaoGetById)
 
         # Alerta
 
@@ -363,6 +364,14 @@ class WebApi(Bottle):
     def PacienteGetByString(self):
 
         return WebApiPaciente.route.GetByString(self)
+
+    def SituacaoGetAll(self):
+
+        return WebApiSituacao.route.GetAll(self)   
+    
+    def SituacaoGetById(self):
+
+        return WebApiSituacao.route.GetById(self)   
 
 if __name__ == '__main__':
 
