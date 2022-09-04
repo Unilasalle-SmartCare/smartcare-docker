@@ -121,11 +121,11 @@ class WebApi(Bottle):
 
         self.route("/microservices/web/paciente/getby/string/cpf", method = "GET", callback = self.PacienteGetByString)
 
-        #self.route("/microservices/web/paciente/insert", method = "POST", callback = self.PacienteInsert)
+        self.route("/microservices/web/paciente/insert", method = "POST", callback = self.PacienteInsert)
 
         #self.route("/microservices/web/paciente/update", method = "PUT", callback = self.PacienteUpdate)
 
-        #self.route("/microservices/web/paciente/delete", method = "DELETE", callback = self.PacienteDelete)
+        self.route("/microservices/web/paciente/delete", method = "DELETE", callback = self.PacienteDelete)
 
         # Situacao
 
@@ -365,6 +365,22 @@ class WebApi(Bottle):
     def PacienteGetByString(self):
 
         return WebApiPaciente.route.GetByString(self)
+        
+    def SituacaoGetAll(self):
+
+        return WebApiSituacao.route.GetAll(self)
+    
+    def SituacaoGetById(self):
+
+        return WebApiSituacao.route.GetById(self)
+
+    def PacienteInsert(self):
+
+        return WebApiPaciente.route.Insert(self)
+
+    def PacienteDelete(self):
+
+        return WebApiPaciente.route.Delete(self)
 
     def SituacaoGetAll(self):
 
