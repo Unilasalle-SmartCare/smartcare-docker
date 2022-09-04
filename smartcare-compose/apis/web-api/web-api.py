@@ -363,6 +363,14 @@ class WebApi(Bottle):
     def PacienteGetByString(self):
 
         return WebApiPaciente.route.GetByString(self)
+        
+    def SituacaoGetAll(self):
+
+        return WebApiSituacao.route.GetAll(self)
+    
+    def SituacaoGetById(self):
+
+        return WebApiSituacao.route.GetById(self)
 
     def PacienteInsert(self):
 
@@ -371,14 +379,6 @@ class WebApi(Bottle):
     def PacienteDelete(self):
 
         return WebApiPaciente.route.Delete(self)
-
-    def SituacaoGetAll(self):
-
-        return WebApiSituacao.route.GetAll(self)
-    
-    def SituacaoGetById(self):
-
-        return WebApiSituacao.route.GetById(self)
 
 if __name__ == '__main__':
 
