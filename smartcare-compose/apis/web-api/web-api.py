@@ -373,14 +373,6 @@ class WebApi(Bottle):
 
         return WebApiPaciente.route.Delete(self)
 
-    def SituacaoGetAll(self):
-
-        return WebApiSituacao.route.GetAll(self)   
-    
-    def SituacaoGetById(self):
-
-        return WebApiSituacao.route.GetById(self)   
-
 if __name__ == '__main__':
 
     webapi = WebApi()
