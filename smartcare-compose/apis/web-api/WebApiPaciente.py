@@ -244,7 +244,7 @@ class route:
 
     def Insert(self):
 
-        connection          = json.loads(ConnectDataBase.Status(self))
+        connection          = json.loads(ConnectDataBase.Get.Status(self))
         connectionStatus    = list(connection.values())[0]
         connectionErrors    = list(connection.values())[1]
         connectionData      = list(connection.values())[2]
@@ -258,7 +258,7 @@ class route:
 
             try:
 
-                MandatoryVars = ["cpf", "nome", "nascimento", "idenfermidade", "estagio_enfermidade"]
+                MandatoryVars = ["cpf", "nome", "nascimento", "enfermidade", "estagio_enfermidade"]
 
                 MandatoryVarsExists = True
 
@@ -272,14 +272,19 @@ class route:
 
                 if MandatoryVarsExists:
 
-                    cpf      = FormData.get("cpf")
-                    nome     = FormData.get("nome")
-                    nascimento  = FormData.get("nascimento")
-                    idenfermidade = FormData.get("enfermidade")
+                    cpf                 = FormData.get("cpf")
+                    nome                = FormData.get("nome")
+                    nascimento          = FormData.get("nascimento")
+                    idenfermidade       = FormData.get("enfermidade")
                     estagio_enfermidade = FormData.get("estagio_enfermidade")
+                    #Variaveis sem obrigatoriedade no request, mas se vier tem que ser de um tipo
+                    idestado            = FormData.get("estado") if "estado" in FormData.keys() else 1 
+                    idcidade            = FormData.get("cidade") if "cidade" in FormData.keys() else 1
                     
-                    MandatoryVarsTypes = True   if  (       str(idenfermidade).isnumeric() \
-                                                            and StringHandling.isdatetime(nascimento) \
+                    MandatoryVarsTypes = True   if  (           str(idenfermidade).isnumeric() \
+                                                            and StringHandling.Is.datetime(nascimento) \
+                                                            and str(idestado).isnumeric() \
+                                                            and str(idestado).isnumeric() \
                                                     ) \
                                                 else False
 
@@ -294,22 +299,23 @@ class route:
                         cpf                 = FormData.get("cpf")
                         nome                = FormData.get("nome")
                         nascimento          = FormData.get("nascimento")
-                        idenfermidade       = FormData.get("enfermidade") if "enfermidade" in FormData.keys() else None
-                        idcidade            = FormData.get("cidade") if "cidade" in FormData.keys() else None
-                        idestado            = FormData.get("estado") if "estado" in FormData.keys() else None 
-                        bairro              = FormData.get("bairro")
-                        endereco            = FormData.get("endereco")
-                        complemento         = FormData.get("complemento")
-                        bit_alerta          = FormData.get("bit_alerta")
-                        ind_sit             = FormData.get("ind_sit")
+                        idenfermidade       = FormData.get("enfermidade")
+                        estagio_enfermidade = FormData.get("estagio_enfermidade")
+                        idestado            = FormData.get("estado") if "estado" in FormData.keys() else 1 
+                        idcidade            = FormData.get("cidade") if "cidade" in FormData.keys() else 1
+                        bairro              = FormData.get("bairro") if "bairro" in FormData.keys() else ""
+                        endereco            = FormData.get("endereco") if "endereco" in FormData.keys() else ""
+                        complemento         = FormData.get("complemento") if "complemento" in FormData.keys() else ""
 
-                        cpf                 = StringHandling.CleanSqlString(cpf)
-                        nome                = StringHandling.CleanSqlString(nome)
-                        estagio_enfermidade = StringHandling.CleanSqlString(estagio_enfermidade)
-                        bairro              = StringHandling.CleanSqlString(bairro)
-                        endereco            = StringHandling.CleanSqlString(endereco)
-                        complemento         = StringHandling.CleanSqlString(complemento)
-                            
+                        cpf                 = StringHandling.Do.CleanSqlString(cpf)
+                        nome                = StringHandling.Do.CleanSqlString(nome)
+                        nascimento          = StringHandling.Do.CleanSqlString(nascimento)
+                        idenfermidade       = StringHandling.Do.CleanSqlString(idenfermidade)
+                        estagio_enfermidade = StringHandling.Do.CleanSqlString(estagio_enfermidade)
+                        bairro              = StringHandling.Do.CleanSqlString(bairro)
+                        endereco            = StringHandling.Do.CleanSqlString(endereco)
+                        complemento         = StringHandling.Do.CleanSqlString(complemento)
+
                         SQL = " INSERT INTO PACIENTE (" + \
                                                             "CPF , " + \
                                                             "NOME , " + \
@@ -324,7 +330,7 @@ class route:
                                                             "BIT_ALERTA , " + \
                                                             "IND_SIT" + \
                                                         ")" + \
-                                "VALUES " + " ('{}', '{}', '{}', {}, '{}', {}, {}, '{}','{}','{}', 1, 1) RETURNING *".format(
+                                "VALUES " + " ('{}', '{}', '{}', {}, '{}', {}, {}, '{}','{}','{}', {}, 1) RETURNING *".format(
                                     cpf ,
                                     nome ,
                                     nascimento ,
@@ -334,7 +340,8 @@ class route:
                                     idcidade ,
                                     bairro ,
                                     endereco ,
-                                    complemento 
+                                    complemento ,
+                                    False
                                 )
 
                         try:
@@ -346,6 +353,8 @@ class route:
                             self.conn.commit()
 
                             for result in rv:
+                                
+                                result = ListHandling.MapDate.ToString(result)
 
                                 Data.append(dict(zip(row_headers, result)))
                                 break
@@ -353,13 +362,13 @@ class route:
                             if not Data:
 
                                 Success = False
-                                Errors.append({"msg": ErrorsDict.errorcode(531)})
+                                Errors.append({"msg": ErrorsDict.Get.ByCode(531)})
                         
                         except:
                             
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrorsDict.errorcode(532)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(532)})
                         
                         finally:
                         
@@ -368,22 +377,22 @@ class route:
                     except:
                     
                         Success = False
-                        Errors.append({"msg": ErrorsDict.errorcode(533)})
+                        Errors.append({"msg": ErrorsDict.Get.ByCode(533)})
 
                 elif MandatoryVarsExists == False:
 
                     Success = False
-                    Errors.append({"msg": ErrorsDict.errorcode(112)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(112)})
 
                 else: #MandatoryVarsTypes == False
 
                     Success = False
-                    Errors.append({"msg": ErrorsDict.errorcode(113)})
+                    Errors.append({"msg": ErrorsDict.Get.ByCode(113)})
             
             except:
 
                 Success = False
-                Errors.append({"msg": ErrorsDict.errorcode(114)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(114)})
 
             finally:
 
@@ -392,13 +401,11 @@ class route:
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
-            Errors = [{"msg": ErrorsDict.errorcode(300)}]
+            Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
             return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
 
     #def Update(self):
-
-
 
     def Delete(self):
 

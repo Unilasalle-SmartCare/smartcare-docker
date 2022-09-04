@@ -54,6 +54,10 @@ class Do():
 
     def CleanSqlString(str):
 
+        if str is None:
+
+            return ""
+
         Remove = "'" #adicionar aqui os caracteres a serem removidos
 
         for c in Remove:
