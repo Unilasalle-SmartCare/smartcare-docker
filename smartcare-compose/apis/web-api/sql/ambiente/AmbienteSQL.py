@@ -1,4 +1,3 @@
-from select import select
 from pypika import Column, Criterion, Database, Dialects, Field, functions as fn, Order, queries, Query, Schema, Table
 import sql.ambiente.Constants as Constants
 
