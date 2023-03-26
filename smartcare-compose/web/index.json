@@ -1,0 +1,94 @@
+{
+    "reception": "Bem-vindo ao Projeto Smart-Care",
+    "authors":{
+        "owner":{
+            "id":"1",
+            "name":"Raphael Abreu",
+            "role":"Coordenação de Projeto"
+        },
+        "front-end":{
+            "veteran":[
+                {
+                    "id":"1",
+                    "name":"Matthew Araújo",
+                    "role":"Scrum Master/Front-End"
+                }
+            ],
+            "shadow":[
+                {
+                    "id":"1",
+                    "name":"Gabriel Accetta",
+                    "role":"Scrum Junior/Front-End"
+                }
+            ]
+        },
+        "back-end":{
+            "veteran":[
+                {
+                    "id":"1",
+                    "name":"Yuri Ferreira",
+                    "role":"Back-End/API"
+                },
+                {
+                    "id":"2",
+                    "name":"Jonathan Thiengo",
+                    "role":"Back-End/API"
+                }
+            ],
+            "shadow":[
+                {
+                    "id":"1",
+                    "name":"Thiago Rangel",
+                    "role":"Back-End/API"
+                },
+                {
+                    "id":"2",
+                    "name":"Breno Ximenes",
+                    "role":"Back-End/API"
+                }
+            ]
+        },
+        "database":{
+            "veteran":[
+                {
+                    "id":"1",
+                    "name":"Roberto Garrahan",
+                    "role":"Banco de dados"
+                }
+            ],
+            "shadow":[
+                {
+                    "id":"1",
+                    "name":"Rebeca Macedo",
+                    "role":"Banco de dados"
+                }
+            ]
+        },
+        "sensors":{
+            "veteran":[
+                {
+                    "id":"1",
+                    "name":"Fabrício Gasperin",
+                    "role":"MQTT/Sensores e Atuadores"
+                },
+                {
+                    "id":"2",
+                    "name":"Carol",
+                    "role":"MQTT/Sensores e Atuadores"
+                }
+            ],
+            "shadow":[
+                {
+                    "id":"1",
+                    "name":"Breno Ximenes",
+                    "role":"MQTT/Sensores e Atuadores"
+                },
+                {
+                    "id":"2",
+                    "name":"Jhonnatan Reishoffer",
+                    "role":"MQTT/Sensores e Atuadores"
+                }
+            ]
+        }
+    }
+}
