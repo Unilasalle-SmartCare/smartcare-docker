@@ -49,14 +49,14 @@ class route:
 
                 cur.close()
 
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data},sort_keys=True, indent=4, ensure_ascii=False)
         
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
-            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData},sort_keys=True, indent=4, ensure_ascii=False)
 
     def GetById(self):
 
@@ -133,14 +133,14 @@ class route:
 
             finally:
 
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data},sort_keys=True, indent=4, ensure_ascii=False)
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
-            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData},sort_keys=True, indent=4, ensure_ascii=False)
 
     def GetByString(self):
 
@@ -233,14 +233,14 @@ class route:
             
             finally:
             
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data},sort_keys=True, indent=4, ensure_ascii=False)
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
-            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData},sort_keys=True, indent=4, ensure_ascii=False)
 
     def Insert(self):
 
@@ -396,14 +396,14 @@ class route:
 
             finally:
 
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data},sort_keys=True, indent=4, ensure_ascii=False)
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
-            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData},sort_keys=True, indent=4, ensure_ascii=False)
 
     #def Update(self):
 
@@ -527,11 +527,11 @@ class route:
 
             finally:
 
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data},sort_keys=True, indent=4, ensure_ascii=False)
 
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
-            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})        
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData},sort_keys=True, indent=4, ensure_ascii=False)        
