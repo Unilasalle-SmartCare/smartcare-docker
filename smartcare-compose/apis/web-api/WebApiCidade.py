@@ -37,20 +37,20 @@ class route:
 
                 self.conn.rollback()
                 Success = False
-                Errors.append({"msg": ErrorsDict.Get.ByCode(401)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(951)})
 
             finally:
 
                 cur.close()
 
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data},sort_keys=True, indent=4, ensure_ascii=False)
         
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
-            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData},sort_keys=True, indent=4, ensure_ascii=False)
 
     def GetByIdEstado(self):
 
@@ -93,7 +93,7 @@ class route:
 
                             self.conn.rollback()
                             Success = False
-                            Errors.append({"msg": ErrorsDict.Get.ByCode(411)})
+                            Errors.append({"msg": ErrorsDict.Get.ByCode(971)})
 
                         finally:
 
@@ -120,15 +120,15 @@ class route:
             except:
 
                 Success = False
-                Errors.append({"msg": ErrorsDict.Get.ByCode(412)})
+                Errors.append({"msg": ErrorsDict.Get.ByCode(962)})
 
             finally:
 
-                return json.dumps({"success": Success, "errors": Errors, "data": Data})
+                return json.dumps({"success": Success, "errors": Errors, "data": Data},sort_keys=True, indent=4, ensure_ascii=False)
         
         else:
 
             # connectionErrors só será passado para usuarioid 1(suporte)
             Errors = [{"msg": ErrorsDict.Get.ByCode(300)}]
 
-            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData})
+            return json.dumps({"success": connectionStatus, "errors": Errors, "data": connectionData},sort_keys=True, indent=4, ensure_ascii=False)
