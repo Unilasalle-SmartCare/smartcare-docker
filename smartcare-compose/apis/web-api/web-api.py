@@ -105,6 +105,12 @@ class WebApi(Bottle):
 
         self.route("/microservices/web/estado/get/all", method = "GET", callback = self.EstadoGetAll)
         
+        self.route("/microservices/web/estado/getby/id", method = "GET", callback = self.EstadoGetById)
+
+        self.route("/microservices/web/estado/getby/string/name", method = "GET", callback = self.EstadoGetByString)
+
+        self.route("/microservices/web/estado/getby/string/uf", method = "GET", callback = self.EstadoGetByString)
+
         # Cidade
 
         self.route("/microservices/web/cidade/get/all", method = "GET", callback = self.CidadeGetAll)
@@ -335,6 +341,14 @@ class WebApi(Bottle):
     def EstadoGetAll(self):
 
         return WebApiEstado.route.GetAll(self)
+    
+    def EstadoGetById(self):
+
+        return WebApiEstado.route.GetById(self)
+
+    def EstadoGetByString(self):
+
+        return WebApiEstado.route.GetByString(self)
 
     #   Cidade
 

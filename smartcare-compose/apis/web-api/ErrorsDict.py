@@ -100,6 +100,17 @@ class Get():
         Errors[812] = "Erro na inserção do usuário!"
         Errors[813] = "Senha inválida! Ela deve ter mais de 6 dígitos e deve conferir com a confirmação!"
         Errors[814] = "Erro interno na Api - inserir usuário!"
+        #900 - ESTADO
+        Errors[901] = "Erro na listagem de estados!"
+        Errors[911] = "Erro interno na Api - busca estado por id!"
+        Errors[921] = "Erro na busca de estado!"
+        Errors[922] = "Erro interno na Api - busca estado por texto!"
+        #950 - CIDADE
+        Errors[951] = "Erro na listagem de cidades!"        
+        Errors[961] = "Erro interno na Api - busca cidade por id!"
+        Errors[962] = "Erro interno na Api - busca cidade por id de estado!"
+        Errors[971] = "Erro na busca de cidade!"
+        Errors[972] = "Erro interno na Api - busca cidade por texto!"
 
         error = Errors[int] if int in Errors.keys() else None
 
