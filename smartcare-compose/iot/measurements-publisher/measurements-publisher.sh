@@ -1,3 +1,3 @@
 #!/bin/sh
 pip install paho-mqtt
-python -u measurements-publisher.py
+python -u new-measurements-publisher.py

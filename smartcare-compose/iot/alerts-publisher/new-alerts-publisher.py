@@ -12,7 +12,7 @@ def on_publish(client, userdata, result):
     pass
 i=0
 
-while i==0:
+while i<5:
 
     time.sleep(2)
 
@@ -33,11 +33,12 @@ while i==0:
             AlertStatus = response["data"][0]["alert"]
 
             print("Leitura de alerta capturada no banco:", AlertStatus)
+            i+=1
 
         else:
 
             print("Erro na iot api: ", response["errors"])
-            i=1
+            i=11
 
     except Exception as ex:
 
