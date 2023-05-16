@@ -10,40 +10,39 @@ def on_publish(client, userdata, result):
 
     print("data published \n")
     pass
-i=0
 
-while i==0:
 
-    time.sleep(2)
+#while True:
 
-    client1 = paho.Client("Alert-Monitor")
-    client1.on_publish = on_publish
-    client1.connect(broker, port)
+time.sleep(2)
 
-    AlertStatus = False
+client1 = paho.Client("Alert-Monitor")
+client1.on_publish = on_publish
+client1.connect(broker, port)
 
-    try:
+AlertStatus = False
 
-        request = requests.get("http://172.20.0.5:8082/alert")
+try:
 
-        response = request.json()
+    request = requests.get("http://172.20.0.5:8082/alert")
 
-        if response["success"]:
+    response = request.json()
 
-            AlertStatus = response["data"][0]["alert"]
+    if response["success"]:
 
-            print("Leitura de alerta capturada no banco:", AlertStatus)
+        AlertStatus = response["data"][0]["alert"]
 
-        else:
+        print("Leitura de alerta capturada no banco:", AlertStatus)
 
-            print("Erro na iot api: ", response["errors"])
-            i=1
+    else:
 
-    except Exception as ex:
+        print("Erro na iot api: ", response["errors"])
 
-        print(ex.__cause__)
-        print(ex)
+except Exception as ex:
+
+    print(ex.__cause__)
+    print(ex)
     
-    message = json.dumps({"msg":AlertStatus})   
+message = json.dumps({"msg":AlertStatus})   
 
-    ret = client1.publish("home/alert", message)
+ret = client1.publish("home/alert", message)
