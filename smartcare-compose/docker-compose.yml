@@ -73,6 +73,8 @@ services:
       - DB_USER=smartcare
       - DB_PASS=820cfb9bb413498ae07941b7bac0582b
       - DB_NAME=smartcare_db
+    ports:
+      - 8081:8081
   broker:
     image: eclipse-mosquitto:1.6.15
     # volumes:

@@ -95,6 +95,6 @@ mqttc.on_subscribe  = on_subscribe
 mqttc.connect("broker", 1883, 60)
 
 run = True
-while run:
-    mqttc.loop()
+#while run:
+mqttc.loop()
 
