@@ -1,4 +1,5 @@
 from bottle import Bottle
+from bottle_cors_plugin import cors_plugin
 import ConnectDataBase
 import ErrorsPages
 import json
@@ -560,6 +561,7 @@ class WebApi(Bottle):
 
  
 if __name__ == '__main__':
-
+    
     webapi = WebApi()
+    WebApi.install(cors_plugin('*'))
     webapi.run(host='0.0.0.0', port=8081, debug=True)
